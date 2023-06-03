@@ -83,6 +83,7 @@ class Human {
 
 
 class Car {
+    private String nameModel;
     private Integer engineCapacity;
     private Owner owner;
     private Integer rentMoney;
@@ -97,6 +98,10 @@ class Car {
         this.owner = owner;
     }
 
+    public void setNameModel(String nameModel) {
+        this.nameModel = nameModel;
+    }
+
     public void setRentMoney(Integer rentMoney) {
         this.rentMoney = rentMoney;
     }
@@ -107,6 +112,10 @@ class Car {
 
     public void setLifespan(Integer lifespan) {
         this.lifespan = lifespan;
+    }
+
+    public String getNameModel() {
+        return nameModel;
     }
 
     public Integer getEngineCapacity() {
@@ -154,11 +163,9 @@ class Owner extends Human {
     private final List<String> myCars = new ArrayList<String>();
 
     public void showMyCars() {
-        // Displaying owner's cars logic
     }
 
     public void showIncome() {
-        // Displaying owner's income logic
     }
 }
 
@@ -186,6 +193,17 @@ class Agency {
         } else {
             System.out.println();
             System.out.println("Tenant not found :(");
+            System.out.println();
+            return null;
+        }
+    }
+
+    public Car getCarByIndex(int index) {
+        if (index >= 0 && index < carList.size()) {
+            return carList.get(index);
+        } else {
+            System.out.println();
+            System.out.println("Car not found :(");
             System.out.println();
             return null;
         }
@@ -261,10 +279,27 @@ class Agency {
         }
     }
 
+    public void printTenant(Tenant tenant) {
+        if (!tenantList.isEmpty()) {
+            System.out.println("List of Tenants:");
+            System.out.println("Username: " + tenant.getUsername());
+            System.out.println("Password: " + tenant.getPassword());
+            System.out.println("First Name: " + tenant.getFirstName());
+            System.out.println("Last Name: " + tenant.getLastName());
+            System.out.println("Age: " + tenant.getAge());
+            System.out.println("National Code: " + tenant.getNationalCode());
+            System.out.println("Phone Number: " + tenant.getPhoneNumber());
+            System.out.println("Address: " + tenant.getAddress());
+            System.out.println("Account Balance: " + tenant.getAccountBalance());
+            System.out.println("-----------------------------------");
+        }
+    }
+
     public void printCars() {
         if (!carList.isEmpty()) {
             System.out.println("List of Cars:");
             for (Car car : carList) {
+                System.out.println("Name Model: " + car.getNameModel());
                 System.out.println("Engine Capacity: " + car.getEngineCapacity());
                 System.out.println("Owner: " + car.getOwner().getFirstName() + ' ' + car.getOwner().getLastName());
                 System.out.println("Rent Money: " + car.getRentMoney());
@@ -275,20 +310,46 @@ class Agency {
         }
     }
 
-    public void printOwnerListUsername() {
+    public void printOwnerList(String type) {
+        if (type.equalsIgnoreCase("username")) {
+            int counter = 0;
+            for (Owner owner : ownerList) {
+                System.out.println("[" + counter + "]" + " " + owner.getUsername());
+                counter += 1;
+            }
+        } else if (type.equalsIgnoreCase("name")) {
+            int counter = 0;
+            for (Owner owner : ownerList) {
+                System.out.println("[" + counter + "]" + " " + owner.getFirstName() + ' ' + owner.getLastName());
+                counter += 1;
+            }
+
+        }
+    }
+
+    public void printCarList() {
         int counter = 0;
-        for (Owner owner : ownerList) {
-            System.out.println("[" + counter + "]" + " " + owner.getUsername());
+        for (Car car : carList) {
+            System.out.println("[" + counter + "]" + " " + car.getNameModel());
             counter += 1;
         }
     }
 
 
-    public void printTenantListUsername() {
-        int counter = 0;
-        for (Tenant tenant : tenantList) {
-            System.out.println("[" + counter + "]" + " " + tenant.getUsername());
-            counter += 1;
+    public void printTenantList(String type) {
+        if (type.equalsIgnoreCase("username")) {
+            int counter = 0;
+            for (Tenant tenant : tenantList) {
+                System.out.println("[" + counter + "]" + " " + tenant.getUsername());
+                counter += 1;
+            }
+        } else if (type.equalsIgnoreCase("name")) {
+            int counter = 0;
+            for (Tenant tenant : tenantList) {
+                System.out.println("[" + counter + "]" + " " + tenant.getFirstName() + ' ' + tenant.getLastName());
+                counter += 1;
+            }
+
         }
     }
 
@@ -299,12 +360,17 @@ class Agency {
     public List<Owner> getOwnerList() {
         return ownerList;
     }
+
+    public List<Car> getCarList() {
+        return carList;
+    }
 }
 
 
 class UserInterface {
     private static final Scanner scanner = new Scanner(System.in);
     private static final Agency agency = new Agency();
+    private static final Rent rent = new Rent();
 
     public static void main(String[] args) {
         boolean running = true;
@@ -332,7 +398,7 @@ class UserInterface {
                 case 2:
                     if (!agency.getOwnerList().isEmpty()) {
                         System.out.println();
-                        agency.printOwnerListUsername();
+                        agency.printOwnerList("username");
                         System.out.print("Select Username : ");
                         int index_username_owner = scanner.nextInt();
                         scanner.nextLine();
@@ -361,7 +427,7 @@ class UserInterface {
                 case 3:
                     if (!agency.getTenantList().isEmpty()) {
                         System.out.println();
-                        agency.printTenantListUsername();
+                        agency.printTenantList("username");
                         System.out.print("Select Username : ");
                         int index_username_tenant = scanner.nextInt();
                         scanner.nextLine();
@@ -402,10 +468,21 @@ class UserInterface {
         System.out.println("Welcome to the Agency Management System");
         System.out.println();
         System.out.println("Who are you:");
-        System.out.println("1. Agency Manager");
-        System.out.println("2. Owner");
-        System.out.println("3. Tenant");
-        System.out.println("0. Exit");
+        System.out.println("[1] Agency Manager");
+        System.out.println("[2] Owner");
+        System.out.println("[3] Tenant");
+        System.out.println("[0] Exit");
+    }
+
+    private static void displayAgencyManagerMenu() {
+
+        System.out.println("Please select an option:");
+        System.out.println("[1] Add Owner");
+        System.out.println("[2] Add Tenant");
+        System.out.println("[3] Add Car");
+        System.out.println("[4] Print Report");
+        System.out.println("[5] Rent");
+        System.out.println("[0] Exit");
     }
 
     private static void handleAgencyManager() {
@@ -428,6 +505,9 @@ class UserInterface {
                     agency.printTenants();
                     agency.printCars();
                     break;
+                case 5:
+                    rent();
+                    break;
                 case 0:
                     running = false;
                     break;
@@ -438,22 +518,57 @@ class UserInterface {
         }
     }
 
-    private static void displayAgencyManagerMenu() {
-
-        System.out.println("Please select an option:");
-        System.out.println("1. Add Owner");
-        System.out.println("2. Add Tenant");
-        System.out.println("3. Add Car");
-        System.out.println("4. Print Report");
-        System.out.println("0. Exit");
-    }
-
     private static int getUserOption() {
         System.out.print("Enter your option: ");
         int option = scanner.nextInt();
         scanner.nextLine();
         System.out.println();
         return option;
+    }
+
+    private static void rent() {
+        if (!agency.getTenantList().isEmpty()) {
+            System.out.println("Please select the desired tenant : ");
+            agency.printTenantList("name");
+            int option = getUserOption();
+            Tenant tenant = agency.getTenantByIndex(option);
+            System.out.println("Please select the desired car : ");
+            agency.printCarList();
+            option = getUserOption();
+            agency.printTenant(tenant);
+            Car car = agency.getCarByIndex(option);
+            if (car.getRentMoney() < tenant.getAccountBalance()) {
+                System.out.print("Please enter the rental period in days : ");
+                int day = scanner.nextInt();
+                scanner.nextLine();
+                System.out.println("Do you want to rent a "
+                        + car.getNameModel() + " car to " + tenant.getFirstName() + ' ' + tenant.getLastName() +
+                        " for a duration of " + day + " days?");
+                System.out.println();
+                System.out.println("[1] Yes");
+                System.out.println("[2] No");
+                System.out.print("Enter : ");
+                int status = scanner.nextInt();
+                if (status == 1) {
+                    System.out.println("The car has been successfully rented :)");
+                    System.out.println("A amount of "
+                            + car.getRentMoney() + " Toman has been deducted from " + tenant.getFirstName() + ' ' + tenant.getLastName() +
+                            "'s account.");
+                    tenant.setAccountBalance(tenant.getAccountBalance() - car.getRentMoney());
+                    System.out.println("Account Balance : " + tenant.getAccountBalance());
+                } else if (status == 2) {
+                    System.out.println("The operation has been canceled :(");
+                } else {
+                    System.out.println("Invalid input");
+                }
+            } else {
+                System.out.println("The user's account balance is insufficient :(");
+            }
+
+        } else {
+            System.out.println("No tenant has been registered :(");
+
+        }
     }
 
     private static void addOwner() {
@@ -599,6 +714,9 @@ class UserInterface {
     private static void addCar() {
         Car car = new Car();
 
+        System.out.print("Enter the car's Name Model: ");
+        car.setNameModel(scanner.nextLine());
+
         System.out.print("Enter the car's engine capacity: ");
         int engineCapacity = scanner.nextInt();
         if (engineCapacity > 700) {
@@ -610,7 +728,7 @@ class UserInterface {
             System.out.println();
             return;
         }
-
+        agency.printOwnerList("name");
         System.out.print("Enter the car's owner index: ");
         int ownerIndex = scanner.nextInt();
         scanner.nextLine();
@@ -646,9 +764,23 @@ class UserInterface {
     }
 }
 
+class Rent {
+    private static final Scanner scanner = new Scanner(System.in);
+
+
+    public void handleUsernameTenant() {
+        Agency agency = new Agency();
+        agency.printTenantList("name");
+    }
+
+}
+
 
 public class Demo {
     public static void main(String[] args) {
+        // اون کلاسی که ااوله و مین داره اجرا میشه
+        // اصن کاری به این خط پایینی و اسم فایل نداره
+        // اگه خط پایین رو پاک کنی بازم کلاس رابط کاربری اجرا میشه
         UserInterface ss = new UserInterface();
     }
 }
