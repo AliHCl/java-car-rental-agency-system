@@ -1,3 +1,5 @@
+import org.w3c.dom.html.HTMLAnchorElement;
+
 import java.io.Console;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,6 +13,8 @@ class Human {
     private String nationalCode;
     private String phoneNumber;
     private String address;
+    private String username;
+    private String password;
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
@@ -36,6 +40,14 @@ class Human {
         this.address = address;
     }
 
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -58,6 +70,14 @@ class Human {
 
     public String getAddress() {
         return address;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
 
@@ -160,6 +180,17 @@ class Agency {
         }
     }
 
+    public Tenant getTenantByIndex(int index) {
+        if (index >= 0 && index < tenantList.size()) {
+            return tenantList.get(index);
+        } else {
+            System.out.println();
+            System.out.println("Tenant not found :(");
+            System.out.println();
+            return null;
+        }
+    }
+
     public void addOwner(Owner owner) {
         ownerList.add(owner);
     }
@@ -244,22 +275,22 @@ class Agency {
 class UserInterface {
     private static final Scanner scanner = new Scanner(System.in);
     private static final Agency agency = new Agency();
-
     public static void main(String[] args) {
         boolean running = true;
         while (running) {
             displayMainMenu();
             int option = getUserOption();
+            String username;
+            String password;
             switch (option) {
                 case 1:
-                    Scanner login = new Scanner(System.in);
-                    String username;
-                    String password;
                     System.out.print("Enter Username : ");
-                    username = login.nextLine();
+                    username = scanner.nextLine();
                     System.out.print("Enter Password : ");
-                    password = login.nextLine();
+                    password = scanner.nextLine();
                     if (username.equals("admin") && password.equals("admin")) {
+                        System.out.println();
+                        System.out.println("Welcome, " + username + ":)");
                         handleAgencyManager();
                     } else {
                         System.out.println();
@@ -268,10 +299,39 @@ class UserInterface {
                     }
                     break;
                 case 2:
-                    System.out.println("handleOwner");
+                    System.out.print("Select Username : ");
+                    int index_username_owner = scanner.nextInt();
+                    scanner.nextLine();
+                    System.out.print("Enter Password : ");
+                    password = scanner.nextLine();
+                    Owner owner = agency.getOwnerByIndex(index_username_owner);
+                    if (password.equals(owner.getPassword())) {
+                        System.out.println();
+                        System.out.println("Welcome, " + owner.getFirstName() + ":)");
+                        System.out.println("handleOwner");
+                    } else {
+                        System.out.println();
+                        System.out.println("Access denied :(");
+                        System.out.println();
+                    }
                     break;
+
                 case 3:
-                    System.out.println("handleTenant");
+                    System.out.print("Select Username : ");
+                    int index_username_tenant = scanner.nextInt();
+                    scanner.nextLine();
+                    System.out.print("Enter Password : ");
+                    password = scanner.nextLine();
+                    Tenant tenant = agency.getTenantByIndex(index_username_tenant);
+                    if (password.equals(tenant.getPassword())) {
+                        System.out.println();
+                        System.out.println("Welcome, " + tenant.getFirstName() + ":)");
+                        System.out.println("handleTenant");
+                    } else {
+                        System.out.println();
+                        System.out.println("Access denied :(");
+                        System.out.println();
+                    }
                     break;
                 case 0:
                     running = false;
@@ -346,6 +406,12 @@ class UserInterface {
     private static void addOwner() {
         Owner owner = new Owner();
 
+        System.out.print("Enter the owner's username: ");
+        owner.setUsername(scanner.nextLine());
+
+        System.out.print("Enter the owner's password: ");
+        owner.setPassword(scanner.nextLine());
+
         System.out.print("Enter the owner's first name: ");
         owner.setFirstName(scanner.nextLine());
 
@@ -395,6 +461,7 @@ class UserInterface {
         System.out.print("Enter the owner's address: ");
         owner.setAddress(scanner.nextLine());
 
+
         agency.addOwner(owner);
         System.out.println();
         System.out.println("Owner added successfully!");
@@ -403,6 +470,12 @@ class UserInterface {
 
     private static void addTenant() {
         Tenant tenant = new Tenant();
+
+        System.out.print("Enter the tenant's username: ");
+        tenant.setUsername(scanner.nextLine());
+
+        System.out.print("Enter the tenant's password: ");
+        tenant.setPassword(scanner.nextLine());
 
         System.out.print("Enter the tenant's first name: ");
         tenant.setFirstName(scanner.nextLine());
