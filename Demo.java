@@ -131,7 +131,7 @@ class Car {
 }
 
 class Tenant extends Human {
-    private Integer budget;
+    private Integer accountBalance;
 
     public void rentCar() {
         // Renting car logic
@@ -141,12 +141,12 @@ class Tenant extends Human {
         // Finding suitable car logic
     }
 
-    public void setBudget(Integer budget) {
-        this.budget = budget;
+    public void setAccountBalance(Integer accountBalance) {
+        this.accountBalance = accountBalance;
     }
 
-    public Integer getBudget() {
-        return budget;
+    public Integer getAccountBalance() {
+        return accountBalance;
     }
 }
 
@@ -255,7 +255,7 @@ class Agency {
                 System.out.println("National Code: " + tenant.getNationalCode());
                 System.out.println("Phone Number: " + tenant.getPhoneNumber());
                 System.out.println("Address: " + tenant.getAddress());
-                System.out.println("Budget: " + tenant.getBudget());
+                System.out.println("Account Balance: " + tenant.getAccountBalance());
                 System.out.println("-----------------------------------");
             }
         }
@@ -578,14 +578,14 @@ class UserInterface {
         System.out.print("Enter the tenant's address: ");
         tenant.setAddress(scanner.nextLine());
 
-        System.out.print("Enter the tenant's budget: ");
-        int budget = scanner.nextInt();
+        System.out.print("Enter the tenant's accountBalance: ");
+        int accountBalance = scanner.nextInt();
         scanner.nextLine();
-        if (budget >= 1_500_000) {
-            tenant.setBudget(budget);
+        if (accountBalance >= 1_500_000) {
+            tenant.setAccountBalance(accountBalance);
         } else {
             System.out.println();
-            System.out.println("The minimum budget amount must be 1,500,000 toman :(");
+            System.out.println("The minimum accountBalance amount must be 1,500,000 toman :(");
             System.out.println();
             return;
         }
