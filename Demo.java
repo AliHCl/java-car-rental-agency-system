@@ -532,8 +532,12 @@ class UserInterface {
             agency.printTenantList("name");
             int option = getUserOption();
             Tenant tenant = agency.getTenantByIndex(option);
-            System.out.println("Please select the desired car : ");
-            agency.printCarList();
+            if (!agency.getCarList().isEmpty()) {
+                System.out.println("Please select the desired car : ");
+                agency.printCarList();
+            } else {
+                System.out.println("No car has been registered :(");
+            }
             option = getUserOption();
             agency.printTenant(tenant);
             Car car = agency.getCarByIndex(option);
@@ -763,18 +767,6 @@ class UserInterface {
         System.out.println();
     }
 }
-
-class Rent {
-    private static final Scanner scanner = new Scanner(System.in);
-
-
-    public void handleUsernameTenant() {
-        Agency agency = new Agency();
-        agency.printTenantList("name");
-    }
-
-}
-
 
 public class Demo {
     public static void main(String[] args) {
