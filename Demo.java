@@ -180,7 +180,6 @@ class Agency {
     private final List<Owner> ownerList = new ArrayList<Owner>();
     private final List<Tenant> tenantList = new ArrayList<Tenant>();
     private final List<Car> rentedCarList = new ArrayList<Car>();
-    private final List<Tenant> CarRentersList = new ArrayList<Tenant>();
     private boolean rentedCarStatus = true;
     private boolean carRentalStatus = true;
 
@@ -232,10 +231,6 @@ class Agency {
 
     public void addRentedCarList(Car car) {
         rentedCarList.add(car);
-    }
-
-    public void addCarRentersList(Tenant tenant) {
-        CarRentersList.add(tenant);
     }
 
     public void removeCar(Car car) {
@@ -303,7 +298,7 @@ class Agency {
 
     public void printTenant(Tenant tenant) {
         if (!tenantList.isEmpty()) {
-            System.out.println("Information of "+tenant.getFirstName()+' '+tenant.getLastName()+": ");
+            System.out.println("Information of " + tenant.getFirstName() + ' ' + tenant.getLastName() + ": ");
             System.out.println("Username: " + tenant.getUsername());
             System.out.println("Password: " + tenant.getPassword());
             System.out.println("First Name: " + tenant.getFirstName());
@@ -415,10 +410,6 @@ class Agency {
 
     public List<Car> getRentedCarList() {
         return rentedCarList;
-    }
-
-    public List<Tenant> getCarRentersList() {
-        return CarRentersList;
     }
 }
 
@@ -591,8 +582,8 @@ class UserInterface {
 
 
                 if (!agency.getCarList().isEmpty()) {
-                        System.out.println("Please select the desired car : ");
-                        agency.printCarList(true);
+                    System.out.println("Please select the desired car : ");
+                    agency.printCarList(true);
                     if (agency.getCarRentalStatus()) {
                         option = getUserOption();
                     } else {
@@ -625,7 +616,6 @@ class UserInterface {
                         tenant.setAccountBalance(tenant.getAccountBalance() - car.getRentMoney());
                         tenant.setRentedCar(car);
                         agency.addRentedCarList(car);
-                        agency.addCarRentersList(tenant);
                     } else if (status == 2) {
                         System.out.println("The operation has been canceled :(");
                     } else {
