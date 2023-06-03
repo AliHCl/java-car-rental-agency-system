@@ -1,7 +1,3 @@
-import org.w3c.dom.html.HTMLAnchorElement;
-
-import java.io.Console;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.List;
@@ -184,6 +180,10 @@ class Agency {
     private final List<Owner> ownerList = new ArrayList<Owner>();
     private final List<Tenant> tenantList = new ArrayList<Tenant>();
     private final List<Car> rentedCarList = new ArrayList<Car>();
+    private final List<Tenant> CarRentersList = new ArrayList<Tenant>();
+    private boolean rentedCarStatus = true;
+    private boolean carRentalStatus = true;
+
 
     public Owner getOwnerByIndex(int index) {
         if (index >= 0 && index < ownerList.size()) {
@@ -234,6 +234,10 @@ class Agency {
         rentedCarList.add(car);
     }
 
+    public void addCarRentersList(Tenant tenant) {
+        CarRentersList.add(tenant);
+    }
+
     public void removeCar(Car car) {
         // Removing car logic
     }
@@ -252,6 +256,14 @@ class Agency {
 
     public void printReport() {
 
+    }
+
+    public Boolean getCarRentalStatus() {
+        return carRentalStatus;
+    }
+
+    public Boolean getRentedCarStatus() {
+        return rentedCarStatus;
     }
 
     public void printOwners() {
@@ -291,7 +303,7 @@ class Agency {
 
     public void printTenant(Tenant tenant) {
         if (!tenantList.isEmpty()) {
-            System.out.println("List of Tenants:");
+            System.out.println("Information of "+tenant.getFirstName()+' '+tenant.getLastName()+": ");
             System.out.println("Username: " + tenant.getUsername());
             System.out.println("Password: " + tenant.getPassword());
             System.out.println("First Name: " + tenant.getFirstName());
@@ -339,11 +351,15 @@ class Agency {
         for (Car car : carList) {
             if (exception) {
                 if (!rentedCarList.contains(car)) {
+                    carRentalStatus = true;
                     System.out.println("[" + carList.indexOf(car) + "]" + " " + car.getNameModel());
 
+                } else {
+                    carRentalStatus = false;
                 }
             } else {
                 System.out.println("[" + carList.indexOf(car) + "]" + " " + car.getNameModel());
+
 
             }
         }
@@ -355,8 +371,11 @@ class Agency {
             for (Tenant tenant : tenantList) {
                 if (exception) {
                     if (tenant.getRentedCar() == null) {
+                        rentedCarStatus = true;
                         System.out.println("[" + tenantList.indexOf(tenant) + "]" + " " + tenant.getUsername());
 
+                    } else {
+                        rentedCarStatus = false;
                     }
                 } else {
                     System.out.println("[" + tenantList.indexOf(tenant) + "]" + " " + tenant.getUsername());
@@ -367,8 +386,11 @@ class Agency {
             for (Tenant tenant : tenantList) {
                 if (exception) {
                     if (tenant.getRentedCar() == null) {
+                        rentedCarStatus = true;
                         System.out.println("[" + tenantList.indexOf(tenant) + "]" + " " + tenant.getFirstName() + ' ' + tenant.getLastName());
 
+                    } else {
+                        rentedCarStatus = false;
                     }
                 } else {
                     System.out.println("[" + tenantList.indexOf(tenant) + "]" + " " + tenant.getFirstName() + ' ' + tenant.getLastName());
@@ -391,6 +413,13 @@ class Agency {
         return carList;
     }
 
+    public List<Car> getRentedCarList() {
+        return rentedCarList;
+    }
+
+    public List<Tenant> getCarRentersList() {
+        return CarRentersList;
+    }
 }
 
 
@@ -556,52 +585,65 @@ class UserInterface {
         if (!agency.getTenantList().isEmpty()) {
             System.out.println("Please select the desired tenant : ");
             agency.printTenantList("name", true);
-            int option = getUserOption();
-            Tenant tenant = agency.getTenantByIndex(option);
-            if (!agency.getCarList().isEmpty()) {
-                System.out.println("Please select the desired car : ");
-                agency.printCarList(true);
+            if (agency.getRentedCarStatus()) {
+                int option = getUserOption();
+                Tenant tenant = agency.getTenantByIndex(option);
 
-            } else {
-                System.out.println("No car has been registered :(");
-            }
-            option = getUserOption();
-            agency.printTenant(tenant);
-            Car car = agency.getCarByIndex(option);
-            if (car.getRentMoney() < tenant.getAccountBalance()) {
-                System.out.print("Please enter the rental period in days : ");
-                int day = scanner.nextInt();
-                scanner.nextLine();
-                System.out.println("Do you want to rent a "
-                        + car.getNameModel() + " car to " + tenant.getFirstName() + ' ' + tenant.getLastName() +
-                        " for a duration of " + day + " days?");
-                System.out.println();
-                System.out.println("[1] Yes");
-                System.out.println("[2] No");
-                System.out.print("Enter : ");
-                int status = scanner.nextInt();
-                if (status == 1) {
-                    System.out.println("The car has been successfully rented :)");
-                    System.out.println("A amount of "
-                            + car.getRentMoney() + " Toman has been deducted from " + tenant.getFirstName() + ' ' + tenant.getLastName() +
-                            "'s account.");
-                    tenant.setAccountBalance(tenant.getAccountBalance() - car.getRentMoney());
-                    tenant.setRentedCar(car);
-                    agency.addRentedCarList(car);
-                } else if (status == 2) {
-                    System.out.println("The operation has been canceled :(");
+
+                if (!agency.getCarList().isEmpty()) {
+                        System.out.println("Please select the desired car : ");
+                        agency.printCarList(true);
+                    if (agency.getCarRentalStatus()) {
+                        option = getUserOption();
+                    } else {
+                        System.out.println("All cars have been rented out");
+                    }
+
                 } else {
-                    System.out.println("Invalid input");
+                    System.out.println("No car has been registered :(");
                 }
-            } else {
-                System.out.println("The user's account balance is insufficient :(");
-            }
 
+                agency.printTenant(tenant);
+                Car car = agency.getCarByIndex(option);
+                if (car.getRentMoney() < tenant.getAccountBalance()) {
+                    System.out.print("Please enter the rental period in days : ");
+                    int day = scanner.nextInt();
+                    scanner.nextLine();
+                    System.out.println("Do you want to rent a "
+                            + car.getNameModel() + " car to " + tenant.getFirstName() + ' ' + tenant.getLastName() +
+                            " for a duration of " + day + " days?");
+                    System.out.println();
+                    System.out.println("[1] Yes");
+                    System.out.println("[2] No");
+                    System.out.print("Enter : ");
+                    int status = scanner.nextInt();
+                    if (status == 1) {
+                        System.out.println("The car has been successfully rented :)");
+                        System.out.println("A amount of "
+                                + car.getRentMoney() + " Toman has been deducted from " + tenant.getFirstName() + ' ' + tenant.getLastName() +
+                                "'s account.");
+                        tenant.setAccountBalance(tenant.getAccountBalance() - car.getRentMoney());
+                        tenant.setRentedCar(car);
+                        agency.addRentedCarList(car);
+                        agency.addCarRentersList(tenant);
+                    } else if (status == 2) {
+                        System.out.println("The operation has been canceled :(");
+                    } else {
+                        System.out.println("Invalid input");
+                    }
+                } else {
+                    System.out.println("The user's account balance is insufficient :(");
+                }
+
+            } else {
+                System.out.println("All tenants have rented a car");
+
+            }
         } else {
             System.out.println("No tenant has been registered :(");
-
         }
     }
+
 
     private static void addOwner() {
         Owner owner = new Owner();
