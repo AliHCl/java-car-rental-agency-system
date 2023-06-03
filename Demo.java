@@ -141,6 +141,7 @@ class Car {
 
 class Tenant extends Human {
     private Integer accountBalance;
+    private Car rentedCar;
 
     public void rentCar() {
         // Renting car logic
@@ -154,8 +155,16 @@ class Tenant extends Human {
         this.accountBalance = accountBalance;
     }
 
+    public void setRentedCar(Car car) {
+        this.rentedCar = car;
+    }
+
     public Integer getAccountBalance() {
         return accountBalance;
+    }
+
+    public Car getRentedCar() {
+        return rentedCar;
     }
 }
 
@@ -222,6 +231,7 @@ class Agency {
     }
 
     public void addRentedCarList(Car car) {
+        rentedCarList.add(car);
     }
 
     public void removeCar(Car car) {
@@ -312,44 +322,60 @@ class Agency {
 
     public void printOwnerList(String type) {
         if (type.equalsIgnoreCase("username")) {
-            int counter = 0;
             for (Owner owner : ownerList) {
-                System.out.println("[" + counter + "]" + " " + owner.getUsername());
-                counter += 1;
+                System.out.println("[" + ownerList.indexOf(owner) + "]" + " " + owner.getUsername());
+
             }
         } else if (type.equalsIgnoreCase("name")) {
-            int counter = 0;
             for (Owner owner : ownerList) {
-                System.out.println("[" + counter + "]" + " " + owner.getFirstName() + ' ' + owner.getLastName());
-                counter += 1;
+                System.out.println("[" + ownerList.indexOf(owner) + "]" + " " + owner.getFirstName() + ' ' + owner.getLastName());
+
             }
 
         }
     }
 
-    public void printCarList() {
-        int counter = 0;
+    public void printCarList(boolean exception) {
         for (Car car : carList) {
-            System.out.println("[" + counter + "]" + " " + car.getNameModel());
-            counter += 1;
+            if (exception) {
+                if (!rentedCarList.contains(car)) {
+                    System.out.println("[" + carList.indexOf(car) + "]" + " " + car.getNameModel());
+
+                }
+            } else {
+                System.out.println("[" + carList.indexOf(car) + "]" + " " + car.getNameModel());
+
+            }
         }
     }
 
 
-    public void printTenantList(String type) {
+    public void printTenantList(String type, boolean exception) {
         if (type.equalsIgnoreCase("username")) {
-            int counter = 0;
             for (Tenant tenant : tenantList) {
-                System.out.println("[" + counter + "]" + " " + tenant.getUsername());
-                counter += 1;
+                if (exception) {
+                    if (tenant.getRentedCar() == null) {
+                        System.out.println("[" + tenantList.indexOf(tenant) + "]" + " " + tenant.getUsername());
+
+                    }
+                } else {
+                    System.out.println("[" + tenantList.indexOf(tenant) + "]" + " " + tenant.getUsername());
+
+                }
             }
         } else if (type.equalsIgnoreCase("name")) {
-            int counter = 0;
             for (Tenant tenant : tenantList) {
-                System.out.println("[" + counter + "]" + " " + tenant.getFirstName() + ' ' + tenant.getLastName());
-                counter += 1;
-            }
+                if (exception) {
+                    if (tenant.getRentedCar() == null) {
+                        System.out.println("[" + tenantList.indexOf(tenant) + "]" + " " + tenant.getFirstName() + ' ' + tenant.getLastName());
 
+                    }
+                } else {
+                    System.out.println("[" + tenantList.indexOf(tenant) + "]" + " " + tenant.getFirstName() + ' ' + tenant.getLastName());
+
+                }
+
+            }
         }
     }
 
@@ -364,13 +390,13 @@ class Agency {
     public List<Car> getCarList() {
         return carList;
     }
+
 }
 
 
 class UserInterface {
     private static final Scanner scanner = new Scanner(System.in);
     private static final Agency agency = new Agency();
-    private static final Rent rent = new Rent();
 
     public static void main(String[] args) {
         boolean running = true;
@@ -427,7 +453,7 @@ class UserInterface {
                 case 3:
                     if (!agency.getTenantList().isEmpty()) {
                         System.out.println();
-                        agency.printTenantList("username");
+                        agency.printTenantList("username", false);
                         System.out.print("Select Username : ");
                         int index_username_tenant = scanner.nextInt();
                         scanner.nextLine();
@@ -529,12 +555,13 @@ class UserInterface {
     private static void rent() {
         if (!agency.getTenantList().isEmpty()) {
             System.out.println("Please select the desired tenant : ");
-            agency.printTenantList("name");
+            agency.printTenantList("name", true);
             int option = getUserOption();
             Tenant tenant = agency.getTenantByIndex(option);
             if (!agency.getCarList().isEmpty()) {
                 System.out.println("Please select the desired car : ");
-                agency.printCarList();
+                agency.printCarList(true);
+
             } else {
                 System.out.println("No car has been registered :(");
             }
@@ -559,7 +586,8 @@ class UserInterface {
                             + car.getRentMoney() + " Toman has been deducted from " + tenant.getFirstName() + ' ' + tenant.getLastName() +
                             "'s account.");
                     tenant.setAccountBalance(tenant.getAccountBalance() - car.getRentMoney());
-                    System.out.println("Account Balance : " + tenant.getAccountBalance());
+                    tenant.setRentedCar(car);
+                    agency.addRentedCarList(car);
                 } else if (status == 2) {
                     System.out.println("The operation has been canceled :(");
                 } else {
