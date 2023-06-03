@@ -311,7 +311,9 @@ class UserInterface {
                     addCar();
                     break;
                 case 4:
-                    agency.printReport();
+                    agency.printOwners();
+                    agency.printTenants();
+                    agency.printCars();
                     break;
                 case 0:
                     running = false;
@@ -451,8 +453,16 @@ class UserInterface {
         tenant.setAddress(scanner.nextLine());
 
         System.out.print("Enter the tenant's budget: ");
-        tenant.setBudget(scanner.nextInt());
+        int budget = scanner.nextInt();
         scanner.nextLine();
+        if (budget >= 1_500_000) {
+            tenant.setBudget(budget);
+        } else {
+            System.out.println();
+            System.out.println("The minimum budget amount must be 1,500,000 toman :(");
+            System.out.println();
+            return;
+        }
 
         agency.addTenant(tenant);
         System.out.println();
