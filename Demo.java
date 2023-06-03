@@ -230,6 +230,8 @@ class Agency {
         if (!ownerList.isEmpty()) {
             System.out.println("List of Owners:");
             for (Owner owner : ownerList) {
+                System.out.println("Username: " + owner.getUsername());
+                System.out.println("Password: " + owner.getPassword());
                 System.out.println("First Name: " + owner.getFirstName());
                 System.out.println("Last Name: " + owner.getLastName());
                 System.out.println("Age: " + owner.getAge());
@@ -245,6 +247,8 @@ class Agency {
         if (!tenantList.isEmpty()) {
             System.out.println("List of Tenants:");
             for (Tenant tenant : tenantList) {
+                System.out.println("Username: " + tenant.getUsername());
+                System.out.println("Password: " + tenant.getPassword());
                 System.out.println("First Name: " + tenant.getFirstName());
                 System.out.println("Last Name: " + tenant.getLastName());
                 System.out.println("Age: " + tenant.getAge());
@@ -270,11 +274,38 @@ class Agency {
             }
         }
     }
+
+    public void printOwnerListUsername() {
+        int counter = 0;
+        for (Owner owner : ownerList) {
+            System.out.println("[" + counter + "]" + " " + owner.getUsername());
+            counter += 1;
+        }
+    }
+
+
+    public void printTenantListUsername() {
+        int counter = 0;
+        for (Tenant tenant : tenantList) {
+            System.out.println("[" + counter + "]" + " " + tenant.getUsername());
+            counter += 1;
+        }
+    }
+
+    public List<Tenant> getTenantList() {
+        return tenantList;
+    }
+
+    public List<Owner> getOwnerList() {
+        return ownerList;
+    }
 }
+
 
 class UserInterface {
     private static final Scanner scanner = new Scanner(System.in);
     private static final Agency agency = new Agency();
+
     public static void main(String[] args) {
         boolean running = true;
         while (running) {
@@ -299,37 +330,59 @@ class UserInterface {
                     }
                     break;
                 case 2:
-                    System.out.print("Select Username : ");
-                    int index_username_owner = scanner.nextInt();
-                    scanner.nextLine();
-                    System.out.print("Enter Password : ");
-                    password = scanner.nextLine();
-                    Owner owner = agency.getOwnerByIndex(index_username_owner);
-                    if (password.equals(owner.getPassword())) {
+                    if (!agency.getOwnerList().isEmpty()) {
                         System.out.println();
-                        System.out.println("Welcome, " + owner.getFirstName() + ":)");
-                        System.out.println("handleOwner");
+                        agency.printOwnerListUsername();
+                        System.out.print("Select Username : ");
+                        int index_username_owner = scanner.nextInt();
+                        scanner.nextLine();
+                        Owner owner = agency.getOwnerByIndex(index_username_owner);
+                        if (owner == null) {
+                            break;
+                        }
+                        System.out.print("Enter Password : ");
+                        password = scanner.nextLine();
+                        if (password.equals(owner.getPassword())) {
+                            System.out.println();
+                            System.out.println("Welcome, " + owner.getFirstName() + ":)");
+                            System.out.println("handleOwner");
+                        } else {
+                            System.out.println();
+                            System.out.println("Access denied :(");
+                            System.out.println();
+                        }
                     } else {
                         System.out.println();
-                        System.out.println("Access denied :(");
+                        System.out.println("No owner has been registered :(");
                         System.out.println();
                     }
                     break;
 
                 case 3:
-                    System.out.print("Select Username : ");
-                    int index_username_tenant = scanner.nextInt();
-                    scanner.nextLine();
-                    System.out.print("Enter Password : ");
-                    password = scanner.nextLine();
-                    Tenant tenant = agency.getTenantByIndex(index_username_tenant);
-                    if (password.equals(tenant.getPassword())) {
+                    if (!agency.getTenantList().isEmpty()) {
                         System.out.println();
-                        System.out.println("Welcome, " + tenant.getFirstName() + ":)");
-                        System.out.println("handleTenant");
+                        agency.printTenantListUsername();
+                        System.out.print("Select Username : ");
+                        int index_username_tenant = scanner.nextInt();
+                        scanner.nextLine();
+                        Tenant tenant = agency.getTenantByIndex(index_username_tenant);
+                        if (tenant == null) {
+                            break;
+                        }
+                        System.out.print("Enter Password : ");
+                        password = scanner.nextLine();
+                        if (password.equals(tenant.getPassword())) {
+                            System.out.println();
+                            System.out.println("Welcome, " + tenant.getFirstName() + ":)");
+                            System.out.println("handleTenant");
+                        } else {
+                            System.out.println();
+                            System.out.println("Access denied :(");
+                            System.out.println();
+                        }
                     } else {
                         System.out.println();
-                        System.out.println("Access denied :(");
+                        System.out.println("No tenant has been registered :(");
                         System.out.println();
                     }
                     break;
