@@ -792,39 +792,43 @@ class UserInterface {
             System.out.println();
             return;
         }
-        agency.printOwnerList("name");
-        System.out.print("Enter the car's owner index: ");
-        int ownerIndex = scanner.nextInt();
-        scanner.nextLine();
-        Owner owner = agency.getOwnerByIndex(ownerIndex);
-        if (owner == null) {
-            return;
-        }
-        car.setOwner(owner);
-
-        System.out.print("Enter the car's rent money: ");
-        int rentMoney = scanner.nextInt();
-        if (rentMoney >= 1_500_000) {
-            car.setRentMoney(rentMoney);
+        if (!agency.getOwnerList().isEmpty()) {
+            agency.printOwnerList("name");
+            System.out.print("Enter the car's owner index: ");
+            int ownerIndex = scanner.nextInt();
             scanner.nextLine();
+            Owner owner = agency.getOwnerByIndex(ownerIndex);
+            if (owner == null) {
+                return;
+            }
+            car.setOwner(owner);
+
+            System.out.print("Enter the car's rent money: ");
+            int rentMoney = scanner.nextInt();
+            if (rentMoney >= 1_500_000) {
+                car.setRentMoney(rentMoney);
+                scanner.nextLine();
+            } else {
+                System.out.println();
+                System.out.println("The entered rental amount must be above 1,500,000 toman :(");
+                System.out.println();
+                return;
+            }
+
+            System.out.print("Enter the car's type: ");
+            car.setType(scanner.nextLine());
+
+            System.out.print("Enter the car's lifespan: ");
+            car.setLifespan(scanner.nextInt());
+            scanner.nextLine();
+
+            agency.addCar(car);
+            System.out.println();
+            System.out.println("Car added successfully!");
+            System.out.println();
         } else {
-            System.out.println();
-            System.out.println("The entered rental amount must be above 1,500,000 toman :(");
-            System.out.println();
-            return;
+            System.out.println("No owner has been registered :(");
         }
-
-        System.out.print("Enter the car's type: ");
-        car.setType(scanner.nextLine());
-
-        System.out.print("Enter the car's lifespan: ");
-        car.setLifespan(scanner.nextInt());
-        scanner.nextLine();
-
-        agency.addCar(car);
-        System.out.println();
-        System.out.println("Car added successfully!");
-        System.out.println();
     }
 }
 
