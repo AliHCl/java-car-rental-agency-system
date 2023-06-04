@@ -590,13 +590,17 @@ class UserInterface {
             String password;
             switch (option) {
                 case 1:
-                    System.out.print("Enter Username : ");
+                    System.out.print(UserInterface.YELLOW + "Enter Username : " + UserInterface.RESET);
+                    System.out.print(UserInterface.PURPLE);
                     username = scanner.nextLine();
-                    System.out.print("Enter Password : ");
+                    System.out.print(UserInterface.RESET);
+                    System.out.print(UserInterface.YELLOW + "Enter Password : " + UserInterface.RESET);
+                    System.out.print(UserInterface.PURPLE);
                     password = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
                     if (username.equals("admin") && password.equals("admin")) {
                         System.out.println();
-                        System.out.println("Welcome, " + username + ":)");
+                        System.out.println("Welcome, " + UserInterface.GREEN + username + UserInterface.RESET + ":)");
                         handleAgencyManager();
                     } else {
                         System.out.println();
@@ -619,7 +623,7 @@ class UserInterface {
                         password = scanner.nextLine();
                         if (password.equals(owner.getPassword())) {
                             System.out.println();
-                            System.out.println("Welcome, " + owner.getFirstName() + ":)");
+                            System.out.println("Welcome, " + UserInterface.GREEN + owner.getFirstName() + ":)" + UserInterface.RESET);
                             System.out.println("handleOwner");
                         } else {
                             System.out.println();
@@ -674,27 +678,50 @@ class UserInterface {
     }
 
     private static void displayMainMenu() {
+        String art = """
+                ╔═╗┌─┐┬─┐  ╦═╗┌─┐┌┐┌┌┬┐┌─┐┬    ╔═╗┌─┐┌─┐┌┐┌┌─┐┬ ┬
+                ║  ├─┤├┬┘  ╠╦╝├┤ │││ │ ├─┤│    ╠═╣│ ┬├┤ ││││  └┬┘
+                ╚═╝┴ ┴┴└─  ╩╚═└─┘┘└┘ ┴ ┴ ┴┴─┘  ╩ ╩└─┘└─┘┘└┘└─┘ ┴\s
+                """;
+
+        int num = art.length() / 2;
+        for (int i = 0; i < num; i++) {
+            System.out.print(UserInterface.PURPLE + art.charAt(i));
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        for (int i = num; i < art.length(); i++) {
+            System.out.print(UserInterface.WHITE + art.charAt(i));
+            try {
+                Thread.sleep(2);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
         System.out.println("Welcome to the Agency Management System");
         System.out.println();
         System.out.println("Who are you:");
-        System.out.println(UserInterface.RED + "[1] " + UserInterface.RESET + "Agency Manager");
-        System.out.println(UserInterface.RED + "[2] " + UserInterface.RESET + "Owner");
-        System.out.println(UserInterface.RED + "[3] " + UserInterface.RESET + "Tenant");
-        System.out.println(UserInterface.RED + "[0] " + UserInterface.RESET + "Exit");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Agency Manager");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Owner");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Tenant");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Exit");
     }
 
     private static void displayAgencyManagerMenu() {
-
-        System.out.println("Please select an option:");
-        System.out.println(UserInterface.RED + "[1] " + UserInterface.RESET + "Add Owner");
-        System.out.println(UserInterface.RED + "[2] " + UserInterface.RESET + "Add Tenant");
-        System.out.println(UserInterface.RED + "[3] " + UserInterface.RESET + "Add Car");
-        System.out.println(UserInterface.RED + "[4] " + UserInterface.RESET + "Remove Owner");
-        System.out.println(UserInterface.RED + "[5] " + UserInterface.RESET + "Remove Tenant");
-        System.out.println(UserInterface.RED + "[6] " + UserInterface.RESET + "Remove Car");
-        System.out.println(UserInterface.RED + "[7] " + UserInterface.RESET + "Print Report");
-        System.out.println(UserInterface.RED + "[8] " + UserInterface.RESET + "Rent");
-        System.out.println(UserInterface.RED + "[0] " + UserInterface.RESET + "Exit");
+        System.out.println();
+        System.out.println(UserInterface.PURPLE + "Please select an option :" + UserInterface.RESET);
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Add Owner");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Add Tenant");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Add Car");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 4 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Remove Owner");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 5 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Remove Tenant");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 6 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Remove Car");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 7 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Print Report");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 8 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Rent");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Exit");
     }
 
     private static void handleAgencyManager() {
@@ -738,7 +765,8 @@ class UserInterface {
     }
 
     private static int getUserOption() {
-        System.out.print("Enter your option: ");
+        System.out.println();
+        System.out.print(UserInterface.GREEN + "Enter your option: " + UserInterface.RESET);
         int option = scanner.nextInt();
         scanner.nextLine();
         System.out.println();
