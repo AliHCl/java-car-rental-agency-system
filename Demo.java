@@ -245,15 +245,15 @@ class Agency {
     }
 
     public void removeCar(Car car) {
-        // Removing car logic
+        carList.remove(car);
     }
 
     public void removeOwner(Owner owner) {
-        // Removing owner logic
+        ownerList.remove(owner);
     }
 
     public void removeTenant(Tenant tenant) {
-        // Removing tenant logic
+        tenantList.remove(tenant);
     }
 
     public void clearValidIndexes() {
@@ -290,6 +290,21 @@ class Agency {
                 System.out.println("Address: " + owner.getAddress());
                 System.out.println("-----------------------------------");
             }
+        }
+    }
+
+    public void printOwner(Owner owner) {
+        if (!ownerList.isEmpty()) {
+            System.out.println("Information of " + owner.getFirstName() + ' ' + owner.getLastName() + ": ");
+            System.out.println("Username: " + owner.getUsername());
+            System.out.println("Password: " + owner.getPassword());
+            System.out.println("First Name: " + owner.getFirstName());
+            System.out.println("Last Name: " + owner.getLastName());
+            System.out.println("Age: " + owner.getAge());
+            System.out.println("National Code: " + owner.getNationalCode());
+            System.out.println("Phone Number: " + owner.getPhoneNumber());
+            System.out.println("Address: " + owner.getAddress());
+            System.out.println("-----------------------------------");
         }
     }
 
@@ -342,15 +357,31 @@ class Agency {
         }
     }
 
+    public void printCar(Car car) {
+        if (!carList.isEmpty()) {
+            System.out.println("Information of " + car.getNameModel() + " car : ");
+            System.out.println("Name Model: " + car.getNameModel());
+            System.out.println("Engine Capacity: " + car.getEngineCapacity());
+            System.out.println("Owner: " + car.getOwner().getFirstName() + ' ' + car.getOwner().getLastName());
+            System.out.println("Rent Money: " + car.getRentMoney());
+            System.out.println("Type: " + car.getType());
+            System.out.println("Lifespan: " + car.getLifespan());
+            System.out.println("-----------------------------------");
+        }
+    }
+
+
     public void printOwnerList(String type) {
         if (type.equalsIgnoreCase("username")) {
             for (Owner owner : ownerList) {
                 System.out.println("[" + ownerList.indexOf(owner) + "]" + " " + owner.getUsername());
+                validIndexes.add(ownerList.indexOf(owner));
 
             }
         } else if (type.equalsIgnoreCase("name")) {
             for (Owner owner : ownerList) {
                 System.out.println("[" + ownerList.indexOf(owner) + "]" + " " + owner.getFirstName() + ' ' + owner.getLastName());
+                validIndexes.add(ownerList.indexOf(owner));
 
             }
 
@@ -359,7 +390,7 @@ class Agency {
 
     public void printCarList(boolean exception, Tenant user) {
         for (Car car : carList) {
-            if (exception) {
+            if (exception && user != null) {
                 if (!rentedCarList.contains(car) && user.getAccountBalance() >= car.getRentMoney()) {
                     carRentalStatus = true;
                     System.out.println("[" + carList.indexOf(car) + "]" + " " + car.getNameModel());
@@ -543,8 +574,11 @@ class UserInterface {
         System.out.println("[1] Add Owner");
         System.out.println("[2] Add Tenant");
         System.out.println("[3] Add Car");
-        System.out.println("[4] Print Report");
-        System.out.println("[5] Rent");
+        System.out.println("[4] Remove Owner");
+        System.out.println("[5] Remove Tenant");
+        System.out.println("[6] Remove Car");
+        System.out.println("[7] Print Report");
+        System.out.println("[8] Rent");
         System.out.println("[0] Exit");
     }
 
@@ -564,11 +598,20 @@ class UserInterface {
                     addCar();
                     break;
                 case 4:
+                    removeFromOwnerList();
+                    break;
+                case 5:
+                    removeFromTenantList();
+                    break;
+                case 6:
+                    removeFromCarList();
+                    break;
+                case 7:
                     agency.printOwners();
                     agency.printTenants();
                     agency.printCars();
                     break;
-                case 5:
+                case 8:
                     rent();
                     break;
                 case 0:
@@ -587,6 +630,116 @@ class UserInterface {
         scanner.nextLine();
         System.out.println();
         return option;
+    }
+
+    public static void removeFromTenantList() {
+        if (!agency.getTenantList().isEmpty()) {
+            System.out.println("Please select the desired tenant : ");
+            agency.printTenantList("name", false);
+            int option = getUserOption();
+            while (!agency.getValidIndexes().contains(option)) {
+                System.out.println("The input is invalid. Please try again");
+                option = getUserOption();
+            }
+            agency.clearValidIndexes();
+            Tenant tenant = agency.getTenantByIndex(option);
+            agency.printTenant(tenant);
+            System.out.println();
+            System.out.println("Do you want to remove " + tenant.getFirstName() +
+                    ' ' + tenant.getLastName() + " from the list of tenants?");
+            System.out.println();
+            System.out.println("[1] Yes");
+            System.out.println("[2] No");
+            System.out.print("Enter : ");
+            int status = scanner.nextInt();
+            if (status == 1) {
+                agency.removeTenant(tenant);
+                System.out.println(tenant.getFirstName() + ' ' + tenant.getLastName() +
+                        " has been removed from the list of tenants");
+
+            } else if (status == 2) {
+                System.out.println("The operation has been canceled :(");
+            } else {
+                System.out.println("Invalid input");
+            }
+
+        } else {
+            System.out.println("No tenant has been registered :(");
+        }
+
+    }
+
+    public static void removeFromOwnerList() {
+        if (!agency.getOwnerList().isEmpty()) {
+            System.out.println("Please select the desired owner : ");
+            agency.printOwnerList("name");
+            int option = getUserOption();
+            while (!agency.getValidIndexes().contains(option)) {
+                System.out.println("The input is invalid. Please try again");
+                option = getUserOption();
+            }
+            agency.clearValidIndexes();
+            Owner owner = agency.getOwnerByIndex(option);
+            agency.printOwner(owner);
+            System.out.println();
+            System.out.println("Do you want to remove " + owner.getFirstName() +
+                    ' ' + owner.getLastName() + " from the list of owners?");
+            System.out.println();
+            System.out.println("[1] Yes");
+            System.out.println("[2] No");
+            System.out.print("Enter : ");
+            int status = scanner.nextInt();
+            if (status == 1) {
+                agency.removeOwner(owner);
+                System.out.println(owner.getFirstName() + ' ' + owner.getLastName() +
+                        " has been removed from the list of owners");
+
+            } else if (status == 2) {
+                System.out.println("The operation has been canceled :(");
+            } else {
+                System.out.println("Invalid input");
+            }
+
+        } else {
+            System.out.println("No tenant has been registered :(");
+        }
+
+    }
+
+    public static void removeFromCarList() {
+        if (!agency.getCarList().isEmpty()) {
+            System.out.println("Please select the desired car : ");
+            agency.printCarList(false, null);
+            int option = getUserOption();
+            while (!agency.getValidIndexes().contains(option)) {
+                System.out.println("The input is invalid. Please try again");
+                option = getUserOption();
+            }
+            agency.clearValidIndexes();
+            Car car = agency.getCarByIndex(option);
+            agency.printCar(car);
+            System.out.println();
+            System.out.println("Do you want to remove the " + car.getNameModel() +
+                    " car from the list of cars?");
+            System.out.println();
+            System.out.println("[1] Yes");
+            System.out.println("[2] No");
+            System.out.print("Enter : ");
+            int status = scanner.nextInt();
+            if (status == 1) {
+                agency.removeCar(car);
+                System.out.println(car.getNameModel() + " has been removed from the list of cars");
+
+            } else if (status == 2) {
+                System.out.println("The operation has been canceled :(");
+            } else {
+                System.out.println("Invalid input");
+            }
+
+        } else {
+            System.out.println("No tenant has been registered :(");
+        }
+
     }
 
     private static void rent() {
