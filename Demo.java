@@ -380,7 +380,7 @@ class Agency {
     public void printTenant(Tenant tenant) {
         if (!tenantList.isEmpty()) {
             System.out.println();
-            System.out.println("Information of  " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getFirstName() + ' ' + tenant.getLastName() + ": \n" + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Information of " + UserInterface.GREEN + tenant.getFirstName() + ' ' + tenant.getLastName() + UserInterface.RESET + ": \n");
             System.out.println("Username        " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getUsername() + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("Password        " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPassword() + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("First Name      " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getFirstName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
