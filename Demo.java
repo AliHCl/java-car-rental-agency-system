@@ -1,9 +1,9 @@
+import java.sql.Struct;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.List;
 
-//این متد rent رو جوری تغییر بده که ماشین های در حد بودجه مستاجر رو نشان دهد
 // مستاجر بتونه لیست تراکنش هااشو ببینه توی حسابش و مشخصاتش و موجدوی حسابش و قابلیت افزایش موجودی حسابش و ماشین هایی که تا الان اجرا کرده و ماشین فعلی که الان در حال اجاره داره و با چه کسانی تا حالا کار کرده
 //مالک بتونه درامدشو ببینه توی حسابش و مشخصاتشو و ماشین هایه بنامشو و وضعیت در حال اجاره بودن یا نبودن ماشین ها و با چه کسانی تا حالا کار کرده
 
@@ -181,11 +181,17 @@ class Tenant extends Human {
 
 class Owner extends Human {
     private final List<String> myCars = new ArrayList<String>();
+    private int income;
 
     public void showMyCars() {
     }
 
-    public void showIncome() {
+    public int getIncome() {
+        return income;
+    }
+
+    public void setIncome(int income) {
+        this.income = income;
     }
 }
 
@@ -199,6 +205,7 @@ class Agency {
     private final List<Car> ownerCarList = new ArrayList<Car>();
     private boolean rentedCarStatus = false;
     private boolean carRentalStatus = false;
+    private boolean hasCarStatus = false;
     private boolean isCarOwner = false;
 
     public void setCarRentalStatus(boolean carRentalStatus) {
@@ -324,6 +331,10 @@ class Agency {
 
     public boolean getIsCarOwner() {
         return isCarOwner;
+    }
+
+    public boolean getHasCarStatus() {
+        return hasCarStatus;
     }
 
     public void printOwners() {
@@ -458,6 +469,17 @@ class Agency {
             }
         }
     }
+
+    public void printMyCarsList(Owner owner) {
+        for (Car car : carList) {
+            if (car.getOwner().equals(owner)) {
+                hasCarStatus = true;
+                System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + carList.indexOf(car) + UserInterface.PURPLE + "]" + UserInterface.RESET + " " + car.getNameModel());
+                validIndexes.add(carList.indexOf(car));
+            }
+        }
+    }
+
 
     public void showOwnerCars(Owner owner) {
         for (Car car : carList) {
@@ -602,19 +624,24 @@ class UserInterface {
                     if (!agency.getOwnerList().isEmpty()) {
                         System.out.println();
                         agency.printOwnerList("username");
-                        System.out.print("Select Username : ");
+                        System.out.print(YELLOW + "\nSelect Username : " + RESET);
+                        System.out.print(UserInterface.PURPLE);
                         int index_username_owner = scanner.nextInt();
+                        System.out.print(UserInterface.RESET);
                         scanner.nextLine();
                         Owner owner = agency.getOwnerByIndex(index_username_owner);
                         if (owner == null) {
                             break;
                         }
-                        System.out.print("Enter Password : ");
+                        agency.getValidIndexes().clear();
+                        System.out.print(UserInterface.YELLOW + "\nEnter Password : " + UserInterface.RESET);
+                        System.out.print(UserInterface.PURPLE);
                         password = scanner.nextLine();
+                        System.out.print(UserInterface.RESET);
                         if (password.equals(owner.getPassword())) {
                             System.out.println();
-                            System.out.println("Welcome, " + UserInterface.GREEN + owner.getFirstName() + ":)" + UserInterface.RESET);
-                            System.out.println("handleOwner");
+                            System.out.println("\nWelcome, " + UserInterface.GREEN + owner.getFirstName() + ":)" + UserInterface.RESET);
+                            handleOwnerPanel(owner);
                         } else {
                             System.out.println();
                             System.out.println(RED + "Access denied :(" + RESET);
@@ -704,7 +731,7 @@ class UserInterface {
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 7 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Rent");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 8 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Print Report");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 9 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Search");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Exit");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Log out");
     }
 
     private static void displaySearchMenu() {
@@ -723,7 +750,7 @@ class UserInterface {
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Owners");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Tenants");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Cars");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Exit");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
     }
 
     private static void displayOwnerSearchMenu() {
@@ -746,7 +773,7 @@ class UserInterface {
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 5 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Phone Number");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 6 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Username");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 7 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Age");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Exit");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
 
     }
 
@@ -772,7 +799,7 @@ class UserInterface {
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 6 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Phone Number");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 7 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Username");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 8 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Age");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Exit");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
 
     }
 
@@ -795,7 +822,29 @@ class UserInterface {
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 4 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Life Span");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 5 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Owner");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 6 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Type");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Exit");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
+    }
+
+    private static void displayOwnerPanelMenu(Owner owner) {
+        System.out.println();
+        String art = """
+                   _____        ___   _ _____ ____     ____   _    _   _ _____ _    \s
+                  / _ \\ \\      / / \\ | | ____|  _ \\   |  _ \\ / \\  | \\ | | ____| |   \s
+                 | | | \\ \\ /\\ / /|  \\| |  _| | |_) |  | |_) / _ \\ |  \\| |  _| | |   \s
+                 | |_| |\\ V  V / | |\\  | |___|  _ <   |  __/ ___ \\| |\\  | |___| |___\s
+                  \\___/  \\_/\\_/  |_| \\_|_____|_| \\_\\  |_| /_/   \\_\\_| \\_|_____|_____|
+                                                                                    \s
+                """;
+        printBanner(art);
+        System.out.println();
+        System.out.println("My income (with 90% profit per transaction) " + UserInterface.PURPLE + "[" + UserInterface.WHITE + UserInterface.GREEN + UserInterface.formattedNumber.format(owner.getIncome()) + UserInterface.RESET + UserInterface.PURPLE + "] " + UserInterface.WHITE);
+        System.out.println();
+        agency.printOwner(owner);
+        System.out.println();
+        System.out.println(UserInterface.PURPLE + "Please select an option :\n" + UserInterface.RESET);
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "My Cars ");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "My tenants");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Log out");
     }
 
     private static void handleAgencyManager() {
@@ -839,6 +888,57 @@ class UserInterface {
                     System.out.println("Invalid option! Please try again");
             }
         }
+    }
+
+    private static void handleOwnerPanel(Owner owner) {
+        boolean running = true;
+        while (running) {
+            System.out.println();
+            displayOwnerPanelMenu(owner);
+            int option = getUserOption();
+            switch (option) {
+                case 1:
+                    displayMyCars(owner);
+                    break;
+                case 2:
+                    break;
+                case 0:
+                    running = false;
+                    break;
+                default:
+                    System.out.println();
+                    System.out.println("Invalid option! Please try again");
+            }
+
+        }
+    }
+
+    private static void displayMyCars(Owner owner) {
+        boolean running = true;
+        while (running) {
+            System.out.println(PURPLE + "\nThe list of your cars \n" + RESET);
+            agency.printMyCarsList(owner);
+            if (UserInterface.agency.getHasCarStatus()) {
+                System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + agency.getCarList().size() + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
+                agency.getValidIndexes().add(agency.getCarList().size());
+                int option = getUserOption();
+                while (!agency.getValidIndexes().contains(option)) {
+                    System.out.println("The input is invalid. Please try again");
+                    option = getUserOption();
+                }
+                agency.getValidIndexes().clear();
+                if (option == agency.getCarList().size()) {
+                    running = false;
+                } else {
+                    Car car = agency.getCarByIndex(option);
+                    agency.printCar(car);
+                }
+            } else {
+                System.out.println("No cars are registered under your name :(");
+                running = false;
+            }
+        }
+
     }
 
     private static void fullNameOwnerSearch(String firstName, String lastName) {
@@ -1579,6 +1679,7 @@ class UserInterface {
                     transactionCount += 1;
                     totalTransactionValue += car.getRentMoney();
                     totalProfit += car.getRentMoney() / 10;
+                    car.getOwner().setIncome((car.getRentMoney() * 9 / 10) + (car.getOwner().getIncome()));
                     System.out.println("A amount of "
                             + PURPLE + car.getRentMoney() + RESET + " Toman has been deducted from " + tenant.getFirstName() + ' ' + tenant.getLastName() +
                             "'s account.");
