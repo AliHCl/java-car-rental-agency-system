@@ -363,6 +363,7 @@ class Agency {
         if (!tenantList.isEmpty()) {
             System.out.println(UserInterface.PURPLE + "List of Tenants :\n" + UserInterface.WHITE);
             for (Tenant tenant : tenantList) {
+                System.out.println();
                 System.out.println("Username        " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getUsername() + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Password        " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPassword() + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("First Name      " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getFirstName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
@@ -372,24 +373,23 @@ class Agency {
                 System.out.println("Phone Number    " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPhoneNumber() + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Address         " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAddress() + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Account Balance " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAccountBalance() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-                System.out.println();
             }
         }
     }
 
     public void printTenant(Tenant tenant) {
         if (!tenantList.isEmpty()) {
-            System.out.println("Information of " + tenant.getFirstName() + ' ' + tenant.getLastName() + ": \n");
-            System.out.println("Username: " + tenant.getUsername());
-            System.out.println("Password: " + tenant.getPassword());
-            System.out.println("First Name: " + tenant.getFirstName());
-            System.out.println("Last Name: " + tenant.getLastName());
-            System.out.println("Age: " + tenant.getAge());
-            System.out.println("National Code: " + tenant.getNationalCode());
-            System.out.println("Phone Number: " + tenant.getPhoneNumber());
-            System.out.println("Address: " + tenant.getAddress());
-            System.out.println("Account Balance: " + tenant.getAccountBalance());
-            System.out.println("-----------------------------------");
+            System.out.println();
+            System.out.println("Information of  " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getFirstName() + ' ' + tenant.getLastName() + ": \n" + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Username        " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getUsername() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Password        " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPassword() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("First Name      " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getFirstName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Last Name       " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getLastName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Age             " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAge() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("National Code   " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getNationalCode() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Phone Number    " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPhoneNumber() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Address         " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAddress() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Account Balance " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAccountBalance() + UserInterface.PURPLE + "]" + UserInterface.RESET);
         }
     }
 
@@ -404,21 +404,20 @@ class Agency {
                 System.out.println("Rent Money      " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getRentMoney() + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Type            " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getType() + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Lifespan        " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getLifespan() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-                System.out.println();
             }
         }
     }
 
     public void printCar(Car car) {
         if (!carList.isEmpty()) {
-            System.out.println("Information of " + car.getNameModel() + " car : \n");
-            System.out.println("Name Model: " + car.getNameModel());
-            System.out.println("Engine Capacity: " + car.getEngineCapacity());
-            System.out.println("Owner: " + car.getOwner().getFirstName() + ' ' + car.getOwner().getLastName());
-            System.out.println("Rent Money: " + car.getRentMoney());
-            System.out.println("Type: " + car.getType());
-            System.out.println("Lifespan: " + car.getLifespan());
-            System.out.println("-----------------------------------");
+            System.out.println();
+            System.out.println("Information of  " + UserInterface.GREEN + car.getNameModel() + UserInterface.RESET + " car : \n");
+            System.out.println("Name Model      " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getNameModel() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Engine Capacity " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getEngineCapacity());
+            System.out.println("Owner           " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getOwner().getFirstName() + ' ' + car.getOwner().getLastName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Rent Money      " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getRentMoney() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Type            " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getType() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Lifespan        " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getLifespan() + UserInterface.PURPLE + "]" + UserInterface.RESET);
         }
     }
 
@@ -1054,7 +1053,7 @@ class UserInterface {
     private static void engineCapacitySearch(int engineCapacity) {
         boolean foundStatus = false;
         for (Car car : agency.getCarList()) {
-            if (car.getEngineCapacity().equals(engineCapacity)) {
+            if (car.getEngineCapacity() <= engineCapacity) {
                 agency.printCar(car);
                 foundStatus = true;
             }
