@@ -372,7 +372,7 @@ class Agency {
                 System.out.println("Phone Number        " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPhoneNumber() + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Address             " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAddress() + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Account Balance     " + UserInterface.PURPLE + "[" + UserInterface.RESET + UserInterface.formattedNumber.format(tenant.getAccountBalance()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
-                System.out.println("Tenant has car now? " + UserInterface.PURPLE + "[" + UserInterface.RESET + (tenant.getRentedCar() != null ? UserInterface.GREEN + "Yes" + UserInterface.RESET : UserInterface.RED + "NO" + UserInterface.RESET) + UserInterface.PURPLE + "]" + UserInterface.RESET);
+                System.out.println("Tenant has car now? " + UserInterface.PURPLE + "[" + UserInterface.RESET + (tenant.getRentedCar() != null ? UserInterface.GREEN + "Yes" + UserInterface.RESET : UserInterface.RED + "No" + UserInterface.RESET) + UserInterface.PURPLE + "]" + UserInterface.RESET);
 
 
             }
@@ -392,7 +392,7 @@ class Agency {
             System.out.println("Phone Number        " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPhoneNumber() + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("Address             " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAddress() + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("Account Balance     " + UserInterface.PURPLE + "[" + UserInterface.RESET + UserInterface.formattedNumber.format(tenant.getAccountBalance()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
-            System.out.println("Tenant has car now? " + UserInterface.PURPLE + "[" + UserInterface.RESET + (tenant.getRentedCar() != null ? UserInterface.GREEN + "Yes" + UserInterface.RESET : UserInterface.RED + "NO" + UserInterface.RESET) + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Tenant has car now? " + UserInterface.PURPLE + "[" + UserInterface.RESET + (tenant.getRentedCar() != null ? UserInterface.GREEN + "Yes" + UserInterface.RESET : UserInterface.RED + "No" + UserInterface.RESET) + UserInterface.PURPLE + "]" + UserInterface.RESET);
 
 
         }
@@ -404,7 +404,7 @@ class Agency {
             for (Car car : carList) {
                 System.out.println();
                 System.out.println("Name Model      " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getNameModel() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-                System.out.println("Engine Capacity " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getEngineCapacity() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+                System.out.println("Engine Capacity " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getEngineCapacity() + " cc" + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Owner           " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getOwner().getFirstName() + ' ' + car.getOwner().getLastName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Rent Money      " + UserInterface.PURPLE + "[" + UserInterface.RESET + UserInterface.formattedNumber.format(car.getRentMoney()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Type            " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getType() + UserInterface.PURPLE + "]" + UserInterface.RESET);
@@ -418,7 +418,7 @@ class Agency {
             System.out.println();
             System.out.println("Information of  " + UserInterface.GREEN + car.getNameModel() + UserInterface.RESET + " car  \n");
             System.out.println("Name Model      " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getNameModel() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-            System.out.println("Engine Capacity " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getEngineCapacity());
+            System.out.println("Engine Capacity " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getEngineCapacity() + " cc" + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("Owner           " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getOwner().getFirstName() + ' ' + car.getOwner().getLastName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("Rent Money      " + UserInterface.PURPLE + "[" + UserInterface.RESET + UserInterface.formattedNumber.format(car.getRentMoney()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("Type            " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getType() + UserInterface.PURPLE + "]" + UserInterface.RESET);
@@ -437,7 +437,6 @@ class Agency {
             for (Owner owner : ownerList) {
                 System.out.println("[" + ownerList.indexOf(owner) + "]" + " " + owner.getFirstName() + ' ' + owner.getLastName());
                 validIndexes.add(ownerList.indexOf(owner));
-
             }
 
         }
@@ -1116,11 +1115,32 @@ class UserInterface {
 
     }
 
-    private static void carOwnerSearch() {
-
+    private static void carOwnerSearch(String firstName, String lastName) {
+        boolean foundStatus = false;
+        for (Car car : agency.getCarList()) {
+            if ((car.getOwner().getFirstName() + car.getOwner().getLastName()).equalsIgnoreCase(firstName + lastName)) {
+                agency.printCar(car);
+                foundStatus = true;
+            }
+        }
+        if (!foundStatus) {
+            System.out.println();
+            System.out.println(UserInterface.RED + "Not found :(" + UserInterface.RESET);
+        }
     }
 
-    private static void typeSearch() {
+    private static void typeSearch(String type) {
+        boolean foundStatus = false;
+        for (Car car : agency.getCarList()) {
+            if (car.getType().equalsIgnoreCase(type)) {
+                agency.printCar(car);
+                foundStatus = true;
+            }
+        }
+        if (!foundStatus) {
+            System.out.println();
+            System.out.println(UserInterface.RED + "Not found :(" + UserInterface.RESET);
+        }
 
     }
 
@@ -1271,10 +1291,34 @@ class UserInterface {
                     lifeSpanSearch(lifeSpan);
                     break;
                 case 5:
-                    carOwnerSearch();
+                    System.out.print("Enter First Name : ");
+                    String firstname = scanner.nextLine();
+                    System.out.print("Enter Last Name : ");
+                    String lastname = scanner.nextLine();
+                    carOwnerSearch(firstname, lastname);
                     break;
                 case 6:
-                    typeSearch();
+                    System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Sedan");
+                    System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "High-riding");
+                    System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Semi-high-riding");
+                    System.out.println();
+                    System.out.print("Enter Type : ");
+                    option = scanner.nextInt();
+                    switch (option) {
+                        case 1:
+                            typeSearch("Sedan");
+                            break;
+                        case 2:
+                            typeSearch("High-riding");
+                            break;
+                        case 3:
+                            typeSearch("Semi-high-riding");
+                            break;
+                        default:
+                            System.out.println();
+                            System.out.println("Invalid option! Please try again");
+                    }
+                    String type = scanner.nextLine();
                     break;
                 case 0:
                     running = false;
@@ -1778,10 +1822,25 @@ class UserInterface {
                 return;
             }
 
-            System.out.print("Enter the car's type: ");
-            System.out.print(GREEN);
-            car.setType(scanner.nextLine());
-            System.out.print(RESET);
+            System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Sedan");
+            System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "High-riding");
+            System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Semi-high-riding");
+            int option = getUserOption();
+            switch (option) {
+                case 1:
+                    car.setType("Sedan");
+                    break;
+                case 2:
+                    car.setType("High-riding");
+                    break;
+                case 3:
+                    car.setType("Semi-high-riding");
+                    break;
+                default:
+                    System.out.println();
+                    System.out.println("Invalid option! Please try again");
+            }
+
 
             System.out.print("Enter the car's lifespan: ");
             System.out.print(GREEN);
