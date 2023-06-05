@@ -346,7 +346,7 @@ class Agency {
     public void printOwner(Owner owner) {
         if (!ownerList.isEmpty()) {
             System.out.println();
-            System.out.println("Information of " + UserInterface.GREEN + owner.getFirstName() + ' ' + owner.getLastName() + UserInterface.RESET + ": \n");
+            System.out.println("Information of " + UserInterface.GREEN + owner.getFirstName() + ' ' + owner.getLastName() + UserInterface.RESET + " \n");
             System.out.println("Username       " + UserInterface.PURPLE + "[" + UserInterface.RESET + owner.getUsername() + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("Password       " + UserInterface.PURPLE + "[" + UserInterface.RESET + owner.getPassword() + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("First Name     " + UserInterface.PURPLE + "[" + UserInterface.RESET + owner.getFirstName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
@@ -363,16 +363,17 @@ class Agency {
             System.out.println(UserInterface.PURPLE + "List of Tenants :\n" + UserInterface.WHITE);
             for (Tenant tenant : tenantList) {
                 System.out.println();
-                System.out.println("Username        " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getUsername() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-                System.out.println("Password        " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPassword() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-                System.out.println("First Name      " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getFirstName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-                System.out.println("Last Name       " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getLastName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-                System.out.println("Age             " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAge() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-                System.out.println("National Code   " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getNationalCode() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-                System.out.println("Phone Number    " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPhoneNumber() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-                System.out.println("Address         " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAddress() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-                System.out.println("Account Balance " + UserInterface.PURPLE + "[" + UserInterface.RESET + UserInterface.formattedNumber.format(tenant.getAccountBalance()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
-                System.out.println("Tenant has car now?  " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getRentedCar() != null ? UserInterface.GREEN + "Yes" + UserInterface.RESET : UserInterface.RED + "NO" + UserInterface.RESET + UserInterface.PURPLE + "]" + UserInterface.RESET);
+                System.out.println("Username            " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getUsername() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+                System.out.println("Password            " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPassword() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+                System.out.println("First Name          " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getFirstName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+                System.out.println("Last Name           " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getLastName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+                System.out.println("Age                 " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAge() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+                System.out.println("National Code       " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getNationalCode() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+                System.out.println("Phone Number        " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPhoneNumber() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+                System.out.println("Address             " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAddress() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+                System.out.println("Account Balance     " + UserInterface.PURPLE + "[" + UserInterface.RESET + UserInterface.formattedNumber.format(tenant.getAccountBalance()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
+                System.out.println("Tenant has car now? " + UserInterface.PURPLE + "[" + UserInterface.RESET + (tenant.getRentedCar() != null ? UserInterface.GREEN + "Yes" + UserInterface.RESET : UserInterface.RED + "NO" + UserInterface.RESET) + UserInterface.PURPLE + "]" + UserInterface.RESET);
+
 
             }
         }
@@ -381,17 +382,17 @@ class Agency {
     public void printTenant(Tenant tenant) {
         if (!tenantList.isEmpty()) {
             System.out.println();
-            System.out.println("Information of " + UserInterface.GREEN + tenant.getFirstName() + ' ' + tenant.getLastName() + UserInterface.RESET + ": \n");
-            System.out.println("Username        " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getUsername() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-            System.out.println("Password        " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPassword() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-            System.out.println("First Name      " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getFirstName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-            System.out.println("Last Name       " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getLastName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-            System.out.println("Age             " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAge() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-            System.out.println("National Code   " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getNationalCode() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-            System.out.println("Phone Number    " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPhoneNumber() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-            System.out.println("Address         " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAddress() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-            System.out.println("Account Balance " + UserInterface.PURPLE + "[" + UserInterface.RESET + UserInterface.formattedNumber.format(tenant.getAccountBalance()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
-            System.out.println("Tenant has car now?  " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getRentedCar() != null ? UserInterface.GREEN + "Yes" + UserInterface.RESET : UserInterface.RED + "NO" + UserInterface.RESET + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Information of " + UserInterface.GREEN + tenant.getFirstName() + ' ' + tenant.getLastName() + UserInterface.RESET + " \n");
+            System.out.println("Username            " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getUsername() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Password            " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPassword() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("First Name          " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getFirstName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Last Name           " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getLastName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Age                 " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAge() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("National Code       " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getNationalCode() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Phone Number        " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPhoneNumber() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Address             " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAddress() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Account Balance     " + UserInterface.PURPLE + "[" + UserInterface.RESET + UserInterface.formattedNumber.format(tenant.getAccountBalance()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Tenant has car now? " + UserInterface.PURPLE + "[" + UserInterface.RESET + (tenant.getRentedCar() != null ? UserInterface.GREEN + "Yes" + UserInterface.RESET : UserInterface.RED + "NO" + UserInterface.RESET) + UserInterface.PURPLE + "]" + UserInterface.RESET);
 
 
         }
@@ -415,7 +416,7 @@ class Agency {
     public void printCar(Car car) {
         if (!carList.isEmpty()) {
             System.out.println();
-            System.out.println("Information of  " + UserInterface.GREEN + car.getNameModel() + UserInterface.RESET + " car : \n");
+            System.out.println("Information of  " + UserInterface.GREEN + car.getNameModel() + UserInterface.RESET + " car  \n");
             System.out.println("Name Model      " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getNameModel() + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("Engine Capacity " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getEngineCapacity());
             System.out.println("Owner           " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getOwner().getFirstName() + ' ' + car.getOwner().getLastName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
@@ -594,7 +595,7 @@ class UserInterface {
                         handleAgencyManager();
                     } else {
                         System.out.println();
-                        System.out.println("Access denied :(");
+                        System.out.println(RED + "Access denied :(" + RESET);
                         System.out.println();
                     }
                     break;
@@ -617,7 +618,7 @@ class UserInterface {
                             System.out.println("handleOwner");
                         } else {
                             System.out.println();
-                            System.out.println("Access denied :(");
+                            System.out.println(RED + "Access denied :(" + RESET);
                             System.out.println();
                         }
                     } else {
@@ -646,7 +647,7 @@ class UserInterface {
                             System.out.println("handleTenant");
                         } else {
                             System.out.println();
-                            System.out.println("Access denied :(");
+                            System.out.println(RED + "Access denied :(" + RESET);
                             System.out.println();
                         }
                     } else {
