@@ -1509,6 +1509,7 @@ class UserInterface {
 
                 agency.printTenant(tenant);
                 Car car = agency.getCarByIndex(option);
+                System.out.println();
                 System.out.print("Please enter the rental period in days : ");
                 int day = scanner.nextInt();
                 scanner.nextLine();
