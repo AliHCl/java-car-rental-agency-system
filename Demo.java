@@ -372,6 +372,8 @@ class Agency {
                 System.out.println("Phone Number    " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPhoneNumber() + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Address         " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAddress() + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Account Balance " + UserInterface.PURPLE + "[" + UserInterface.RESET + UserInterface.formattedNumber.format(tenant.getAccountBalance()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
+                System.out.println("Tenant has car now?  " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getRentedCar() != null ? UserInterface.GREEN + "Yes" + UserInterface.RESET : UserInterface.RED + "NO" + UserInterface.RESET + UserInterface.PURPLE + "]" + UserInterface.RESET);
+
             }
         }
     }
@@ -389,6 +391,9 @@ class Agency {
             System.out.println("Phone Number    " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPhoneNumber() + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("Address         " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAddress() + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("Account Balance " + UserInterface.PURPLE + "[" + UserInterface.RESET + UserInterface.formattedNumber.format(tenant.getAccountBalance()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Tenant has car now?  " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getRentedCar() != null ? UserInterface.GREEN + "Yes" + UserInterface.RESET : UserInterface.RED + "NO" + UserInterface.RESET + UserInterface.PURPLE + "]" + UserInterface.RESET);
+
+
         }
     }
 
@@ -1513,21 +1518,24 @@ class UserInterface {
                 System.out.print("Please enter the rental period in days : ");
                 int day = scanner.nextInt();
                 scanner.nextLine();
+                System.out.println();
                 System.out.println("Do you want to rent a "
                         + car.getNameModel() + " car to " + tenant.getFirstName() + ' ' + tenant.getLastName() +
                         " for a duration of " + day + " days?");
+
                 System.out.println();
+                System.out.println("With your confirmation, an amount of " + PURPLE + formattedNumber.format(car.getRentMoney()) + RESET + " Toman will be deducted from " + PURPLE + tenant.getFirstName() + ' ' + tenant.getLastName() + RESET + "'s account ");
                 System.out.println("[1] Yes");
-                System.out.println("[2] No");
+                System.out.println("[2] No\n");
                 System.out.print("Enter : ");
                 int status = scanner.nextInt();
                 if (status == 1) {
-                    System.out.println("The car has been successfully rented :)");
+                    System.out.println(GREEN + "The car has been successfully rented :)" + RESET);
                     transactionCount += 1;
                     totalTransactionValue += car.getRentMoney();
                     totalProfit += car.getRentMoney() / 10;
                     System.out.println("A amount of "
-                            + car.getRentMoney() + " Toman has been deducted from " + tenant.getFirstName() + ' ' + tenant.getLastName() +
+                            + PURPLE + car.getRentMoney() + RESET + " Toman has been deducted from " + tenant.getFirstName() + ' ' + tenant.getLastName() +
                             "'s account.");
                     tenant.setAccountBalance(tenant.getAccountBalance() - car.getRentMoney());
                     tenant.setRentedCar(car);
