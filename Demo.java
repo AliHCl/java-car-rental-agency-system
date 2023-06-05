@@ -290,7 +290,6 @@ class Agency {
                                                          \s
                 """;
         UserInterface.printBanner(art);
-        DecimalFormat decimalFormat = new DecimalFormat("#,###,###");
         int totalCustomers = ownerList.size() + tenantList.size() + UserInterface.getRemovedTenantsCount() + UserInterface.getRemovedOwnersCount();
         System.out.println("The total number of customers                          " + UserInterface.PURPLE + "[" + UserInterface.WHITE + totalCustomers + UserInterface.PURPLE + "]" + UserInterface.RESET);
         System.out.println("The current number of tenants                          " + UserInterface.PURPLE + "[" + UserInterface.WHITE + tenantList.size() + UserInterface.PURPLE + "]" + UserInterface.RESET);
@@ -300,8 +299,8 @@ class Agency {
         System.out.println("Number of owners removed                               " + UserInterface.PURPLE + "[" + UserInterface.WHITE + UserInterface.getRemovedOwnersCount() + UserInterface.PURPLE + "]" + UserInterface.RESET);
         System.out.println("Number of cars removed                                 " + UserInterface.PURPLE + "[" + UserInterface.WHITE + UserInterface.getRemovedCarsCount() + UserInterface.PURPLE + "]" + UserInterface.RESET);
         System.out.println("The number of transactions today                       " + UserInterface.PURPLE + "[" + UserInterface.WHITE + UserInterface.getTransactionCount() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-        System.out.println("The value of transactions conducted                    " + UserInterface.PURPLE + "[" + UserInterface.WHITE + decimalFormat.format(UserInterface.getTotalTransactionValue()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
-        System.out.println("Agency profit (calculated at 10% for each transaction) " + UserInterface.PURPLE + "[" + UserInterface.WHITE + decimalFormat.format(UserInterface.getTotalProfit()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
+        System.out.println("The value of transactions conducted                    " + UserInterface.PURPLE + "[" + UserInterface.WHITE + UserInterface.formattedNumber.format(UserInterface.getTotalTransactionValue()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
+        System.out.println("Agency profit (calculated at 10% for each transaction) " + UserInterface.PURPLE + "[" + UserInterface.WHITE + UserInterface.formattedNumber.format(UserInterface.getTotalProfit()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
         // بعدا یه اپشن باید تو پنل ادمین بزارم که مختص باشه به چاپ اطلاعات کاربرا یعنی میاد میگه اطلاعات کدومارو میخوای ببینی میگه مالک هارو نشون بدم بعد اسامی
         //رو میاره شماره اسامی رو میزنه اطلاعات اونا نشون میده و یه گزینم داره نمایش کل اطلاعات مالک ها اونا بزنه تمام لیست مالک ها با متد پایین براش نمایش داده میشه
         System.out.println();
@@ -372,7 +371,7 @@ class Agency {
                 System.out.println("National Code   " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getNationalCode() + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Phone Number    " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPhoneNumber() + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Address         " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAddress() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-                System.out.println("Account Balance " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAccountBalance() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+                System.out.println("Account Balance " + UserInterface.PURPLE + "[" + UserInterface.RESET + UserInterface.formattedNumber.format(tenant.getAccountBalance()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
             }
         }
     }
@@ -389,7 +388,7 @@ class Agency {
             System.out.println("National Code   " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getNationalCode() + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("Phone Number    " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getPhoneNumber() + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("Address         " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAddress() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-            System.out.println("Account Balance " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getAccountBalance() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Account Balance " + UserInterface.PURPLE + "[" + UserInterface.RESET + UserInterface.formattedNumber.format(tenant.getAccountBalance()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
         }
     }
 
@@ -401,7 +400,7 @@ class Agency {
                 System.out.println("Name Model      " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getNameModel() + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Engine Capacity " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getEngineCapacity() + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Owner           " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getOwner().getFirstName() + ' ' + car.getOwner().getLastName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-                System.out.println("Rent Money      " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getRentMoney() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+                System.out.println("Rent Money      " + UserInterface.PURPLE + "[" + UserInterface.RESET + UserInterface.formattedNumber.format(car.getRentMoney()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Type            " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getType() + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 System.out.println("Lifespan        " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getLifespan() + UserInterface.PURPLE + "]" + UserInterface.RESET);
             }
@@ -415,7 +414,7 @@ class Agency {
             System.out.println("Name Model      " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getNameModel() + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("Engine Capacity " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getEngineCapacity());
             System.out.println("Owner           " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getOwner().getFirstName() + ' ' + car.getOwner().getLastName() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-            System.out.println("Rent Money      " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getRentMoney() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+            System.out.println("Rent Money      " + UserInterface.PURPLE + "[" + UserInterface.RESET + UserInterface.formattedNumber.format(car.getRentMoney()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("Type            " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getType() + UserInterface.PURPLE + "]" + UserInterface.RESET);
             System.out.println("Lifespan        " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getLifespan() + UserInterface.PURPLE + "]" + UserInterface.RESET);
         }
@@ -535,6 +534,7 @@ class UserInterface {
     private static int removedTenantsCount;
     private static int removedCarsCount;
     private static long totalProfit;
+    public static final DecimalFormat formattedNumber = new DecimalFormat("#,###,###");
     public static final String RESET = "\u001B[0m";
     public static final String RED = "\u001B[31m";
     public static final String GREEN = "\u001B[32m";
@@ -923,7 +923,7 @@ class UserInterface {
     private static void ageOwnerSearch(int age) {
         boolean foundStatus = false;
         for (Owner owner : agency.getOwnerList()) {
-            if (owner.getAge().equals(age)) {
+            if (owner.getAge() <= age) {
                 agency.printOwner(owner);
                 foundStatus = true;
             }
@@ -1023,7 +1023,7 @@ class UserInterface {
     private static void ageTenantSearch(int age) {
         boolean foundStatus = false;
         for (Tenant tenant : agency.getTenantList()) {
-            if (tenant.getAge().equals(age)) {
+            if (tenant.getAge() <= age) {
                 agency.printTenant(tenant);
                 foundStatus = true;
             }
@@ -1098,7 +1098,7 @@ class UserInterface {
     private static void lifeSpanSearch(int lifeSpan) {
         boolean foundStatus = false;
         for (Car car : agency.getCarList()) {
-            if (car.getLifespan().equals(lifeSpan)) {
+            if (car.getLifespan() <= lifeSpan) {
                 agency.printCar(car);
                 foundStatus = true;
             }
