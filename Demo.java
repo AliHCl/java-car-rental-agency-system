@@ -1092,7 +1092,7 @@ class UserInterface {
             switch (option) {
                 case 1:
                     tenant.setAccountBalance(tenant.getAccountBalance() + amount);
-                    System.out.println(YELLOW + "\n " + GREEN + formattedNumber.format(amount) + RESET +YELLOW+ " toman deposited successfully to your account" + RESET);
+                    System.out.println(YELLOW + "\n" + GREEN + formattedNumber.format(amount) + RESET +YELLOW+ " toman deposited successfully to your account" + RESET);
                     System.out.println("\nBalance:  " + PURPLE + "[" + WHITE + GREEN + formattedNumber.format(tenant.getAccountBalance()) + RESET + PURPLE + "] " + WHITE);
                     running = false;
                     break;
