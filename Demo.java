@@ -481,7 +481,7 @@ class Agency {
             System.out.println(UserInterface.PURPLE + "[" + counter + UserInterface.PURPLE + "]" + UserInterface.RESET + " " + tenant.getFirstName() + ' ' + tenant.getLastName());
             counter += 1;
         }
-        if(counter==1){
+        if (counter == 1) {
             System.out.println();
             System.out.println("You don't have any tenants :(");
         }
@@ -685,19 +685,24 @@ class UserInterface {
                     if (!agency.getTenantList().isEmpty()) {
                         System.out.println();
                         agency.printTenantList("username", false);
-                        System.out.print("Select Username : ");
+                        System.out.print(YELLOW + "\nSelect Username : " + RESET);
+                        System.out.print(UserInterface.PURPLE);
                         int index_username_tenant = scanner.nextInt();
+                        System.out.print(UserInterface.RESET);
                         scanner.nextLine();
                         Tenant tenant = agency.getTenantByIndex(index_username_tenant);
                         if (tenant == null) {
                             break;
                         }
-                        System.out.print("Enter Password : ");
+                        agency.getValidIndexes().clear();
+                        System.out.print(UserInterface.YELLOW + "Enter Password : " + UserInterface.RESET);
+                        System.out.print(UserInterface.PURPLE);
                         password = scanner.nextLine();
+                        System.out.print(UserInterface.RESET);
                         if (password.equals(tenant.getPassword())) {
                             System.out.println();
-                            System.out.println("Welcome, " + tenant.getFirstName() + ":)");
-                            System.out.println("handleTenant");
+                            System.out.println("\nWelcome, " + UserInterface.GREEN + tenant.getFirstName() + ":)" + UserInterface.RESET);
+                            handleTenantPanel(tenant);
                         } else {
                             System.out.println();
                             System.out.println(RED + "Access denied :(" + RESET);
@@ -705,7 +710,7 @@ class UserInterface {
                         }
                     } else {
                         System.out.println();
-                        System.out.println("No tenant has been registered :(");
+                        System.out.println("No owner has been registered :(");
                         System.out.println();
                     }
                     break;
@@ -804,7 +809,6 @@ class UserInterface {
 
     }
 
-    // توی چاپ مشخصات مستاجران باید یه گزنم اضافه کنم که مشخص بشه این در حال حاضر ماشین اجاره کرده یا نه
     private static void displayTenantSearchMenu() {
         System.out.println();
         String art = """
@@ -874,6 +878,34 @@ class UserInterface {
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Log out");
     }
 
+    private static void displayTenantPanelMenu(Tenant tenant) {
+        System.out.println();
+        String art = """
+                  _____ _____ _   _    _    _   _ _____    ____   _    _   _ _____ _    \s
+                 |_   _| ____| \\ | |  / \\  | \\ | |_   _|  |  _ \\ / \\  | \\ | | ____| |   \s
+                   | | |  _| |  \\| | / _ \\ |  \\| | | |    | |_) / _ \\ |  \\| |  _| | |   \s
+                   | | | |___| |\\  |/ ___ \\| |\\  | | |    |  __/ ___ \\| |\\  | |___| |___\s
+                   |_| |_____|_| \\_/_/   \\_\\_| \\_| |_|    |_| /_/   \\_\\_| \\_|_____|_____|
+                                                                                        \s
+                """;
+        printBanner(art);
+        System.out.println();
+        System.out.println("My account balance " + UserInterface.PURPLE + "[" + UserInterface.WHITE + UserInterface.GREEN + UserInterface.formattedNumber.format(tenant.getAccountBalance()) + UserInterface.RESET + UserInterface.PURPLE + "] " + UserInterface.WHITE);
+        System.out.println();
+        agency.printTenant(tenant);
+        System.out.println();
+        Car rentalCar = tenant.getRentedCar();
+        if (rentalCar != null) {
+            agency.printCar(rentalCar);
+        } else {
+            System.out.println("You did not rent a car");
+        }
+        System.out.println();
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Increase Account Balance ");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "My Transactions");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Log out");
+    }
+
     private static void handleAgencyManager() {
         boolean running = true;
         while (running) {
@@ -937,7 +969,28 @@ class UserInterface {
                     System.out.println();
                     System.out.println("Invalid option! Please try again");
             }
+        }
+    }
 
+    private static void handleTenantPanel(Tenant tenant) {
+        boolean running = true;
+        while (running) {
+            System.out.println();
+            displayTenantPanelMenu(tenant);
+            int option = getUserOption();
+            switch (option) {
+                case 1:
+                    increaseAccountBalance(tenant);
+                    break;
+                case 2:
+                    break;
+                case 0:
+                    running = false;
+                    break;
+                default:
+                    System.out.println();
+                    System.out.println("Invalid option! Please try again");
+            }
         }
     }
 
@@ -969,6 +1022,35 @@ class UserInterface {
         }
 
     }
+
+    private static void increaseAccountBalance(Tenant tenant) {
+        System.out.print(PURPLE + "Please enter the desired amount : " + RESET);
+        System.out.print(GREEN);
+        int amount = scanner.nextInt();
+        System.out.println(RESET);
+        System.out.println(YELLOW + "Do you want to increase your account balance by " + formattedNumber.format(amount) + " Toman?" + RESET);
+        System.out.println();
+        System.out.println("[1] Yes");
+        System.out.println("[2] No\n");
+        System.out.print("Enter : ");
+        int option = scanner.nextInt();
+        switch (option) {
+            case 1:
+                tenant.setAccountBalance(tenant.getAccountBalance() + amount);
+                System.out.println(GREEN + "\nDone!" + RESET);
+                System.out.println("\nBalance:  " + PURPLE + "[" + WHITE + GREEN + formattedNumber.format(tenant.getAccountBalance()) + RESET + PURPLE + "] " + WHITE);
+
+                break;
+            case 2:
+                System.out.println(RED + "\nThe operation has been canceled :(" + RESET);
+                break;
+
+            default:
+                System.out.println("\nInvalid input");
+                break;
+        }
+    }
+
 
     private static void fullNameOwnerSearch(String firstName, String lastName) {
         boolean foundStatus = false;
