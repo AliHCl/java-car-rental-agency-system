@@ -9,6 +9,7 @@ public class Demo {
         // اصن کاری به این خط پایینی و اسم فایل نداره
         // اگه خط پایین رو پاک کنی بازم کلاس رابط کاربری اجرا میشه
         UserInterface.main(null);
+        System.out.println(UserInterface.RESET); // reset color console
 
     }
 }
@@ -195,7 +196,7 @@ class Agency {
     private boolean rentedCarStatus = false;
     private boolean carRentalStatus = false;
     private boolean hasCarStatus = false;
-    private boolean isCarOwner;
+    private boolean isCarOwner = false;
 
     public void setCarRentalStatus(boolean carRentalStatus) {
         this.carRentalStatus = carRentalStatus;
@@ -605,91 +606,17 @@ class UserInterface {
         while (running) {
             displayMainMenu();
             int option = getUserOption();
-            String username;
-            String password;
             switch (option) {
                 case 1:
-                    System.out.print(UserInterface.YELLOW + "Enter Username : " + UserInterface.RESET);
-                    System.out.print(UserInterface.PURPLE);
-                    username = scanner.nextLine();
-                    System.out.print(UserInterface.RESET);
-                    System.out.print(UserInterface.YELLOW + "Enter Password : " + UserInterface.RESET);
-                    System.out.print(UserInterface.PURPLE);
-                    password = scanner.nextLine();
-                    System.out.print(UserInterface.RESET);
-                    if (username.equals("admin") && password.equals("admin")) {
-                        System.out.println();
-                        System.out.println("Welcome, " + UserInterface.GREEN + username + UserInterface.RESET + ":)");
-                        System.out.println();
-                        handleAgencyManager();
-                    } else {
-                        System.out.println();
-                        System.out.println(RED + "Access denied :(" + RESET);
-                        System.out.println();
-                    }
+                    adminLogin();
                     break;
+
                 case 2:
-                    if (!agency.getOwnerList().isEmpty()) {
-                        System.out.println();
-                        agency.printOwnerList("username");
-                        System.out.print(YELLOW + "\nSelect Username : " + RESET);
-                        System.out.print(UserInterface.PURPLE);
-                        int index_username_owner = scanner.nextInt();
-                        System.out.print(UserInterface.RESET);
-                        scanner.nextLine();
-                        Owner owner = agency.getOwnerByIndex(index_username_owner);
-                        if (owner == null) {
-                            break;
-                        }
-                        agency.getValidIndexes().clear();
-                        System.out.print(UserInterface.YELLOW + "Enter Password : " + UserInterface.RESET);
-                        System.out.print(UserInterface.PURPLE);
-                        password = scanner.nextLine();
-                        System.out.print(UserInterface.RESET);
-                        if (password.equals(owner.getPassword())) {
-                            System.out.println();
-                            System.out.println("\nWelcome, " + UserInterface.GREEN + owner.getFirstName() + ":)" + UserInterface.RESET);
-                            handleOwnerPanel(owner);
-                        } else {
-                            System.out.println();
-                            System.out.println(RED + "Access denied :(" + RESET);
-                            System.out.println();
-                        }
-                    } else {
-                        System.out.println(UserInterface.RED + "\n\nNo owner has been registered\n\n" + UserInterface.RESET);
-                    }
+                    ownerLogin();
                     break;
 
                 case 3:
-                    if (!agency.getTenantList().isEmpty()) {
-                        System.out.println();
-                        agency.printTenantList("username", false);
-                        System.out.print(YELLOW + "\nSelect Username : " + RESET);
-                        System.out.print(UserInterface.PURPLE);
-                        int index_username_tenant = scanner.nextInt();
-                        System.out.print(UserInterface.RESET);
-                        scanner.nextLine();
-                        Tenant tenant = agency.getTenantByIndex(index_username_tenant);
-                        if (tenant == null) {
-                            break;
-                        }
-                        agency.getValidIndexes().clear();
-                        System.out.print(UserInterface.YELLOW + "Enter Password : " + UserInterface.RESET);
-                        System.out.print(UserInterface.PURPLE);
-                        password = scanner.nextLine();
-                        System.out.print(UserInterface.RESET);
-                        if (password.equals(tenant.getPassword())) {
-                            System.out.println();
-                            System.out.println("\nWelcome, " + UserInterface.GREEN + tenant.getFirstName() + ":)" + UserInterface.RESET);
-                            handleTenantPanel(tenant);
-                        } else {
-                            System.out.println();
-                            System.out.println(RED + "Access denied :(" + RESET);
-                            System.out.println();
-                        }
-                    } else {
-                        System.out.println(UserInterface.RED + "\n\nNo tenant has been registered\n\n" + UserInterface.RESET);
-                    }
+                    tenantLogin();
                     break;
 
                 case 4:
@@ -697,9 +624,9 @@ class UserInterface {
                     break;
 
                 case 0:
-
                     running = false;
                     break;
+
                 default:
                     System.out.println();
                     System.out.println(UserInterface.RED + "Invalid option! Please try again" + UserInterface.RESET);
@@ -707,6 +634,94 @@ class UserInterface {
         }
         scanner.close();
         System.out.println("Goodbye!");
+    }
+
+    public static void adminLogin() {
+        String adminUsername = "admin";
+        String adminPassword = "admin";
+        System.out.print(UserInterface.YELLOW + "Enter Username : " + UserInterface.RESET);
+        System.out.print(UserInterface.PURPLE);
+        String username = scanner.nextLine();
+        System.out.print(UserInterface.RESET);
+        System.out.print(UserInterface.YELLOW + "Enter Password : " + UserInterface.RESET);
+        System.out.print(UserInterface.PURPLE);
+        String password = scanner.nextLine();
+        System.out.print(UserInterface.RESET);
+        if (username.equals(adminUsername) && password.equals(adminPassword)) {
+            System.out.println();
+            System.out.println("Welcome, " + UserInterface.GREEN + username + UserInterface.RESET + ":)");
+            System.out.println();
+            runAgencyManagerMenu();
+        } else {
+            System.out.println();
+            System.out.println(RED + "Access denied :(" + RESET);
+            System.out.println();
+        }
+
+    }
+
+    public static void ownerLogin() {
+        if (!agency.getOwnerList().isEmpty()) {
+            agency.printOwnerList("\n\nusername");
+            System.out.print(YELLOW + "\nSelect Username : " + RESET);
+            System.out.print(UserInterface.PURPLE);
+            int ownerUsernameIndex = scanner.nextInt();
+            System.out.print(UserInterface.RESET);
+            scanner.nextLine();
+            Owner owner = agency.getOwnerByIndex(ownerUsernameIndex);
+            if (owner == null) {
+                return;
+            }
+            agency.getValidIndexes().clear();
+            System.out.print(UserInterface.YELLOW + "Enter Password : " + UserInterface.RESET);
+            System.out.print(UserInterface.PURPLE);
+            String password = scanner.nextLine();
+            System.out.print(UserInterface.RESET);
+            if (password.equals(owner.getPassword())) {
+                System.out.println();
+                System.out.println("\nWelcome, " + UserInterface.GREEN + owner.getFirstName() + ":)" + UserInterface.RESET);
+                runOwnerPanelMenu(owner);
+            } else {
+                System.out.println();
+                System.out.println(RED + "Access denied :(" + RESET);
+                System.out.println();
+            }
+        } else {
+            System.out.println(UserInterface.RED + "\n\nNo owner has been registered\n\n" + UserInterface.RESET);
+        }
+
+    }
+
+    public static void tenantLogin() {
+        if (!agency.getTenantList().isEmpty()) {
+            agency.printTenantList("\n\nusername", false);
+            System.out.print(YELLOW + "\nSelect Username : " + RESET);
+            System.out.print(UserInterface.PURPLE);
+            int tenantUsernameIndex = scanner.nextInt();
+            System.out.print(UserInterface.RESET);
+            scanner.nextLine();
+            Tenant tenant = agency.getTenantByIndex(tenantUsernameIndex);
+            if (tenant == null) {
+                return;
+            }
+            agency.getValidIndexes().clear();
+            System.out.print(UserInterface.YELLOW + "Enter Password : " + UserInterface.RESET);
+            System.out.print(UserInterface.PURPLE);
+            String password = scanner.nextLine();
+            System.out.print(UserInterface.RESET);
+            if (password.equals(tenant.getPassword())) {
+                System.out.println();
+                System.out.println("\nWelcome, " + UserInterface.GREEN + tenant.getFirstName() + ":)" + UserInterface.RESET);
+                runTenantPanelMenu(tenant);
+            } else {
+                System.out.println();
+                System.out.println(RED + "Access denied :(" + RESET);
+                System.out.println();
+            }
+        } else {
+            System.out.println(UserInterface.RED + "\n\nNo tenant has been registered\n\n" + UserInterface.RESET);
+        }
+
     }
 
     private static void displayMainMenu() {
@@ -918,7 +933,7 @@ class UserInterface {
 
     }
 
-    private static void handleAgencyManager() {
+    private static void runAgencyManagerMenu() {
         boolean running = true;
         while (running) {
             displayAgencyManagerMenu();
@@ -960,7 +975,7 @@ class UserInterface {
         }
     }
 
-    private static void handleOwnerPanel(Owner owner) {
+    private static void runOwnerPanelMenu(Owner owner) {
         boolean running = true;
         while (running) {
             System.out.println();
@@ -982,7 +997,7 @@ class UserInterface {
         }
     }
 
-    private static void handleTenantPanel(Tenant tenant) {
+    private static void runTenantPanelMenu(Tenant tenant) {
         boolean running = true;
         while (running) {
             System.out.println();
@@ -1038,6 +1053,15 @@ class UserInterface {
         }
     }
 
+    public static int validateUserInput(int option) {
+        while (!agency.getValidIndexes().contains(option)) {
+            System.out.println(UserInterface.RED + "The input is invalid. Please try again" + UserInterface.RESET);
+            option = getUserOption();
+        }
+        agency.getValidIndexes().clear();
+        return option;
+    }
+
     private static void displayMyCars(Owner owner) {
         boolean running = true;
         while (running) {
@@ -1048,11 +1072,7 @@ class UserInterface {
                 System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + agency.getCarList().size() + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
                 agency.getValidIndexes().add(agency.getCarList().size());
                 int option = getUserOption();
-                while (!agency.getValidIndexes().contains(option)) {
-                    System.out.println(UserInterface.RED + "The input is invalid. Please try again" + UserInterface.RESET);
-                    option = getUserOption();
-                }
-                agency.getValidIndexes().clear();
+                option = validateUserInput(option);
                 if (option == agency.getCarList().size()) {
                     running = false;
                 } else {
@@ -1648,11 +1668,7 @@ class UserInterface {
             System.out.println("Please select the desired tenant : \n\n");
             agency.printTenantList("name", false);
             int option = getUserOption();
-            while (!agency.getValidIndexes().contains(option)) {
-                System.out.println(UserInterface.RED + "The input is invalid. Please try again" + UserInterface.RESET);
-                option = getUserOption();
-            }
-            agency.getValidIndexes().clear();
+            option = validateUserInput(option);
             Tenant tenant = agency.getTenantByIndex(option);
             agency.printTenant(tenant);
             System.out.println();
@@ -1693,11 +1709,7 @@ class UserInterface {
             System.out.println(UserInterface.PURPLE + "Please select the desired owner : \n\n" + UserInterface.RESET);
             agency.printOwnerList("name");
             int option = getUserOption();
-            while (!agency.getValidIndexes().contains(option)) {
-                System.out.println(UserInterface.RED + "The input is invalid. Please try again" + UserInterface.RESET);
-                option = getUserOption();
-            }
-            agency.getValidIndexes().clear();
+            option = validateUserInput(option);
             Owner owner = agency.getOwnerByIndex(option);
             agency.printOwner(owner);
             System.out.println();
@@ -1757,11 +1769,7 @@ class UserInterface {
             System.out.println("Please select the desired car : ");
             agency.printCarList(false, null);
             int option = getUserOption();
-            while (!agency.getValidIndexes().contains(option)) {
-                System.out.println(UserInterface.RED + "The input is invalid. Please try again" + UserInterface.RESET);
-                option = getUserOption();
-            }
-            agency.getValidIndexes().clear();
+            option = validateUserInput(option);
             Car car = agency.getCarByIndex(option);
             agency.printCar(car);
             System.out.println();
@@ -1803,13 +1811,7 @@ class UserInterface {
             agency.printTenantList("name", true);
             if (agency.getRentedCarStatus()) {
                 int option = getUserOption();
-
-                while (!agency.getValidIndexes().contains(option)) {
-                    System.out.println(UserInterface.RED + "The input is invalid. Please try again" + UserInterface.RESET);
-                    option = getUserOption();
-                }
-
-                agency.getValidIndexes().clear();
+                option = validateUserInput(option);
                 agency.setRentedCarStatus(false);
                 Tenant tenant = agency.getTenantByIndex(option);
                 if (!agency.getCarList().isEmpty()) {
@@ -1819,11 +1821,7 @@ class UserInterface {
                     agency.printCarList(true, tenant);
                     if (agency.getCarRentalStatus()) {
                         option = getUserOption();
-                        while (!agency.getValidIndexes().contains(option)) {
-                            System.out.println(UserInterface.RED + "The input is invalid. Please try again" + UserInterface.RESET);
-                            option = getUserOption();
-                        }
-                        agency.getValidIndexes().clear();
+                        option = validateUserInput(option);
                         agency.setCarRentalStatus(false);
                     } else {
                         System.out.println("All cars have been rented out");
@@ -2072,11 +2070,7 @@ class UserInterface {
         if (!agency.getOwnerList().isEmpty()) {
             agency.printOwnerList("name");
             int option = getUserOption();
-            while (!agency.getValidIndexes().contains(option)) {
-                System.out.println(UserInterface.RED + "The input is invalid. Please try again" + UserInterface.RESET);
-                option = getUserOption();
-            }
-            agency.getValidIndexes().clear();
+            option = validateUserInput(option);
             Owner owner = agency.getOwnerByIndex(option);
             if (owner == null) {
                 return;
