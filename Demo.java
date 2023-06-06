@@ -2055,9 +2055,8 @@ class UserInterface {
                 scanner.nextLine();
                 System.out.print(RESET);
             } else {
-                System.out.println();
-                System.out.println("The entered rental amount must be above 1,500,000 toman :(");
-                System.out.println();
+                System.out.print(RESET);
+                System.out.println(UserInterface.YELLOW + "\n\nThe entered rental amount must be above" + UserInterface.RESET + UserInterface.RED + " 1,500,000 " + UserInterface.RESET + UserInterface.YELLOW + "toman\n\n" + UserInterface.RESET);
                 return;
             }
 
@@ -2066,7 +2065,7 @@ class UserInterface {
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Semi-high-riding");
             boolean running = true;
             while (running) {
-            option = getUserOption();
+                option = getUserOption();
                 switch (option) {
                     case 1:
                         car.setType("Sedan");
