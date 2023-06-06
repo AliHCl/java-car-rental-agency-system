@@ -1,4 +1,3 @@
-import java.sql.Struct;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -169,8 +168,7 @@ class Tenant extends Human {
 }
 
 class Owner extends Human {
-    private final List<String> myCars = new ArrayList<String>();
-    private final List<Tenant> myTenantsList = new ArrayList<Tenant>();
+    private final List<Tenant> myTenantsList = new ArrayList<>();
     private int income;
 
     public List<Tenant> getMyTenantsList() {
@@ -188,12 +186,12 @@ class Owner extends Human {
 
 class Agency {
     // ArrayList --> https://www.youtube.com/watch?v=pruuvCVXIt8
-    private final List<Car> carList = new ArrayList<Car>();
-    private final List<Owner> ownerList = new ArrayList<Owner>();
-    private final List<Tenant> tenantList = new ArrayList<Tenant>();
-    private final List<Car> rentedCarList = new ArrayList<Car>();
-    private final List<Integer> validIndexes = new ArrayList<Integer>();
-    private final List<Car> ownerCarList = new ArrayList<Car>();
+    private final List<Car> carList = new ArrayList<>();
+    private final List<Owner> ownerList = new ArrayList<>();
+    private final List<Tenant> tenantList = new ArrayList<>();
+    private final List<Car> rentedCarList = new ArrayList<>();
+    private final List<Integer> validIndexes = new ArrayList<>();
+    private final List<Car> ownerCarList = new ArrayList<>();
     private boolean rentedCarStatus = false;
     private boolean carRentalStatus = false;
     private boolean hasCarStatus = false;
@@ -549,10 +547,6 @@ class Agency {
 
     public List<Car> getCarList() {
         return carList;
-    }
-
-    public List<Car> getRentedCarList() {
-        return rentedCarList;
     }
 
     public List<Integer> getValidIndexes() {
@@ -1021,7 +1015,7 @@ class UserInterface {
                 } else if (i < 30) {
                     System.out.print("\r" + YELLOW + "I worked on this project for " + RESET + YELLOW + i + RESET);
 
-                } else if (i >= 30) {
+                } else {
                     System.out.print("\r" + YELLOW + "I worked on this project for " + RESET + RED + i + RESET);
                 }
                 Thread.sleep(animationSpeed);
@@ -1580,7 +1574,7 @@ class UserInterface {
                         default:
                             System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
                     }
-                    String type = scanner.nextLine();
+                    scanner.nextLine();
                     break;
                 case 0:
                     running = false;
@@ -1776,20 +1770,20 @@ class UserInterface {
             System.out.println();
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 2 + UserInterface.PURPLE + "]" + UserInterface.RESET + " No\n");
-            boolean runing = true;
-            while (runing) {
+            boolean running = true;
+            while (running) {
                 option = getUserOption();
                 switch (option) {
                     case 1:
                         agency.removeCar(car);
                         removedCarsCount += 1;
                         System.out.println(UserInterface.PURPLE + car.getNameModel() + UserInterface.RESET + " has been" + UserInterface.RED + " removed " + UserInterface.RESET + "from the list of cars\n\n");
-                        runing = false;
+                        running = false;
                         break;
 
                     case 2:
                         System.out.println(UserInterface.RED + "The operation has been canceled :(\n\n" + UserInterface.RESET);
-                        runing = false;
+                        running = false;
                         break;
                     default:
                         System.out.println(UserInterface.RED + "\nInvalid input" + UserInterface.RESET);
@@ -1858,8 +1852,8 @@ class UserInterface {
                 System.out.println("With your confirmation, an amount of " + PURPLE + formattedNumber.format(car.getRentMoney()) + RESET + " Toman will be deducted from " + PURPLE + tenant.getFirstName() + ' ' + tenant.getLastName() + RESET + "'s account\n\n");
                 System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
                 System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 2 + UserInterface.PURPLE + "]" + UserInterface.RESET + " No\n");
-                boolean runnig = true;
-                while (runnig) {
+                boolean running = true;
+                while (running) {
                     option = getUserOption();
                     switch (option) {
                         case 1:
@@ -1875,11 +1869,11 @@ class UserInterface {
                             tenant.setAccountBalance(tenant.getAccountBalance() - car.getRentMoney());
                             tenant.setRentedCar(car);
                             agency.addRentedCarList(car);
-                            runnig = false;
+                            running = false;
                             break;
                         case 2:
                             System.out.println(UserInterface.RED + "The operation has been canceled :(\n\n" + UserInterface.RESET);
-                            runnig = false;
+                            running = false;
                             break;
                         default:
                             System.out.println(UserInterface.RED + "Invalid input" + UserInterface.RESET);
