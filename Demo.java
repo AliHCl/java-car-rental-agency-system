@@ -2064,9 +2064,9 @@ class UserInterface {
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Sedan");
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "High-riding");
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Semi-high-riding");
-            option = getUserOption();
             boolean running = true;
             while (running) {
+            option = getUserOption();
                 switch (option) {
                     case 1:
                         car.setType("Sedan");
