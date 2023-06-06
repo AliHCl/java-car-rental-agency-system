@@ -200,7 +200,7 @@ class Agency {
     private boolean rentedCarStatus = false;
     private boolean carRentalStatus = false;
     private boolean hasCarStatus = false;
-    private boolean isCarOwner = false;
+    private boolean isCarOwner;
 
     public void setCarRentalStatus(boolean carRentalStatus) {
         this.carRentalStatus = carRentalStatus;
@@ -317,6 +317,10 @@ class Agency {
 
     public boolean getIsCarOwner() {
         return isCarOwner;
+    }
+
+    public void setIsCarOwner(Boolean value) {
+        isCarOwner = value;
     }
 
     public boolean getHasCarStatus() {
@@ -1703,13 +1707,14 @@ class UserInterface {
             System.out.println("Do you want to remove " + UserInterface.PURPLE + owner.getFirstName() +
                     ' ' + owner.getLastName() + UserInterface.RESET + " from the list of owners?");
             System.out.println();
+            agency.setIsCarOwner(false);
             agency.showOwnerCars(owner);
             System.out.println();
             if (agency.getIsCarOwner()) {
                 System.out.println("Please note that by removing " + UserInterface.PURPLE + owner.getFirstName() + ' ' +
                         owner.getLastName() + UserInterface.RESET + " from the list of owners of " + UserInterface.RED + "the above cars, they will be removed from the list" + UserInterface.RESET);
             } else {
-                System.out.println("This owner does not have any car with their name");
+                System.out.println(UserInterface.PURPLE + "This owner does not have any car with their name" + UserInterface.PURPLE);
             }
             System.out.println();
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
@@ -1726,13 +1731,14 @@ class UserInterface {
                         if (agency.getIsCarOwner()) {
                             System.out.println("Furthermore, " + UserInterface.PURPLE + agency.getOwnerCarList().size() + UserInterface.RESET + " cars owned by the mentioned owner have also been" + UserInterface.RED + " removed " + UserInterface.RESET + "from the list of cars");
                             removedCarsCount += agency.getOwnerCarList().size();
-                            removedOwnersCount += 1;
                         }
+                        removedOwnersCount += 1;
                         System.out.println();
                         agency.getOwnerCarList().clear();
                         running = false;
                         break;
                     case 2:
+                        agency.setIsCarOwner(false);
                         System.out.println(UserInterface.RED + "The operation has been canceled :(\n\n" + UserInterface.RESET);
                         agency.getOwnerCarList().clear();
                         running = false;
@@ -1744,7 +1750,7 @@ class UserInterface {
                 }
             }
         } else {
-            System.out.println(UserInterface.RED + "No tenant has been registered :(" + UserInterface.RESET);
+            System.out.println(UserInterface.RED + "No Owner has been registered :(" + UserInterface.RESET);
         }
 
     }
@@ -1789,7 +1795,7 @@ class UserInterface {
 
             }
         } else {
-            System.out.println("No tenant has been registered :(");
+            System.out.println(UserInterface.RED + "No car has been registered :(" + UserInterface.RESET);
         }
 
     }
@@ -2080,7 +2086,7 @@ class UserInterface {
             }
             car.setOwner(owner);
 
-            System.out.print("Enter the car's rent money:");
+            System.out.print("Enter the car's rent money: ");
             System.out.print(GREEN);
             int rentMoney = scanner.nextInt();
             if (rentMoney >= 1_500_000) {
@@ -2092,7 +2098,7 @@ class UserInterface {
                 System.out.println(UserInterface.YELLOW + "\n\nThe entered rental amount must be above" + UserInterface.RESET + UserInterface.RED + " 1,500,000 " + UserInterface.RESET + UserInterface.YELLOW + "toman\n\n" + UserInterface.RESET);
                 return;
             }
-
+            System.out.println();
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Sedan");
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "High-riding");
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Semi-high-riding");
