@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.List;
 
-// مستاجر بتونه لیست تراکنش هااشو ببینه توی حسابش و مشخصاتش و موجدوی حسابش و قابلیت افزایش موجودی حسابش و ماشین هایی که تا الان اجرا کرده و ماشین فعلی که الان در حال اجاره داره و با چه کسانی تا حالا کار کرده
-//مالک بتونه درامدشو ببینه توی حسابش و مشخصاتشو و ماشین هایه بنامشو و وضعیت در حال اجاره بودن یا نبودن ماشین ها و با چه کسانی تا حالا کار کرده
-
 public class Demo {
     public static void main(String[] args) {
         // اون کلاسی که ااوله و مین داره اجرا میشه
@@ -154,14 +151,6 @@ class Tenant extends Human {
     private Integer accountBalance;
     private Car rentedCar;
 
-    public void rentCar() {
-        // Renting car logic
-    }
-
-    public void findSuitableCar() {
-        // Finding suitable car logic
-    }
-
     public void setAccountBalance(Integer accountBalance) {
         this.accountBalance = accountBalance;
     }
@@ -225,9 +214,7 @@ class Agency {
         if (index >= 0 && index < ownerList.size()) {
             return ownerList.get(index);
         } else {
-            System.out.println();
-            System.out.println("Owner not found :(");
-            System.out.println();
+            System.out.println(UserInterface.RED + "\n\nOwner not found :(\n\n" + UserInterface.RESET);
             return null;
         }
     }
@@ -283,10 +270,6 @@ class Agency {
     }
 
 
-    public void search() {
-        // Searching logic
-    }
-
     public void printReport() {
         String art = """
                 8888888b.  8888888888 8888888b.   .d88888b.  8888888b. 88888888888\s
@@ -313,8 +296,6 @@ class Agency {
         System.out.println("The number of transactions today                       " + UserInterface.PURPLE + "[" + UserInterface.WHITE + UserInterface.getTransactionCount() + UserInterface.PURPLE + "]" + UserInterface.RESET);
         System.out.println("The value of transactions conducted                    " + UserInterface.PURPLE + "[" + UserInterface.WHITE + UserInterface.formattedNumber.format(UserInterface.getTotalTransactionValue()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
         System.out.println("Agency profit (calculated at 10% for each transaction) " + UserInterface.PURPLE + "[" + UserInterface.WHITE + UserInterface.formattedNumber.format(UserInterface.getTotalProfit()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
-        // بعدا یه اپشن باید تو پنل ادمین بزارم که مختص باشه به چاپ اطلاعات کاربرا یعنی میاد میگه اطلاعات کدومارو میخوای ببینی میگه مالک هارو نشون بدم بعد اسامی
-        //رو میاره شماره اسامی رو میزنه اطلاعات اونا نشون میده و یه گزینم داره نمایش کل اطلاعات مالک ها اونا بزنه تمام لیست مالک ها با متد پایین براش نمایش داده میشه
         System.out.println();
         printOwners();
         System.out.println();
@@ -445,13 +426,13 @@ class Agency {
     public void printOwnerList(String type) {
         if (type.equalsIgnoreCase("username")) {
             for (Owner owner : ownerList) {
-                System.out.println("[" + ownerList.indexOf(owner) + "]" + " " + owner.getUsername());
+                System.out.println(UserInterface.RED + "[" + UserInterface.RESET + UserInterface.YELLOW + ownerList.indexOf(owner) + UserInterface.RESET + UserInterface.YELLOW + "] " + UserInterface.RESET + owner.getUsername());
                 validIndexes.add(ownerList.indexOf(owner));
 
             }
         } else if (type.equalsIgnoreCase("name")) {
             for (Owner owner : ownerList) {
-                System.out.println("[" + ownerList.indexOf(owner) + "]" + " " + owner.getFirstName() + ' ' + owner.getLastName());
+                System.out.println(UserInterface.RED + "[" + UserInterface.RESET + UserInterface.YELLOW + ownerList.indexOf(owner) + UserInterface.RESET + UserInterface.RED + "] " + UserInterface.RESET + owner.getFirstName() + ' ' + owner.getLastName());
                 validIndexes.add(ownerList.indexOf(owner));
             }
 
@@ -640,6 +621,7 @@ class UserInterface {
                     if (username.equals("admin") && password.equals("admin")) {
                         System.out.println();
                         System.out.println("Welcome, " + UserInterface.GREEN + username + UserInterface.RESET + ":)");
+                        System.out.println();
                         handleAgencyManager();
                     } else {
                         System.out.println();
@@ -675,9 +657,7 @@ class UserInterface {
                             System.out.println();
                         }
                     } else {
-                        System.out.println();
-                        System.out.println("No owner has been registered :(");
-                        System.out.println();
+                        System.out.println(UserInterface.RED + "\n\nNo owner has been registered\n\n" + UserInterface.RESET);
                     }
                     break;
 
@@ -709,9 +689,7 @@ class UserInterface {
                             System.out.println();
                         }
                     } else {
-                        System.out.println();
-                        System.out.println("No owner has been registered :(");
-                        System.out.println();
+                        System.out.println(UserInterface.RED + "\n\nNo tenant has been registered\n\n" + UserInterface.RESET);
                     }
                     break;
 
@@ -725,7 +703,7 @@ class UserInterface {
                     break;
                 default:
                     System.out.println();
-                    System.out.println("Invalid option! Please try again.");
+                    System.out.println(UserInterface.RED + "Invalid option! Please try again" + UserInterface.RESET);
             }
         }
         scanner.close();
@@ -739,9 +717,8 @@ class UserInterface {
                 ╚═╝┴ ┴┴└─  ╩╚═└─┘┘└┘ ┴ ┴ ┴┴─┘  ╩ ╩└─┘└─┘┘└┘└─┘ ┴\s
                 """;
         printBanner(art);
-        System.out.println("Welcome to the Agency Management System");
-        System.out.println();
-        System.out.println("Who are you:");
+        System.out.println("Welcome to the Agency Management System\n");
+        System.out.println("Who are you:\n");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Agency Manager");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Owner");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Tenant");
@@ -919,13 +896,13 @@ class UserInterface {
                   \\ \\ /\\ / /| |_| | | | |   / _ \\ | |\\/| |   | |    / /
                    \\ V  V / |  _  | |_| |  / ___ \\| |  | |   | |   |_|\s
                     \\_/\\_/  |_| |_|\\___/  /_/   \\_\\_|  |_|  |___|  (_)\s
-                                                                      \s                            
+                                                                                                   
                 """;
 
         printBanner(art);
-        typingAnimation("\n\nEverything is on "+GREEN+"Principle"+RESET+", everything is on "+GREEN+"Discipline"+RESET, 90);
-        typingAnimation(PURPLE+"\n======================================\n\n"+RESET,30);
-        typingAnimation(YELLOW+"I am "+RESET+GREEN+"Ali Dehghanpour\n"+RESET, 90);
+        typingAnimation("\n\nEverything is on " + GREEN + "Principle" + RESET + ", everything is on " + GREEN + "Discipline" + RESET, 90);
+        typingAnimation(PURPLE + "\n======================================\n\n" + RESET, 30);
+        typingAnimation(YELLOW + "I am " + RESET + GREEN + "Ali Dehghanpour\n" + RESET, 90);
         System.out.println();
         showProjectHours();
         System.out.println();
@@ -935,7 +912,7 @@ class UserInterface {
         System.out.println();
         typingAnimation("Telegram " + PURPLE + "[" + WHITE + GREEN + "@Ali_4201" + RESET + PURPLE + "]" + RESET, 90);
         System.out.println();
-        typingAnimation(PURPLE+"\n======================================\n\n"+RESET,30);
+        typingAnimation(PURPLE + "\n======================================\n\n" + RESET, 30);
         System.out.println();
 
 
@@ -978,8 +955,7 @@ class UserInterface {
                     running = false;
                     break;
                 default:
-                    System.out.println();
-                    System.out.println("Invalid option! Please try again");
+                    System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
             }
         }
     }
@@ -1001,8 +977,7 @@ class UserInterface {
                     running = false;
                     break;
                 default:
-                    System.out.println();
-                    System.out.println("Invalid option! Please try again");
+                    System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
             }
         }
     }
@@ -1021,8 +996,7 @@ class UserInterface {
                     running = false;
                     break;
                 default:
-                    System.out.println();
-                    System.out.println("Invalid option! Please try again");
+                    System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
             }
         }
     }
@@ -1074,7 +1048,7 @@ class UserInterface {
                 agency.getValidIndexes().add(agency.getCarList().size());
                 int option = getUserOption();
                 while (!agency.getValidIndexes().contains(option)) {
-                    System.out.println("The input is invalid. Please try again");
+                    System.out.println(UserInterface.RED + "The input is invalid. Please try again" + UserInterface.RESET);
                     option = getUserOption();
                 }
                 agency.getValidIndexes().clear();
@@ -1475,8 +1449,7 @@ class UserInterface {
                     break;
 
                 default:
-                    System.out.println();
-                    System.out.println("Invalid option! Please try again");
+                    System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
             }
         }
 
@@ -1538,8 +1511,7 @@ class UserInterface {
                     break;
 
                 default:
-                    System.out.println();
-                    System.out.println("Invalid option! Please try again");
+                    System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
             }
         }
 
@@ -1596,8 +1568,7 @@ class UserInterface {
                             typeSearch("Semi-high-riding");
                             break;
                         default:
-                            System.out.println();
-                            System.out.println("Invalid option! Please try again");
+                            System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
                     }
                     String type = scanner.nextLine();
                     break;
@@ -1606,8 +1577,7 @@ class UserInterface {
                     break;
 
                 default:
-                    System.out.println();
-                    System.out.println("Invalid option! Please try again");
+                    System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
             }
         }
 
@@ -1633,8 +1603,7 @@ class UserInterface {
                     break;
 
                 default:
-                    System.out.println();
-                    System.out.println("Invalid option! Please try again");
+                    System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
             }
         }
 
@@ -1676,7 +1645,7 @@ class UserInterface {
             agency.printTenantList("name", false);
             int option = getUserOption();
             while (!agency.getValidIndexes().contains(option)) {
-                System.out.println("The input is invalid. Please try again");
+                System.out.println(UserInterface.RED + "The input is invalid. Please try again" + UserInterface.RESET);
                 option = getUserOption();
             }
             agency.getValidIndexes().clear();
@@ -1714,7 +1683,7 @@ class UserInterface {
             agency.printOwnerList("name");
             int option = getUserOption();
             while (!agency.getValidIndexes().contains(option)) {
-                System.out.println("The input is invalid. Please try again");
+                System.out.println(UserInterface.RED + "The input is invalid. Please try again" + UserInterface.RESET);
                 option = getUserOption();
             }
             agency.getValidIndexes().clear();
@@ -1769,7 +1738,7 @@ class UserInterface {
             agency.printCarList(false, null);
             int option = getUserOption();
             while (!agency.getValidIndexes().contains(option)) {
-                System.out.println("The input is invalid. Please try again");
+                System.out.println(UserInterface.RED + "The input is invalid. Please try again" + UserInterface.RESET);
                 option = getUserOption();
             }
             agency.getValidIndexes().clear();
@@ -1808,7 +1777,7 @@ class UserInterface {
                 int option = getUserOption();
 
                 while (!agency.getValidIndexes().contains(option)) {
-                    System.out.println("The input is invalid. Please try again");
+                    System.out.println(UserInterface.RED + "The input is invalid. Please try again" + UserInterface.RESET);
                     option = getUserOption();
                 }
 
@@ -1823,7 +1792,7 @@ class UserInterface {
                     if (agency.getCarRentalStatus()) {
                         option = getUserOption();
                         while (!agency.getValidIndexes().contains(option)) {
-                            System.out.println("The input is invalid. Please try again");
+                            System.out.println(UserInterface.RED + "The input is invalid. Please try again" + UserInterface.RESET);
                             option = getUserOption();
                         }
                         agency.getValidIndexes().clear();
@@ -1916,14 +1885,10 @@ class UserInterface {
             owner.setAge(age);
             scanner.nextLine();
         } else if (age < 18) {
-            System.out.println();
-            System.out.println("You have not reached the legal age :(");
-            System.out.println();
+            System.out.println(UserInterface.RED + "\n\nYou have not reached the legal age\n\n" + UserInterface.RESET);
             return;
         } else {
-            System.out.println();
-            System.out.println("Invalid age entered :(");
-            System.out.println();
+            System.out.println(UserInterface.RED + "\n\nInvalid age entered\n\n" + UserInterface.RESET);
             return;
         }
 
@@ -1934,9 +1899,7 @@ class UserInterface {
         if (nationalCode.length() == 10) {
             owner.setNationalCode(nationalCode);
         } else {
-            System.out.println();
-            System.out.println("Invalid national code entered :(");
-            System.out.println();
+            System.out.println(UserInterface.RED + "\n\nInvalid national code entered\n\n" + UserInterface.RESET);
             return;
         }
 
@@ -1947,9 +1910,7 @@ class UserInterface {
         if (phoneNumber.length() == 11) {
             owner.setPhoneNumber(phoneNumber);
         } else {
-            System.out.println();
-            System.out.println("Invalid phone number entered :(");
-            System.out.println();
+            System.out.println(UserInterface.RED + "\n\nInvalid phone number entered\n\n" + UserInterface.RESET);
             return;
         }
 
@@ -1997,14 +1958,10 @@ class UserInterface {
             tenant.setAge(age);
             scanner.nextLine();
         } else if (age < 18) {
-            System.out.println();
-            System.out.println("You have not reached the legal age :(");
-            System.out.println();
+            System.out.println(UserInterface.RED + "\n\nYou have not reached the legal age\n\n" + UserInterface.RESET);
             return;
         } else {
-            System.out.println();
-            System.out.println("Invalid age entered :(");
-            System.out.println();
+            System.out.println(UserInterface.RED + "\n\nInvalid age entered\n\n" + UserInterface.RESET);
             return;
         }
 
@@ -2015,9 +1972,7 @@ class UserInterface {
         if (nationalCode.length() == 10) {
             tenant.setNationalCode(nationalCode);
         } else {
-            System.out.println();
-            System.out.println("Invalid national code entered :(");
-            System.out.println();
+            System.out.println(UserInterface.RED + "\n\nInvalid national code entered\n\n" + UserInterface.RESET);
             return;
         }
 
@@ -2028,9 +1983,7 @@ class UserInterface {
         if (phoneNumber.length() == 11) {
             tenant.setPhoneNumber(phoneNumber);
         } else {
-            System.out.println();
-            System.out.println("Invalid phone number entered :(");
-            System.out.println();
+            System.out.println(UserInterface.RED + "\n\nInvalid phone number entered\n\n" + UserInterface.RESET);
             return;
         }
 
@@ -2048,7 +2001,7 @@ class UserInterface {
             tenant.setAccountBalance(accountBalance);
         } else {
             System.out.println();
-            System.out.println("The minimum accountBalance amount must be 1,500,000 toman :(");
+            System.out.println(UserInterface.YELLOW + "The minimum accountBalance amount must be " + UserInterface.RESET + UserInterface.RED + "1,500,000" + UserInterface.RESET + UserInterface.YELLOW + " toman" + UserInterface.RESET);
             System.out.println();
             return;
         }
@@ -2074,20 +2027,21 @@ class UserInterface {
             car.setEngineCapacity(engineCapacity);
             scanner.nextLine();
             System.out.print(RESET);
+            System.out.println();
         } else {
-            System.out.println();
-            System.out.println("Engine capacity must be above 700 cc");
-            System.out.println();
+            System.out.print(RESET);
+            System.out.println(UserInterface.YELLOW + "\n\nEngine capacity must be above " + UserInterface.RESET + UserInterface.RED + " 700 cc\n\n" + UserInterface.RESET);
             return;
         }
         if (!agency.getOwnerList().isEmpty()) {
             agency.printOwnerList("name");
-            System.out.print("Enter the car's owner index: ");
-            System.out.print(GREEN);
-            int ownerIndex = scanner.nextInt();
-            scanner.nextLine();
-            System.out.print(RESET);
-            Owner owner = agency.getOwnerByIndex(ownerIndex);
+            int option = getUserOption();
+            while (!agency.getValidIndexes().contains(option)) {
+                System.out.println(UserInterface.RED + "The input is invalid. Please try again" + UserInterface.RESET);
+                option = getUserOption();
+            }
+            agency.getValidIndexes().clear();
+            Owner owner = agency.getOwnerByIndex(option);
             if (owner == null) {
                 return;
             }
@@ -2110,22 +2064,27 @@ class UserInterface {
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Sedan");
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "High-riding");
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Semi-high-riding");
-            int option = getUserOption();
-            switch (option) {
-                case 1:
-                    car.setType("Sedan");
-                    break;
-                case 2:
-                    car.setType("High-riding");
-                    break;
-                case 3:
-                    car.setType("Semi-high-riding");
-                    break;
-                default:
-                    System.out.println();
-                    System.out.println("Invalid option! Please try again");
+            option = getUserOption();
+            boolean running = true;
+            while (running) {
+                switch (option) {
+                    case 1:
+                        car.setType("Sedan");
+                        running = false;
+                        break;
+                    case 2:
+                        car.setType("High-riding");
+                        running = false;
+                        break;
+                    case 3:
+                        car.setType("Semi-high-riding");
+                        running = false;
+                        break;
+                    default:
+                        System.out.println();
+                        System.out.println(UserInterface.RED + "Invalid option! Please try again" + UserInterface.RESET);
+                }
             }
-
 
             System.out.print("Enter the car's lifespan: ");
             System.out.print(GREEN);
@@ -2138,7 +2097,7 @@ class UserInterface {
             System.out.println(UserInterface.GREEN + "Car added successfully!" + UserInterface.RESET);
             System.out.println();
         } else {
-            System.out.println("No owner has been registered :(");
+            System.out.println(UserInterface.RED + "\n\nNo owner has been registered\n\n" + UserInterface.RESET);
         }
     }
 }
