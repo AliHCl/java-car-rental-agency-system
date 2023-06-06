@@ -284,17 +284,17 @@ class Agency {
 
     public void printReport() {
         String art = """
-                8888888 888b    888 8888888888 .d88888b. \s
-                  888   8888b   888 888       d88P" "Y88b\s
-                  888   88888b  888 888       888     888\s
-                  888   888Y88b 888 8888888   888     888\s
-                  888   888 Y88b888 888       888     888\s
-                  888   888  Y88888 888       888     888\s
-                  888   888   Y8888 888       Y88b. .d88P\s
-                8888888 888    Y888 888        "Y88888P" \s
-                                                         \s
-                                                         \s
-                                                         \s
+                8888888b.  8888888888 8888888b.   .d88888b.  8888888b. 88888888888\s
+                888   Y88b 888        888   Y88b d88P" "Y88b 888   Y88b    888    \s
+                888    888 888        888    888 888     888 888    888    888    \s
+                888   d88P 8888888    888   d88P 888     888 888   d88P    888    \s
+                8888888P"  888        8888888P"  888     888 8888888P"     888    \s
+                888 T88b   888        888        888     888 888 T88b      888    \s
+                888  T88b  888        888        Y88b. .d88P 888  T88b     888    \s
+                888   T88b 8888888888 888         "Y88888P"  888   T88b    888    \s
+                                                                                  \s
+                                                                                  \s
+                                                                                  \s
                 """;
         UserInterface.printBanner(art);
         int totalCustomers = ownerList.size() + tenantList.size() + UserInterface.getRemovedTenantsCount() + UserInterface.getRemovedOwnersCount();
@@ -491,6 +491,16 @@ class Agency {
         }
     }
 
+    public Boolean isCarRented(Car car) {
+        for (Tenant tenant : tenantList) {
+            if (tenant.getRentedCar() != null) {
+                if (tenant.getRentedCar().equals(car)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     public void printTenantList(String type, boolean exception) {
         if (type.equalsIgnoreCase("username")) {
@@ -634,7 +644,7 @@ class UserInterface {
                             break;
                         }
                         agency.getValidIndexes().clear();
-                        System.out.print(UserInterface.YELLOW + "\nEnter Password : " + UserInterface.RESET);
+                        System.out.print(UserInterface.YELLOW + "Enter Password : " + UserInterface.RESET);
                         System.out.print(UserInterface.PURPLE);
                         password = scanner.nextLine();
                         System.out.print(UserInterface.RESET);
@@ -932,6 +942,7 @@ class UserInterface {
                 } else {
                     Car car = agency.getCarByIndex(option);
                     agency.printCar(car);
+                    System.out.println("Is the car rented by a tenant? " + UserInterface.PURPLE + "[" + UserInterface.RESET + (agency.isCarRented(car) ? UserInterface.GREEN + "Yes" + UserInterface.RESET : UserInterface.RED + "No" + UserInterface.RESET) + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 }
             } else {
                 System.out.println("No cars are registered under your name :(");
