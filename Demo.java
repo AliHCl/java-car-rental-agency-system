@@ -886,9 +886,10 @@ class UserInterface {
         if (rentalCar != null) {
             agency.printCar(rentalCar);
         } else {
-            System.out.println("You did not rent a car");
+            System.out.println(UserInterface.PURPLE+"You did not rent a car"+UserInterface.RESET);
         }
         System.out.println();
+        System.out.println(UserInterface.PURPLE + "Please select an option :\n" + UserInterface.RESET);
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Increase Account Balance ");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Log out");
     }
