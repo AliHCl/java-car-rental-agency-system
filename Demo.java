@@ -181,9 +181,14 @@ class Tenant extends Human {
 
 class Owner extends Human {
     private final List<String> myCars = new ArrayList<String>();
+    private final List<Tenant> myTenantsList = new ArrayList<Tenant>();
     private int income;
 
     public void showMyCars() {
+    }
+
+    public List<Tenant> getMyTenantsList() {
+        return myTenantsList;
     }
 
     public int getIncome() {
@@ -467,6 +472,18 @@ class Agency {
 
 
             }
+        }
+    }
+
+    public void printMyTenantsList(Owner owner) {
+        int counter = 1;
+        for (Tenant tenant : owner.getMyTenantsList()) {
+            System.out.println(UserInterface.PURPLE + "[" + counter + UserInterface.PURPLE + "]" + UserInterface.RESET + " " + tenant.getFirstName() + ' ' + tenant.getLastName());
+            counter += 1;
+        }
+        if(counter==1){
+            System.out.println();
+            System.out.println("You don't have any tenants :(");
         }
     }
 
@@ -911,6 +928,7 @@ class UserInterface {
                     displayMyCars(owner);
                     break;
                 case 2:
+                    agency.printMyTenantsList(owner);
                     break;
                 case 0:
                     running = false;
@@ -1692,6 +1710,7 @@ class UserInterface {
                     transactionCount += 1;
                     totalTransactionValue += car.getRentMoney();
                     totalProfit += car.getRentMoney() / 10;
+                    car.getOwner().getMyTenantsList().add(tenant);
                     car.getOwner().setIncome((car.getRentMoney() * 9 / 10) + (car.getOwner().getIncome()));
                     System.out.println("A amount of "
                             + PURPLE + car.getRentMoney() + RESET + " Toman has been deducted from " + tenant.getFirstName() + ' ' + tenant.getLastName() +
