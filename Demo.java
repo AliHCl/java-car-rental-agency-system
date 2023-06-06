@@ -206,6 +206,10 @@ class Agency {
         this.carRentalStatus = carRentalStatus;
     }
 
+    public void setHasCarStatus(boolean hasCarStatus) {
+        this.hasCarStatus = hasCarStatus;
+    }
+
     public void setRentedCarStatus(boolean rentedCarStatus) {
         this.rentedCarStatus = rentedCarStatus;
     }
@@ -905,7 +909,7 @@ class UserInterface {
                 """;
 
         printBanner(art);
-        typingAnimation("\n\nEverything is on " + GREEN + "Principle" + RESET + ", everything is on " + GREEN + "Discipline" + RESET, 90);
+        typingAnimation("\n\neverything is on " + GREEN + "Principle" + RESET + ", everything is on " + GREEN + "Discipline" + RESET, 90);
         typingAnimation(PURPLE + "\n======================================\n\n" + RESET, 30);
         typingAnimation(YELLOW + "I am " + RESET + GREEN + "Ali Dehghanpour\n" + RESET, 90);
         System.out.println();
@@ -1047,6 +1051,7 @@ class UserInterface {
         boolean running = true;
         while (running) {
             System.out.println(PURPLE + "\nThe list of your cars \n" + RESET);
+            agency.setHasCarStatus(false);
             agency.printMyCarsList(owner);
             if (UserInterface.agency.getHasCarStatus()) {
                 System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + agency.getCarList().size() + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
@@ -1077,7 +1082,7 @@ class UserInterface {
         System.out.print(GREEN);
         int amount = scanner.nextInt();
         System.out.println(RESET);
-        System.out.println(YELLOW + "Do you want to increase your account balance by " + UserInterface.RESET + formattedNumber.format(amount) + UserInterface.RESET + " Toman?" + RESET);
+        System.out.println(YELLOW + "Do you want to increase your account balance by " + UserInterface.GREEN + formattedNumber.format(amount) + UserInterface.RESET +YELLOW+ " toman?" + RESET);
         System.out.println();
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 2 + UserInterface.PURPLE + "]" + UserInterface.RESET + " No\n");
@@ -1087,7 +1092,7 @@ class UserInterface {
             switch (option) {
                 case 1:
                     tenant.setAccountBalance(tenant.getAccountBalance() + amount);
-                    System.out.println(YELLOW + "\n " + GREEN + formattedNumber.format(amount) + RESET + " toman deposited successfully to your account" + RESET);
+                    System.out.println(YELLOW + "\n " + GREEN + formattedNumber.format(amount) + RESET +YELLOW+ " toman deposited successfully to your account" + RESET);
                     System.out.println("\nBalance:  " + PURPLE + "[" + WHITE + GREEN + formattedNumber.format(tenant.getAccountBalance()) + RESET + PURPLE + "] " + WHITE);
                     running = false;
                     break;
