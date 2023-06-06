@@ -902,7 +902,6 @@ class UserInterface {
         }
         System.out.println();
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Increase Account Balance ");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "My Transactions");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Log out");
     }
 
@@ -981,8 +980,6 @@ class UserInterface {
             switch (option) {
                 case 1:
                     increaseAccountBalance(tenant);
-                    break;
-                case 2:
                     break;
                 case 0:
                     running = false;
