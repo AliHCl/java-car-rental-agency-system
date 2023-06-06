@@ -714,7 +714,13 @@ class UserInterface {
                         System.out.println();
                     }
                     break;
+
+                case 4:
+                    displayDeveloperInfo();
+                    break;
+
                 case 0:
+
                     running = false;
                     break;
                 default:
@@ -739,6 +745,7 @@ class UserInterface {
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Agency Manager");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Owner");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Tenant");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 4 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "About me");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Exit");
     }
 
@@ -905,6 +912,35 @@ class UserInterface {
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Log out");
     }
 
+    private static void displayDeveloperInfo() {
+        String art = """
+                 __        ___   _  ___       _    __  __    ___   ___\s
+                 \\ \\      / / | | |/ _ \\     / \\  |  \\/  |  |_ _| |__ \\
+                  \\ \\ /\\ / /| |_| | | | |   / _ \\ | |\\/| |   | |    / /
+                   \\ V  V / |  _  | |_| |  / ___ \\| |  | |   | |   |_|\s
+                    \\_/\\_/  |_| |_|\\___/  /_/   \\_\\_|  |_|  |___|  (_)\s
+                                                                      \s                            
+                """;
+
+        printBanner(art);
+        typingAnimation("\n\nEverything is on "+GREEN+"Principle"+RESET+", everything is on "+GREEN+"Discipline"+RESET, 90);
+        typingAnimation(PURPLE+"\n======================================\n\n"+RESET,30);
+        typingAnimation(YELLOW+"I am "+RESET+GREEN+"Ali Dehghanpour\n"+RESET, 90);
+        System.out.println();
+        showProjectHours();
+        System.out.println();
+        typingAnimation("Email    " + PURPLE + "[" + WHITE + GREEN + "ali75847584@gmail.com" + RESET + PURPLE + "]" + RESET, 90);
+        System.out.println();
+        typingAnimation("GitHub   " + PURPLE + "[" + WHITE + GREEN + "AliHCl" + RESET + PURPLE + "]" + RESET, 90);
+        System.out.println();
+        typingAnimation("Telegram " + PURPLE + "[" + WHITE + GREEN + "@Ali_4201" + RESET + PURPLE + "]" + RESET, 90);
+        System.out.println();
+        typingAnimation(PURPLE+"\n======================================\n\n"+RESET,30);
+        System.out.println();
+
+
+    }
+
     private static void handleAgencyManager() {
         boolean running = true;
         while (running) {
@@ -988,6 +1024,43 @@ class UserInterface {
                     System.out.println();
                     System.out.println("Invalid option! Please try again");
             }
+        }
+    }
+
+
+    private static void showProjectHours() {
+        try {
+            int animationSpeed = 90;
+            int projectHours = 54;
+            typingAnimation("\r" + YELLOW + "I worked on this project for " + RESET, 90);
+            for (int i = 0; i <= projectHours; i++) {
+                if (i < 10) {
+                    System.out.print("\r" + YELLOW + "I worked on this project for " + RESET + i);
+                } else if (i < 25) {
+                    System.out.print("\r" + YELLOW + "I worked on this project for " + RESET + GREEN + i + RESET);
+                } else if (i < 30) {
+                    System.out.print("\r" + YELLOW + "I worked on this project for " + RESET + YELLOW + i + RESET);
+
+                } else if (i >= 30) {
+                    System.out.print("\r" + YELLOW + "I worked on this project for " + RESET + RED + i + RESET);
+                }
+                Thread.sleep(animationSpeed);
+            }
+            typingAnimation(YELLOW + " hours" + RESET, 90);
+            System.out.println();
+        } catch (InterruptedException error) {
+            error.printStackTrace();
+        }
+    }
+
+    private static void typingAnimation(String text, int delay) {
+        try {
+            for (int i = 0; i < text.length(); i++) {
+                System.out.print(text.charAt(i));
+                Thread.sleep(delay);
+            }
+        } catch (InterruptedException error) {
+            error.printStackTrace();
         }
     }
 
