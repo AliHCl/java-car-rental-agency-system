@@ -468,7 +468,7 @@ class Agency {
         }
         if (counter == 1) {
             System.out.println();
-            System.out.println("You don't have any tenants :(");
+            System.out.println(UserInterface.RED + "You don't have any tenants :(" + UserInterface.RESET);
         }
     }
 
@@ -886,7 +886,7 @@ class UserInterface {
         if (rentalCar != null) {
             agency.printCar(rentalCar);
         } else {
-            System.out.println(UserInterface.PURPLE+"You did not rent a car"+UserInterface.RESET);
+            System.out.println(UserInterface.PURPLE + "You did not rent a car" + UserInterface.RESET);
         }
         System.out.println();
         System.out.println(UserInterface.PURPLE + "Please select an option :\n" + UserInterface.RESET);
@@ -1065,7 +1065,7 @@ class UserInterface {
                     System.out.println("Is the car rented by a tenant? " + UserInterface.PURPLE + "[" + UserInterface.RESET + (agency.isCarRented(car) ? UserInterface.GREEN + "Yes" + UserInterface.RESET : UserInterface.RED + "No" + UserInterface.RESET) + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 }
             } else {
-                System.out.println("No cars are registered under your name :(");
+                System.out.println(UserInterface.RED + "No cars are registered under your name :(" + UserInterface.RESET);
                 running = false;
             }
         }
@@ -1073,11 +1073,11 @@ class UserInterface {
     }
 
     private static void increaseAccountBalance(Tenant tenant) {
-        System.out.print(PURPLE + "Please enter the desired amount : " + RESET);
+        System.out.print(YELLOW + "Please enter the desired amount : " + RESET);
         System.out.print(GREEN);
         int amount = scanner.nextInt();
         System.out.println(RESET);
-        System.out.println(YELLOW + "Do you want to increase your account balance by " + formattedNumber.format(amount) + " Toman?" + RESET);
+        System.out.println(YELLOW + "Do you want to increase your account balance by " + UserInterface.RESET + formattedNumber.format(amount) + UserInterface.RESET + " Toman?" + RESET);
         System.out.println();
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 2 + UserInterface.PURPLE + "]" + UserInterface.RESET + " No\n");
@@ -1087,7 +1087,7 @@ class UserInterface {
             switch (option) {
                 case 1:
                     tenant.setAccountBalance(tenant.getAccountBalance() + amount);
-                    System.out.println(GREEN + "\nDone!" + RESET);
+                    System.out.println(YELLOW + "\n " + GREEN + formattedNumber.format(amount) + RESET + " toman deposited successfully to your account" + RESET);
                     System.out.println("\nBalance:  " + PURPLE + "[" + WHITE + GREEN + formattedNumber.format(tenant.getAccountBalance()) + RESET + PURPLE + "] " + WHITE);
                     running = false;
                     break;
