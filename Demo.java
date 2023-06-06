@@ -1087,12 +1087,12 @@ class UserInterface {
                     running = false;
                     break;
                 case 2:
-                    System.out.println(RED + "\nThe operation has been canceled :(" + RESET);
+                    System.out.println(RED + "\nThe operation has been canceled :(\n\n" + RESET);
                     running = false;
                     break;
 
                 default:
-                    System.out.println("\nInvalid input");
+                    System.out.println(UserInterface.RED + "\nInvalid input" + UserInterface.RESET);
                     break;
             }
         }
@@ -1655,8 +1655,8 @@ class UserInterface {
             Tenant tenant = agency.getTenantByIndex(option);
             agency.printTenant(tenant);
             System.out.println();
-            System.out.println("Do you want to remove " + tenant.getFirstName() +
-                    ' ' + tenant.getLastName() + " from the list of tenants?");
+            System.out.println("Do you want to remove " + UserInterface.PURPLE + tenant.getFirstName() +
+                    ' ' + tenant.getLastName() + UserInterface.RESET + " from the list of tenants?");
             System.out.println();
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 2 + UserInterface.PURPLE + "]" + UserInterface.RESET + " No\n");
@@ -1667,13 +1667,13 @@ class UserInterface {
                     case 1:
                         agency.removeTenant(tenant);
                         removedTenantsCount += 1;
-                        System.out.println(tenant.getFirstName() + ' ' + tenant.getLastName() +
-                                " has been removed from the list of tenants");
+                        System.out.println(UserInterface.PURPLE + tenant.getFirstName() + ' ' + tenant.getLastName() + UserInterface.RESET +
+                                " has been " + UserInterface.RED + "removed " + UserInterface.RESET + "from the list of tenants\n\n");
                         running = false;
                         break;
 
                     case 2:
-                        System.out.println(UserInterface.RED + "The operation has been canceled :(" + UserInterface.RESET);
+                        System.out.println(UserInterface.RED + "The operation has been canceled :(\n\n" + UserInterface.RESET);
                         running = false;
                         break;
                     default:
@@ -1689,7 +1689,7 @@ class UserInterface {
 
     public static void removeFromOwnerList() {
         if (!agency.getOwnerList().isEmpty()) {
-            System.out.println("Please select the desired owner : ");
+            System.out.println(UserInterface.PURPLE + "Please select the desired owner : \n\n" + UserInterface.RESET);
             agency.printOwnerList("name");
             int option = getUserOption();
             while (!agency.getValidIndexes().contains(option)) {
@@ -1700,14 +1700,14 @@ class UserInterface {
             Owner owner = agency.getOwnerByIndex(option);
             agency.printOwner(owner);
             System.out.println();
-            System.out.println("Do you want to remove " + owner.getFirstName() +
-                    ' ' + owner.getLastName() + " from the list of owners?");
+            System.out.println("Do you want to remove " + UserInterface.PURPLE + owner.getFirstName() +
+                    ' ' + owner.getLastName() + UserInterface.RESET + " from the list of owners?");
             System.out.println();
             agency.showOwnerCars(owner);
             System.out.println();
             if (agency.getIsCarOwner()) {
-                System.out.println("Please note that by removing " + owner.getFirstName() + ' ' +
-                        owner.getLastName() + " from the list of owners of the above cars, they will be removed from the list");
+                System.out.println("Please note that by removing " + UserInterface.PURPLE + owner.getFirstName() + ' ' +
+                        owner.getLastName() + UserInterface.RESET + " from the list of owners of " + UserInterface.RED + "the above cars, they will be removed from the list" + UserInterface.RESET);
             } else {
                 System.out.println("This owner does not have any car with their name");
             }
@@ -1715,25 +1715,25 @@ class UserInterface {
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 2 + UserInterface.PURPLE + "]" + UserInterface.RESET + " No\n");
             boolean running = true;
-            while (true) {
+            while (running) {
                 option = getUserOption();
                 switch (option) {
                     case 1:
                         agency.removeOwner(owner);
                         agency.getCarList().removeAll(agency.getOwnerCarList());
-                        System.out.println(owner.getFirstName() + ' ' + owner.getLastName() +
-                                " has been removed from the list of owners");
+                        System.out.println(UserInterface.PURPLE + owner.getFirstName() + ' ' + owner.getLastName() + UserInterface.RESET +
+                                " has been " + UserInterface.RED + "removed" + UserInterface.RESET + " from the list of owners\n\n");
                         if (agency.getIsCarOwner()) {
-                            System.out.println("Furthermore, " + agency.getOwnerCarList().size() + " cars owned by the mentioned owner have also been removed from the list of cars");
+                            System.out.println("Furthermore, " + UserInterface.PURPLE + agency.getOwnerCarList().size() + UserInterface.RESET + " cars owned by the mentioned owner have also been" + UserInterface.RED + " removed " + UserInterface.RESET + "from the list of cars");
                             removedCarsCount += agency.getOwnerCarList().size();
                             removedOwnersCount += 1;
                         }
                         System.out.println();
                         agency.getOwnerCarList().clear();
-                        running =false;
+                        running = false;
                         break;
                     case 2:
-                        System.out.println(UserInterface.RED + "The operation has been canceled :(" + UserInterface.RESET);
+                        System.out.println(UserInterface.RED + "The operation has been canceled :(\n\n" + UserInterface.RESET);
                         agency.getOwnerCarList().clear();
                         running = false;
                         break;
@@ -1742,7 +1742,6 @@ class UserInterface {
                         agency.getOwnerCarList().clear();
                         break;
                 }
-
             }
         } else {
             System.out.println(UserInterface.RED + "No tenant has been registered :(" + UserInterface.RESET);
@@ -1763,7 +1762,7 @@ class UserInterface {
             Car car = agency.getCarByIndex(option);
             agency.printCar(car);
             System.out.println();
-            System.out.println("Do you want to remove the " + car.getNameModel() +
+            System.out.println("Do you want to remove the " + UserInterface.PURPLE + car.getNameModel() + UserInterface.RESET +
                     " car from the list of cars?");
             System.out.println();
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
@@ -1775,16 +1774,16 @@ class UserInterface {
                     case 1:
                         agency.removeCar(car);
                         removedCarsCount += 1;
-                        System.out.println(car.getNameModel() + " has been removed from the list of cars");
+                        System.out.println(UserInterface.PURPLE + car.getNameModel() + UserInterface.RESET + " has been" + UserInterface.RED + " removed " + UserInterface.RESET + "from the list of cars\n\n");
                         runing = false;
                         break;
 
                     case 2:
-                        System.out.println("The operation has been canceled :(");
+                        System.out.println(UserInterface.RED + "The operation has been canceled :(\n\n" + UserInterface.RESET);
                         runing = false;
                         break;
                     default:
-                        System.out.println("Invalid input");
+                        System.out.println(UserInterface.RED + "\nInvalid input" + UserInterface.RESET);
                         break;
                 }
 
@@ -1870,7 +1869,7 @@ class UserInterface {
                             runnig = false;
                             break;
                         case 2:
-                            System.out.println(UserInterface.RED + "The operation has been canceled :(" + UserInterface.RESET);
+                            System.out.println(UserInterface.RED + "The operation has been canceled :(\n\n" + UserInterface.RESET);
                             runnig = false;
                             break;
                         default:
@@ -1880,10 +1879,10 @@ class UserInterface {
 
                 }
             } else {
-                System.out.println("All tenants have rented a car");
+                System.out.println(UserInterface.GREEN + "All tenants have rented a car\n\n" + UserInterface.RESET);
             }
         } else {
-            System.out.println("No tenant has been registered :(");
+            System.out.println(UserInterface.RED + "No tenant has been registered :(" + UserInterface.RESET);
         }
 
     }
