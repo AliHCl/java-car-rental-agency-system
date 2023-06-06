@@ -173,9 +173,6 @@ class Owner extends Human {
     private final List<Tenant> myTenantsList = new ArrayList<Tenant>();
     private int income;
 
-    public void showMyCars() {
-    }
-
     public List<Tenant> getMyTenantsList() {
         return myTenantsList;
     }
