@@ -383,7 +383,7 @@ class Agency {
             return Tenant.getTenantList().get(index);
         } else {
             System.out.println();
-            System.out.println("Tenant not found :(");
+            System.out.println(UserInterface.RED + "Tenant not found :(" + UserInterface.RESET);
             System.out.println();
             return null;
         }
