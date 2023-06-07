@@ -1321,7 +1321,7 @@ class Agency {
         }
 
     }
-    private static void handleOwnerManager() {
+    private static void handleSearchOwnerManager() {
         boolean running = true;
         while (running) {
             UserInterface.displayOwnerSearchMenu();
@@ -1377,7 +1377,7 @@ class Agency {
 
 
     }
-    private static void handleTenantManager(){
+    private static void handleSearchTenantManager(){
         boolean running = true;
         while (running) {
             UserInterface.displayTenantSearchMenu();
@@ -1437,7 +1437,7 @@ class Agency {
         }
 
     }
-    private static void handleCarManager() {
+    private static void handleSearchCarManager() {
         boolean running = true;
         while (running) {
             UserInterface.displayCarSearchMenu();
@@ -1502,20 +1502,20 @@ class Agency {
         }
 
     }
-    public static void handleSearchManager() {
+    public static void handleSearchMainMenuManager() {
         boolean running = true;
         while (running) {
             UserInterface.displaySearchMenu();
             int option = UserInterface.getUserOption();
             switch (option) {
                 case 1:
-                    handleOwnerManager();
+                    handleSearchOwnerManager();
                     break;
                 case 2:
-                    handleTenantManager();
+                    handleSearchTenantManager();
                     break;
                 case 3:
-                    handleCarManager();
+                    handleSearchCarManager();
                     break;
                 case 0:
                     running = false;
@@ -1544,7 +1544,7 @@ class UserInterface {
     public static void main(String[] args) {
         boolean running = true;
         while (running) {
-            displayMainMenu();
+            displayHomeMenu();
             int option = UserInterface.getUserOption();
             switch (option) {
                 case 1:
@@ -1590,7 +1590,7 @@ class UserInterface {
             System.out.println();
             System.out.println("Welcome, " + UserInterface.GREEN + username + UserInterface.RESET + ":)");
             System.out.println();
-            runAgencyManagerMenu();
+            handleAgencyManagerMenu();
         } else {
             System.out.println();
             System.out.println(RED + "Access denied :(" + RESET);
@@ -1618,7 +1618,7 @@ class UserInterface {
             if (password.equals(owner.getPassword())) {
                 System.out.println();
                 System.out.println("\nWelcome, " + UserInterface.GREEN + owner.getFirstName() + ":)" + UserInterface.RESET);
-                runOwnerPanelMenu(owner);
+                handleOwnerPanelMenu(owner);
             } else {
                 System.out.println();
                 System.out.println(RED + "Access denied :(" + RESET);
@@ -1649,7 +1649,7 @@ class UserInterface {
             if (password.equals(tenant.getPassword())) {
                 System.out.println();
                 System.out.println("\nWelcome, " + UserInterface.GREEN + tenant.getFirstName() + ":)" + UserInterface.RESET);
-                runTenantPanelMenu(tenant);
+                handleTenantPanelMenu(tenant);
             } else {
                 System.out.println();
                 System.out.println(RED + "Access denied :(" + RESET);
@@ -1746,7 +1746,7 @@ class UserInterface {
 
 
     }
-    private static void runAgencyManagerMenu() {
+    private static void handleAgencyManagerMenu() {
         boolean running = true;
         while (running) {
             displayAgencyManagerMenu();
@@ -1777,7 +1777,7 @@ class UserInterface {
                     Agency.printReport();
                     break;
                 case 9:
-                    Agency.handleSearchManager();
+                    Agency.handleSearchMainMenuManager();
                     break;
                 case 0:
                     running = false;
@@ -1787,7 +1787,7 @@ class UserInterface {
             }
         }
     }
-    private static void runOwnerPanelMenu(Owner owner) {
+    private static void handleOwnerPanelMenu(Owner owner) {
         boolean running = true;
         while (running) {
             System.out.println();
@@ -1808,7 +1808,7 @@ class UserInterface {
             }
         }
     }
-    private static void runTenantPanelMenu(Tenant tenant) {
+    private static void handleTenantPanelMenu(Tenant tenant) {
         boolean running = true;
         while (running) {
             System.out.println();
@@ -1850,7 +1850,7 @@ class UserInterface {
             error.printStackTrace();
         }
     }
-    public static void displayMainMenu() {
+    public static void displayHomeMenu() {
         String art = """
                 ╔═╗┌─┐┬─┐  ╦═╗┌─┐┌┐┌┌┬┐┌─┐┬    ╔═╗┌─┐┌─┐┌┐┌┌─┐┬ ┬
                 ║  ├─┤├┬┘  ╠╦╝├┤ │││ │ ├─┤│    ╠═╣│ ┬├┤ ││││  └┬┘
