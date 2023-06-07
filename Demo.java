@@ -246,9 +246,9 @@ class Owner extends Human {
         boolean running = true;
         while (running) {
             System.out.println(UserInterface.PURPLE + "\nThe list of your cars \n" + UserInterface.RESET);
-            Agency.setHasCarStatus(false);
+            Agency.setIsCarOwner(false);
             Owner.displayOwnerCarsFiltered(owner);
-            if (Agency.getHasCarStatus()) {
+            if (Agency.getIsCarOwner()) {
                 System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + Car.getCarList().size() + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
                 UserInterface.getValidIndexes().add(Car.getCarList().size());
                 int option = UserInterface.getUserOption();
@@ -270,7 +270,7 @@ class Owner extends Human {
     public static void displayOwnerCarsFiltered(Owner owner) {
         for (Car car : Car.getCarList()) {
             if (car.getOwner().equals(owner)) {
-                Agency.setHasCarStatus(true);
+                Agency.setIsCarOwner(true);
                 System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + Car.getCarList().indexOf(car) + UserInterface.PURPLE + "]" + UserInterface.RESET + " " + car.getNameModel());
                 UserInterface.getValidIndexes().add(Car.getCarList().indexOf(car));
                 Owner.getOwnerCarList().add(car);
@@ -295,7 +295,7 @@ class Agency {
     // ArrayList --> https://www.youtube.com/watch?v=pruuvCVXIt8
     private static boolean rentedCarStatus = false;
     private static boolean carRentalStatus = false;
-    private static boolean hasCarStatus = false;
+    private static final boolean hasCarStatus = false;
     private static boolean isCarOwner = false;
     private static int transactionCount;
     private static int removedOwnersCount;
@@ -359,14 +359,6 @@ class Agency {
 
     public static void setCarRentalStatus(boolean carRentalStatus) {
         Agency.carRentalStatus = carRentalStatus;
-    }
-
-    public static boolean getHasCarStatus() {
-        return hasCarStatus;
-    }
-
-    public static void setHasCarStatus(boolean hasCarStatus) {
-        Agency.hasCarStatus = hasCarStatus;
     }
 
     public static Boolean getRentedCarStatus() {
@@ -696,7 +688,7 @@ class Agency {
                 }
             }
         } else {
-            System.out.println(UserInterface.RED + "No tenant has been registered :(" + UserInterface.RESET);
+            System.out.println(UserInterface.RED + "No tenant has been registered :(\n\n" + UserInterface.RESET);
         }
 
     }
@@ -880,7 +872,7 @@ class Agency {
                 System.out.println(UserInterface.GREEN + "All tenants have rented a car\n\n" + UserInterface.RESET);
             }
         } else {
-            System.out.println(UserInterface.RED + "No tenant has been registered :(" + UserInterface.RESET);
+            System.out.println(UserInterface.RED + "No tenant has been registered :(\n\n" + UserInterface.RESET);
         }
 
     }
@@ -1639,6 +1631,63 @@ class Agency {
         }
 
     }
+
+    public static void handleAddMainMenuManager() {
+        boolean running = true;
+        while (running) {
+            UserInterface.displayAddMenu();
+            int option = UserInterface.getUserOption();
+            switch (option) {
+                case 1:
+                    UserInterface.displayOwnerBanner();
+                    Agency.addOwner();
+                    break;
+                case 2:
+                    UserInterface.displayTenantBanner();
+                    Agency.addTenant();
+                    break;
+                case 3:
+                    UserInterface.displayCarBanner();
+                    Agency.addCar();
+                    break;
+                case 0:
+                    running = false;
+                    break;
+
+                default:
+                    System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
+            }
+        }
+    }
+
+    public static void handleRemoveMainMenuManager() {
+        boolean running = true;
+        while (running) {
+            UserInterface.displayRemoveMenu();
+            int option = UserInterface.getUserOption();
+            switch (option) {
+                case 1:
+                    UserInterface.displayOwnerBanner();
+                    Agency.removeFromOwnerList();
+                    break;
+                case 2:
+                    UserInterface.displayTenantBanner();
+                    Agency.removeFromTenantList();
+                    break;
+                case 3:
+                    UserInterface.displayCarBanner();
+                    Agency.removeFromCarList();
+                    break;
+                case 0:
+                    running = false;
+                    break;
+
+                default:
+                    System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
+            }
+        }
+
+    }
 }
 
 class UserInterface {
@@ -1877,31 +1926,20 @@ class UserInterface {
             int option = UserInterface.getUserOption();
             switch (option) {
                 case 1:
-                    Agency.addOwner();
+                    Agency.handleAddMainMenuManager();
                     break;
                 case 2:
-                    Agency.addTenant();
+                    Agency.handleRemoveMainMenuManager();
                     break;
                 case 3:
-                    Agency.addCar();
+                    Agency.handleSearchMainMenuManager();
                     break;
                 case 4:
-                    Agency.removeFromOwnerList();
-                    break;
-                case 5:
-                    Agency.removeFromTenantList();
-                    break;
-                case 6:
-                    Agency.removeFromCarList();
-                    break;
-                case 7:
+                    UserInterface.displayRentBanner();
                     Agency.rent();
                     break;
-                case 8:
+                case 5:
                     Agency.printReport();
-                    break;
-                case 9:
-                    Agency.handleSearchMainMenuManager();
                     break;
                 case 0:
                     running = false;
@@ -2005,16 +2043,12 @@ class UserInterface {
                 """;
         printBanner(art);
         System.out.println();
-        System.out.println(UserInterface.PURPLE + "Please select an option :\n" + UserInterface.RESET);
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Add Owner");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Add Tenant");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Add Car");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 4 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Remove Owner");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 5 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Remove Tenant");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 6 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Remove Car");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 7 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Rent");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 8 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Print Report");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 9 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Search");
+        System.out.println(UserInterface.PURPLE + "Please select an option \n" + UserInterface.RESET);
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Add");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Remove");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Search");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 4 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Rent");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 5 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Print Report");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Log out");
     }
 
@@ -2030,11 +2064,105 @@ class UserInterface {
                 """;
         printBanner(art);
         System.out.println();
-        System.out.println(UserInterface.PURPLE + "Which of the following options do you intend to search within? \n" + UserInterface.RESET);
+        System.out.println(UserInterface.PURPLE + "Please select an option \n" + UserInterface.RESET);
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Owners");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Tenants");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Cars");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
+    }
+
+    public static void displayAddMenu() {
+        System.out.println();
+        String art = """
+                     _    ____  ____ \s
+                    / \\  |  _ \\|  _ \\\s
+                   / _ \\ | | | | | | |
+                  / ___ \\| |_| | |_| |
+                 /_/   \\_\\____/|____/\s
+                                     \s
+                """;
+        printBanner(art);
+        System.out.println();
+        System.out.println(UserInterface.PURPLE + "Please select an option \n" + UserInterface.RESET);
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Add Owner");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Add Tenant");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Add Car");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
+    }
+
+    public static void displayRemoveMenu() {
+        System.out.println();
+        String art = """
+                  ____  _____ __  __  _____     _______\s
+                 |  _ \\| ____|  \\/  |/ _ \\ \\   / / ____|
+                 | |_) |  _| | |\\/| | | | \\ \\ / /|  _| \s
+                 |  _ <| |___| |  | | |_| |\\ V / | |___\s
+                 |_| \\_\\_____|_|  |_|\\___/  \\_/  |_____|
+                                                       \s
+                """;
+        printBanner(art);
+        System.out.println();
+        System.out.println(UserInterface.PURPLE + "Please select an option \n" + UserInterface.RESET);
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Remove Owner");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Remove Tenant");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Remove Car");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
+    }
+
+    public static void displayOwnerBanner() {
+        System.out.println();
+        String art = """
+                   ___                          \s
+                  / _ \\__      ___ __   ___ _ __\s
+                 | | | \\ \\ /\\ / / '_ \\ / _ \\ '__|
+                 | |_| |\\ V  V /| | | |  __/ |  \s
+                  \\___/  \\_/\\_/ |_| |_|\\___|_|  \s
+                                                \s
+                """;
+        printBanner(art);
+        System.out.println();
+    }
+
+    public static void displayTenantBanner() {
+        System.out.println();
+        String art = """
+                  _____                      _  \s
+                 |_   _|__ _ __   __ _ _ __ | |_\s
+                   | |/ _ \\ '_ \\ / _` | '_ \\| __|
+                   | |  __/ | | | (_| | | | | |_\s
+                   |_|\\___|_| |_|\\__,_|_| |_|\\__|
+                                                \s
+                """;
+        printBanner(art);
+        System.out.println();
+    }
+
+    public static void displayCarBanner() {
+        System.out.println();
+        String art = """
+                   ____          \s
+                  / ___|__ _ _ __\s
+                 | |   / _` | '__|
+                 | |__| (_| | |  \s
+                  \\____\\__,_|_|  \s
+                                 \s
+                """;
+        printBanner(art);
+        System.out.println();
+    }
+
+    public static void displayRentBanner() {
+        System.out.println();
+        String art = """
+                  ____  _____ _   _ _____\s
+                 |  _ \\| ____| \\ | |_   _|
+                 | |_) |  _| |  \\| | | | \s
+                 |  _ <| |___| |\\  | | | \s
+                 |_| \\_\\_____|_| \\_| |_| \s
+                                         \s
+                """;
+        printBanner(art);
+        System.out.println();
     }
 
     public static void displayOwnerSearchMenu() {
