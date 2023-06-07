@@ -268,6 +268,9 @@ class Owner extends Human {
     }
 
     public static void displayOwnerCarsFiltered(Owner owner) {
+        // این میاد تمام ماشین هایی که متعلق به اون یوزر هستن رو توی ownercarlist ادد میکنه یعنی چی ؟
+        // یعنی حتی ماشین هایی که تا الان حذف شدن هم اد میکنه
+        // چون ما یه لیست کلی داریم که ازش میایم
         for (Car car : Car.getCarList()) {
             if (car.getOwner().equals(owner)) {
                 Agency.setIsCarOwner(true);
@@ -743,7 +746,6 @@ class Agency {
                         break;
                     default:
                         System.out.println(UserInterface.RED + "Invalid input" + UserInterface.RESET);
-                        Owner.getOwnerCarList().clear();
                         break;
                 }
             }
