@@ -847,7 +847,7 @@ class Agency {
                             System.out.println(UserInterface.GREEN + "\n\nThe car has been successfully rented :)\n\n" + UserInterface.RESET);
                             Agency.setTransactionCount(Agency.getTransactionCount() + 1);
                             Agency.setTotalTransactionValue(Agency.getTotalTransactionValue() + car.getRentMoney());
-                            Agency.setTotalProfit(car.getRentMoney() / 10);
+                            Agency.setTotalProfit(Agency.getTotalProfit() + car.getRentMoney() / 10);
                             car.getOwner().getMyTenantsList().add(tenant);
                             car.getOwner().setIncome((car.getRentMoney() * 9 / 10) + (car.getOwner().getIncome()));
                             System.out.println("A amount of "
