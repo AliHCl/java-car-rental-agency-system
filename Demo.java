@@ -1739,7 +1739,7 @@ class UserInterface {
 
     public static void ownerLogin() {
         if (!Owner.getOwnerList().isEmpty()) {
-            Agency.printOwnerList("\n\nusername");
+            Agency.printOwnerList("username");
             System.out.print(YELLOW + "\nSelect Username : " + RESET);
             System.out.print(UserInterface.PURPLE);
             int ownerUsernameIndex = scanner.nextInt();
@@ -1771,7 +1771,7 @@ class UserInterface {
 
     public static void tenantLogin() {
         if (!Tenant.getTenantList().isEmpty()) {
-            Agency.printTenantList("\n\nusername", false);
+            Agency.printTenantList("username", false);
             System.out.print(YELLOW + "\nSelect Username : " + RESET);
             System.out.print(UserInterface.PURPLE);
             int tenantUsernameIndex = scanner.nextInt();
