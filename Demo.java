@@ -758,7 +758,7 @@ class Agency {
 
     public static void removeFromCarList() {
         if (!Car.getCarList().isEmpty()) {
-            System.out.println("Please select the desired car : ");
+            System.out.println("Please select the desired car : \n\n");
             printCarList(false, null);
             int option = UserInterface.getUserOption();
             option = UserInterface.validateUserInput(option);
@@ -830,9 +830,7 @@ class Agency {
                 System.out.println();
                 printCar(car);
                 System.out.println();
-                System.out.print("Please enter the rental period in days : ");
-                int day = scanner.nextInt();
-                scanner.nextLine();
+                int day = validateNumericInput("Please enter the rental period in days : ");
                 System.out.println();
                 System.out.println("Do you want to rent a "
                         + UserInterface.PURPLE + car.getNameModel() + UserInterface.RESET + " car to " + UserInterface.PURPLE + tenant.getFirstName() + ' ' + tenant.getLastName() + UserInterface.RESET +
@@ -903,21 +901,7 @@ class Agency {
         owner.setLastName(scanner.nextLine());
         System.out.print(UserInterface.RESET);
 
-        System.out.print("Enter the owner's age: ");
-        int age = 0;
-        boolean isValidInput = false;
-        while (!isValidInput) {
-            try {
-                System.out.print(UserInterface.GREEN);
-                age = scanner.nextInt();
-                System.out.print(UserInterface.RESET);
-                isValidInput = true;
-            } catch (InputMismatchException invalidInput) {
-                scanner.nextLine();
-                System.out.println(UserInterface.RED + "Invalid input. Please enter a valid integer." + UserInterface.RESET);
-                System.out.print("Enter the owner's age: ");
-            }
-        }
+        int age = validateNumericInput("Enter the owner's age: ");
 
         if (age >= 18 && age <= 250) {
             owner.setAge(age);
@@ -988,21 +972,7 @@ class Agency {
         tenant.setLastName(scanner.nextLine());
         System.out.print(UserInterface.RESET);
 
-        System.out.print("Enter the tenant's age: ");
-        int age = 0;
-        boolean isValidInput = false;
-        while (!isValidInput) {
-            try {
-                System.out.print(UserInterface.GREEN);
-                age = scanner.nextInt();
-                System.out.print(UserInterface.RESET);
-                isValidInput = true;
-            } catch (InputMismatchException invalidInput) {
-                scanner.nextLine();
-                System.out.println(UserInterface.RED + "Invalid input. Please enter a valid integer." + UserInterface.RESET);
-                System.out.print("Enter the tenant's age: ");
-            }
-        }
+        int age = validateNumericInput("Enter the tenant's age: ");
         if (age >= 18 && age <= 250) {
             tenant.setAge(age);
             scanner.nextLine();
@@ -1041,22 +1011,7 @@ class Agency {
         tenant.setAddress(scanner.nextLine());
         System.out.print(UserInterface.RESET);
 
-        System.out.print("Enter the tenant's accountBalance: ");
-        int accountBalance = 0;
-        boolean isValidInput_money = false;
-        while (!isValidInput_money) {
-            try {
-                System.out.print(UserInterface.GREEN);
-                accountBalance = scanner.nextInt();
-                System.out.print(UserInterface.RESET);
-                isValidInput_money = true;
-            } catch (InputMismatchException invalidInput) {
-                scanner.nextLine();
-                System.out.println(UserInterface.RED + "Invalid input. Please enter a valid integer." + UserInterface.RESET);
-                System.out.print("Enter the tenant's accountBalance: ");
-            }
-        }
-
+        int accountBalance = validateNumericInput("Enter the tenant's accountBalance: ");
         if (accountBalance >= 1_500_000) {
             tenant.setAccountBalance(accountBalance);
         } else {
@@ -1071,6 +1026,25 @@ class Agency {
         System.out.println(UserInterface.GREEN + "Tenant added successfully!" + UserInterface.RESET);
         System.out.println();
     }
+    public static int validateNumericInput(String askText) {
+        System.out.print(askText);
+        int inputNumber = 0;
+        boolean isValidInput = false;
+        while (!isValidInput) {
+            try {
+                System.out.print(UserInterface.GREEN);
+                inputNumber = scanner.nextInt();
+                System.out.print(UserInterface.RESET);
+                isValidInput = true;
+            } catch (InputMismatchException invalidInput) {
+                scanner.nextLine();
+                System.out.println(UserInterface.RED + "Invalid input. Please enter a valid integer." + UserInterface.RESET);
+                System.out.print(askText);
+
+            }
+        }
+        return inputNumber;
+    }
 
     public static void addCar() {
         Car car = new Car();
@@ -1079,22 +1053,9 @@ class Agency {
         System.out.print(UserInterface.GREEN);
         car.setNameModel(scanner.nextLine());
         System.out.print(UserInterface.RESET);
-        System.out.print("Enter the car's engine capacity: ");
-        int engineCapacity = 0;
-        boolean isValidInput = false;
-        while (!isValidInput) {
-            try {
-                System.out.print(UserInterface.GREEN);
-                engineCapacity = scanner.nextInt();
-                System.out.print(UserInterface.RESET);
-                isValidInput = true;
-            } catch (InputMismatchException invalidInput) {
-                scanner.nextLine();
-                System.out.println(UserInterface.RED + "Invalid input. Please enter a valid integer." + UserInterface.RESET);
-                System.out.print("Enter the car's engine capacity: ");
 
-            }
-        }
+        int engineCapacity = validateNumericInput("Enter the car's engine capacity: ");
+
         if (engineCapacity > 700) {
             car.setEngineCapacity(engineCapacity);
             scanner.nextLine();
@@ -1115,21 +1076,9 @@ class Agency {
                 return;
             }
             car.setOwner(owner);
-            System.out.print("Enter the car's rent money: ");
-            int rentMoney = 0;
-            boolean isValidInput_money = false;
-            while (!isValidInput_money) {
-                try {
-                    System.out.print(UserInterface.GREEN);
-                    rentMoney = scanner.nextInt();
-                    System.out.print(UserInterface.RESET);
-                    isValidInput_money = true;
-                } catch (InputMismatchException invalidInput) {
-                    scanner.nextLine();
-                    System.out.println(UserInterface.RED + "Invalid input. Please enter a valid integer." + UserInterface.RESET);
-                    System.out.print("Enter the car's rent money: ");
-                }
-            }
+
+            int rentMoney = validateNumericInput("Enter the car's rent money: ");
+
             if (rentMoney >= 1_500_000) {
                 car.setRentMoney(rentMoney);
                 scanner.nextLine();
@@ -1165,20 +1114,10 @@ class Agency {
                         System.out.println(UserInterface.RED + "Invalid option! Please try again" + UserInterface.RESET);
                 }
             }
-            System.out.print("Enter the car's lifespan: ");
-            boolean isValidInput_lifespan = false;
-            while (!isValidInput_lifespan) {
-                try {
-                    System.out.print(UserInterface.GREEN);
-                    car.setLifespan(scanner.nextInt());
-                    System.out.print(UserInterface.RESET);
-                    isValidInput_lifespan = true;
-                } catch (InputMismatchException invalidInput) {
-                    scanner.nextLine();
-                    System.out.println(UserInterface.RED + "Invalid input. Please enter a valid integer." + UserInterface.RESET);
-                    System.out.print("Enter the car's lifespan: ");
-                }
-            }
+
+            int lifespan = validateNumericInput("Enter the car's lifespan: ");
+            car.setLifespan(lifespan);
+
 
             addCar(car);
             System.out.println();
@@ -1532,11 +1471,12 @@ class Agency {
                     String username = scanner.nextLine();
                     usernameOwnerSearch(username);
                     break;
+
                 case 7:
-                    System.out.print("Enter Age : ");
-                    int age = scanner.nextInt();
+                    int age = validateNumericInput("Enter the owner's age : ");
                     ageOwnerSearch(age);
                     break;
+
                 case 0:
                     running = false;
                     break;
@@ -1575,8 +1515,7 @@ class Agency {
                     lastNameTenantSearch(lastname);
                     break;
                 case 4:
-                    System.out.print("Enter Account Balance : ");
-                    int accountBalance = scanner.nextInt();
+                    int accountBalance = validateNumericInput("Enter the tenant's accountBalance: ");
                     accountBalanceSearch(accountBalance);
                     break;
                 case 5:
@@ -1595,8 +1534,7 @@ class Agency {
                     usernameTenantSearch(username);
                     break;
                 case 8:
-                    System.out.print("Enter Age : ");
-                    int age = scanner.nextInt();
+                    int age = validateNumericInput("Enter the tenant's age : ");
                     ageTenantSearch(age);
                     break;
                 case 0:
@@ -1617,8 +1555,7 @@ class Agency {
             int option = UserInterface.getUserOption();
             switch (option) {
                 case 1:
-                    System.out.print("Enter Engine Capacity : ");
-                    int engineCapacity = scanner.nextInt();
+                    int engineCapacity = validateNumericInput("Enter the car's engine capacity: ");
                     engineCapacitySearch(engineCapacity);
                     break;
                 case 2:
@@ -1627,13 +1564,11 @@ class Agency {
                     nameModelSearch(nameModel);
                     break;
                 case 3:
-                    System.out.print("Enter Rent Money : ");
-                    int rentMoney = scanner.nextInt();
+                    int rentMoney = validateNumericInput("Enter the car's rent money: ");
                     rentMoneySearch(rentMoney);
                     break;
                 case 4:
-                    System.out.print("Enter Life Span : ");
-                    int lifeSpan = scanner.nextInt();
+                    int lifeSpan = validateNumericInput("Enter the car's lifespan: ");
                     lifeSpanSearch(lifeSpan);
                     break;
                 case 5:
