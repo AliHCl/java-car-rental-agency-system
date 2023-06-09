@@ -200,8 +200,7 @@ class Tenant extends Human {
         System.out.println(UserInterface.RESET);
         System.out.println(UserInterface.YELLOW + "Do you want to increase your account balance by " + UserInterface.GREEN + UserInterface.formattedNumber.format(amount) + UserInterface.RESET + UserInterface.YELLOW + " toman?" + UserInterface.RESET);
         System.out.println();
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 2 + UserInterface.PURPLE + "]" + UserInterface.RESET + " No\n");
+        UserInterface.showConfirmationPrompt();
         boolean running = true;
         while (running) {
             int option = UserInterface.getUserOption();
@@ -392,7 +391,7 @@ class Agency {
         if (index >= 0 && index < Owner.getOwnerList().size()) {
             return Owner.getOwnerList().get(index);
         } else {
-            System.out.println(UserInterface.RED + "\n\nOwner not found :(\n\n" + UserInterface.RESET);
+            System.out.println(UserInterface.RED + "\nOwner not found :(\n" + UserInterface.RESET);
             return null;
         }
     }
@@ -402,7 +401,7 @@ class Agency {
             return Tenant.getTenantList().get(index);
         } else {
             System.out.println();
-            System.out.println(UserInterface.RED + "Tenant not found :(" + UserInterface.RESET);
+            System.out.println(UserInterface.RED + "\nTenant not found :(\n" + UserInterface.RESET);
             System.out.println();
             return null;
         }
@@ -682,8 +681,7 @@ class Agency {
             System.out.println("Do you want to remove " + UserInterface.PURPLE + tenant.getFirstName() +
                     ' ' + tenant.getLastName() + UserInterface.RESET + " from the list of tenants?");
             System.out.println();
-            System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
-            System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 2 + UserInterface.PURPLE + "]" + UserInterface.RESET + " No\n");
+            UserInterface.showConfirmationPrompt();
             boolean running = true;
             while (running) {
                 option = UserInterface.getUserOption();
@@ -735,8 +733,7 @@ class Agency {
                 System.out.println(UserInterface.PURPLE + "This owner does not have any car with their name" + UserInterface.PURPLE);
             }
             System.out.println();
-            System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
-            System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 2 + UserInterface.PURPLE + "]" + UserInterface.RESET + " No\n");
+            UserInterface.showConfirmationPrompt();
             boolean running = true;
             while (running) {
                 option = UserInterface.getUserOption();
@@ -782,8 +779,7 @@ class Agency {
             System.out.println("Do you want to remove the " + UserInterface.PURPLE + car.getNameModel() + UserInterface.RESET +
                     " car from the list of cars?");
             System.out.println();
-            System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
-            System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 2 + UserInterface.PURPLE + "]" + UserInterface.RESET + " No\n");
+            UserInterface.showConfirmationPrompt();
             boolean running = true;
             while (running) {
                 option = UserInterface.getUserOption();
@@ -853,8 +849,7 @@ class Agency {
 
                 System.out.println();
                 System.out.println("With your confirmation, an amount of " + UserInterface.PURPLE + UserInterface.formattedNumber.format(car.getRentMoney()) + UserInterface.RESET + " Toman will be deducted from " + UserInterface.PURPLE + tenant.getFirstName() + ' ' + tenant.getLastName() + UserInterface.RESET + "'s account\n\n");
-                System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
-                System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 2 + UserInterface.PURPLE + "]" + UserInterface.RESET + " No\n");
+                UserInterface.showConfirmationPrompt();
                 boolean running = true;
                 while (running) {
                     option = UserInterface.getUserOption();
@@ -1728,7 +1723,7 @@ class UserInterface {
                     break;
 
                 case 0:
-                    running = false;
+                    running = confirmLogout("System");
                     break;
 
                 default:
@@ -1737,7 +1732,7 @@ class UserInterface {
             }
         }
         scanner.close();
-        System.out.println("Goodbye!");
+        System.out.println(UserInterface.GREEN + "Successful logout!" + UserInterface.RESET);
     }
 
     public static void adminLogin() {
@@ -1941,7 +1936,7 @@ class UserInterface {
                     Agency.printReport();
                     break;
                 case 0:
-                    running = false;
+                    running = confirmLogout("admin panel");
                     break;
                 default:
                     System.out.println(RED + "\n\nInvalid option! Please try again" + RESET);
@@ -1963,7 +1958,7 @@ class UserInterface {
                     Owner.printMyTenantsList(owner);
                     break;
                 case 0:
-                    running = false;
+                    running = confirmLogout("owner panel");
                     break;
                 default:
                     System.out.println(RED + "\n\nInvalid option! Please try again" + RESET);
@@ -1982,7 +1977,7 @@ class UserInterface {
                     Tenant.increaseAccountBalance(tenant);
                     break;
                 case 0:
-                    running = false;
+                    running = confirmLogout("tenant panel");
                     break;
                 default:
                     System.out.println(RED + "\n\nInvalid option! Please try again" + RESET);
@@ -2235,6 +2230,11 @@ class UserInterface {
         System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back");
     }
 
+    public static void showConfirmationPrompt() {
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 2 + UserInterface.PURPLE + "]" + UserInterface.RESET + " No");
+    }
+
     public static int validateUserInput(int option) {
         while (!getValidIndexes().contains(option)) {
             System.out.println(RED + "The input is invalid. Please try again" + RESET);
@@ -2264,6 +2264,22 @@ class UserInterface {
         return inputNumber;
     }
 
+    public static boolean confirmLogout(String location) {
+        System.out.println(YELLOW + "Would you like to log out of the " + location + " ? \n" + RESET);
+        showConfirmationPrompt();
+        while (true) {
+            int option = getUserOption();
+            switch (option) {
+                case 1:
+                    return false;
+                case 2:
+                    return true;
+                default:
+                    System.out.println(UserInterface.RED + "\nInvalid input" + UserInterface.RESET);
+                    break;
+            }
+        }
+    }
 
     public static void printBanner(String art) {
         int num = art.length() / 2;
@@ -2295,7 +2311,6 @@ class UserInterface {
                 option = scanner.nextInt();
                 System.out.println();
                 scanner.nextLine();
-                System.out.println();
                 isValidInput = true;
             } catch (InputMismatchException invalidInput) {
                 scanner.nextLine();
