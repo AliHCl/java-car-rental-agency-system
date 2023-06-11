@@ -680,7 +680,6 @@ class Agency {
             System.out.println();
             System.out.println("Do you want to remove " + UserInterface.PURPLE + tenant.getFirstName() +
                     ' ' + tenant.getLastName() + UserInterface.RESET + " from the list of tenants?");
-            System.out.println();
             UserInterface.showConfirmationPrompt();
             boolean running = true;
             while (running) {
@@ -688,7 +687,10 @@ class Agency {
                 switch (option) {
                     case 1:
                         removeTenant(tenant);
-                        tenant.getRentedCarOwner().getMyTenantsList().remove(tenant);
+                        try {
+                            tenant.getRentedCarOwner().getMyTenantsList().remove(tenant);
+                        } catch (java.lang.NullPointerException ignored) {
+                        }
                         Agency.setRemovedTenantsCount(Agency.getRemovedTenantsCount() + 1);
 
                         System.out.println(UserInterface.PURPLE + tenant.getFirstName() + ' ' + tenant.getLastName() + UserInterface.RESET +
@@ -732,7 +734,6 @@ class Agency {
             } else {
                 System.out.println(UserInterface.PURPLE + "This owner does not have any car with their name" + UserInterface.PURPLE);
             }
-            System.out.println();
             UserInterface.showConfirmationPrompt();
             boolean running = true;
             while (running) {
@@ -778,7 +779,6 @@ class Agency {
             System.out.println();
             System.out.println("Do you want to remove the " + UserInterface.PURPLE + car.getNameModel() + UserInterface.RESET +
                     " car from the list of cars?");
-            System.out.println();
             UserInterface.showConfirmationPrompt();
             boolean running = true;
             while (running) {
@@ -904,13 +904,15 @@ class Agency {
 
         System.out.print("Enter the owner's first name: ");
         System.out.print(UserInterface.GREEN);
-        owner.setFirstName(scanner.nextLine());
+        String firstName = scanner.nextLine();
         System.out.print(UserInterface.RESET);
+        owner.setFirstName(firstName);
 
         System.out.print("Enter the owner's last name: ");
         System.out.print(UserInterface.GREEN);
-        owner.setLastName(scanner.nextLine());
+        String lastName = scanner.nextLine();
         System.out.print(UserInterface.RESET);
+        owner.setLastName(lastName);
 
         int age = UserInterface.validateNumericInput("Enter the owner's age: ", UserInterface.GREEN);
 
@@ -951,12 +953,26 @@ class Agency {
         System.out.print(UserInterface.GREEN);
         owner.setAddress(scanner.nextLine());
         System.out.print(UserInterface.RESET);
-
-
-        addOwner(owner);
-        System.out.println();
-        System.out.println(UserInterface.GREEN + "Owner added successfully!" + UserInterface.RESET);
-        System.out.println();
+        System.out.println("\nAre you sure about adding " + firstName + ' ' + lastName + " to the list of owners?");
+        UserInterface.showConfirmationPrompt();
+        boolean running = true;
+        while (running) {
+            int option = UserInterface.getUserOption();
+            switch (option) {
+                case 1:
+                    addOwner(owner);
+                    System.out.println(UserInterface.GREEN + "\nOwner added successfully!" + UserInterface.RESET);
+                    running = false;
+                    break;
+                case 2:
+                    System.out.println(UserInterface.RED + "\nThe operation has been canceled" + UserInterface.RESET);
+                    running = false;
+                    break;
+                default:
+                    System.out.println(UserInterface.RED + "Invalid input" + UserInterface.RESET);
+                    break;
+            }
+        }
     }
 
     public static void addTenant() {
@@ -974,13 +990,15 @@ class Agency {
 
         System.out.print("Enter the tenant's first name: ");
         System.out.print(UserInterface.GREEN);
-        tenant.setFirstName(scanner.nextLine());
+        String firstName = scanner.nextLine();
         System.out.print(UserInterface.RESET);
+        tenant.setFirstName(firstName);
 
         System.out.print("Enter the tenant's last name: ");
         System.out.print(UserInterface.GREEN);
-        tenant.setLastName(scanner.nextLine());
+        String lastName = scanner.nextLine();
         System.out.print(UserInterface.RESET);
+        tenant.setLastName(lastName);
 
         int age = UserInterface.validateNumericInput("Enter the tenant's age: ", UserInterface.GREEN);
         if (age >= 18 && age <= 250) {
@@ -1030,10 +1048,26 @@ class Agency {
             return;
         }
 
-        addTenant(tenant);
-        System.out.println();
-        System.out.println(UserInterface.GREEN + "Tenant added successfully!" + UserInterface.RESET);
-        System.out.println();
+        System.out.println("\nAre you sure about adding " + firstName + ' ' + lastName + " to the list of tenants?");
+        UserInterface.showConfirmationPrompt();
+        boolean running = true;
+        while (running) {
+            int option = UserInterface.getUserOption();
+            switch (option) {
+                case 1:
+                    addTenant(tenant);
+                    System.out.println(UserInterface.GREEN + "Tenant added successfully!" + UserInterface.RESET);
+                    running = false;
+                    break;
+                case 2:
+                    System.out.println(UserInterface.RED + "\nThe operation has been canceled" + UserInterface.RESET);
+                    running = false;
+                    break;
+                default:
+                    System.out.println(UserInterface.RED + "Invalid input" + UserInterface.RESET);
+                    break;
+            }
+        }
     }
 
     public static void addCar() {
@@ -1041,8 +1075,9 @@ class Agency {
 
         System.out.print("Enter the car's Name Model: ");
         System.out.print(UserInterface.GREEN);
-        car.setNameModel(scanner.nextLine());
+        String carName = scanner.nextLine();
         System.out.print(UserInterface.RESET);
+        car.setNameModel(carName);
 
         int engineCapacity = UserInterface.validateNumericInput("Enter the car's engine capacity: ", UserInterface.GREEN);
 
@@ -1106,12 +1141,30 @@ class Agency {
             int lifespan = UserInterface.validateNumericInput("Enter the car's lifespan: ", UserInterface.GREEN);
             car.setLifespan(lifespan);
 
-            addCar(car);
-            owner.setNumberOfCars(owner.getNumberOfCars() + 1);
-            owner.getOwnerCarList().add(car);
-            System.out.println();
-            System.out.println(UserInterface.GREEN + "Car added successfully!" + UserInterface.RESET);
-            System.out.println();
+            System.out.println("\nAre you sure about adding the " + carName + " car to the list of cars?");
+            UserInterface.showConfirmationPrompt();
+            running = true;
+            while (running) {
+                option = UserInterface.getUserOption();
+                switch (option) {
+                    case 1:
+                        addCar(car);
+                        owner.setNumberOfCars(owner.getNumberOfCars() + 1);
+                        owner.getOwnerCarList().add(car);
+                        System.out.println(UserInterface.GREEN + "Car added successfully!" + UserInterface.RESET);
+                        running = false;
+                        break;
+                    case 2:
+                        System.out.println(UserInterface.RED + "\nThe operation has been canceled" + UserInterface.RESET);
+                        running = false;
+                        break;
+                    default:
+                        System.out.println(UserInterface.RED + "Invalid input" + UserInterface.RESET);
+                        break;
+                }
+            }
+
+
         } else {
             System.out.println(UserInterface.RED + "\n\nNo owner has been registered\n\n" + UserInterface.RESET);
         }
@@ -2231,6 +2284,7 @@ class UserInterface {
     }
 
     public static void showConfirmationPrompt() {
+        System.out.println();
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 2 + UserInterface.PURPLE + "]" + UserInterface.RESET + " No");
     }
