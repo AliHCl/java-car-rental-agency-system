@@ -1,4 +1,5 @@
 import java.text.DecimalFormat;
+import java.time.Year;
 import java.util.InputMismatchException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -671,15 +672,15 @@ class Agency {
 
     public static void removeFromTenantList() {
         if (!Tenant.getTenantList().isEmpty()) {
-            System.out.println("Please select the desired tenant : \n\n");
+            System.out.println(UserInterface.PURPLE + "Please select the desired tenant : \n\n" + UserInterface.RESET);
             printTenantList("name", false);
             int option = UserInterface.getUserOption();
             option = UserInterface.validateUserInput(option);
             Tenant tenant = Agency.getTenantByIndex(option);
             Agency.printTenant(tenant);
             System.out.println();
-            System.out.println("Do you want to remove " + UserInterface.PURPLE + tenant.getFirstName() +
-                    ' ' + tenant.getLastName() + UserInterface.RESET + " from the list of tenants?");
+            System.out.println(UserInterface.YELLOW + "Do you want to remove " + UserInterface.RESET + UserInterface.GREEN + tenant.getFirstName() +
+                    ' ' + tenant.getLastName() + UserInterface.RESET + UserInterface.YELLOW + " from the list of tenants?" + UserInterface.RESET);
             UserInterface.showConfirmationPrompt();
             boolean running = true;
             while (running) {
@@ -693,7 +694,7 @@ class Agency {
                         }
                         Agency.setRemovedTenantsCount(Agency.getRemovedTenantsCount() + 1);
 
-                        System.out.println(UserInterface.PURPLE + tenant.getFirstName() + ' ' + tenant.getLastName() + UserInterface.RESET +
+                        System.out.println(UserInterface.GREEN + tenant.getFirstName() + ' ' + tenant.getLastName() + UserInterface.RESET +
                                 " has been " + UserInterface.RED + "removed " + UserInterface.RESET + "from the list of tenants\n\n");
                         running = false;
                         break;
@@ -722,15 +723,15 @@ class Agency {
             Owner owner = Agency.getOwnerByIndex(option);
             Agency.printOwner(owner);
             System.out.println();
-            System.out.println("Do you want to remove " + UserInterface.PURPLE + owner.getFirstName() +
-                    ' ' + owner.getLastName() + UserInterface.RESET + " from the list of owners?");
+            System.out.println(UserInterface.YELLOW + "Do you want to remove " + UserInterface.RESET + UserInterface.GREEN + owner.getFirstName() +
+                    ' ' + owner.getLastName() + UserInterface.RESET + UserInterface.YELLOW + " from the list of owners?" + UserInterface.RESET);
             System.out.println();
             setIsCarOwner(false);
             Owner.displayOwnerCarsFiltered(owner);
             System.out.println();
             if (getIsCarOwner()) {
-                System.out.println("Please note that by removing " + UserInterface.PURPLE + owner.getFirstName() + ' ' +
-                        owner.getLastName() + UserInterface.RESET + " from the list of owners of " + UserInterface.RED + "the above cars, they will be removed from the list" + UserInterface.RESET);
+                System.out.println(UserInterface.YELLOW + "Please note that by removing " + UserInterface.RESET + UserInterface.GREEN + owner.getFirstName() + ' ' +
+                        owner.getLastName() + UserInterface.RESET + UserInterface.YELLOW + " from the list of owners of the above cars, they will be removed from the list" + UserInterface.RESET);
             } else {
                 System.out.println(UserInterface.PURPLE + "This owner does not have any car with their name" + UserInterface.PURPLE);
             }
@@ -742,10 +743,10 @@ class Agency {
                     case 1:
                         removeOwner(owner);
                         Car.getCarList().removeAll(owner.getOwnerCarList());
-                        System.out.println(UserInterface.PURPLE + owner.getFirstName() + ' ' + owner.getLastName() + UserInterface.RESET +
+                        System.out.println(UserInterface.GREEN + owner.getFirstName() + ' ' + owner.getLastName() + UserInterface.RESET +
                                 " has been " + UserInterface.RED + "removed" + UserInterface.RESET + " from the list of owners\n\n");
                         if (getIsCarOwner()) {
-                            System.out.println("Furthermore, " + UserInterface.PURPLE + owner.getOwnerCarList().size() + UserInterface.RESET + " cars owned by the mentioned owner have also been" + UserInterface.RED + " removed " + UserInterface.RESET + "from the list of cars");
+                            System.out.println("Furthermore, " + UserInterface.GREEN + owner.getOwnerCarList().size() + UserInterface.RESET + " cars owned by the mentioned owner have also been removed from the list of cars");
                             Agency.setRemovedCarsCount(Agency.getRemovedCarsCount() + owner.getOwnerCarList().size());
                         }
                         Agency.setRemovedOwnersCount(Agency.getRemovedOwnersCount() + 1);
@@ -777,8 +778,8 @@ class Agency {
             Car car = getCarByIndex(option);
             printCar(car);
             System.out.println();
-            System.out.println("Do you want to remove the " + UserInterface.PURPLE + car.getNameModel() + UserInterface.RESET +
-                    " car from the list of cars?");
+            System.out.println(UserInterface.YELLOW + "Do you want to remove the " + UserInterface.RESET + UserInterface.PURPLE + car.getNameModel() + UserInterface.RESET +
+                    UserInterface.YELLOW + " car from the list of cars?" + UserInterface.RESET);
             UserInterface.showConfirmationPrompt();
             boolean running = true;
             while (running) {
@@ -810,7 +811,7 @@ class Agency {
 
     public static void rent() {
         if (!Tenant.getTenantList().isEmpty()) {
-            System.out.println("Please select the desired tenant : \n\n");
+            System.out.println(UserInterface.PURPLE + "Please select the desired tenant : \n\n" + UserInterface.RESET);
             printTenantList("name", true);
             if (getRentedCarStatus()) {
                 int option = UserInterface.getUserOption();
@@ -819,8 +820,8 @@ class Agency {
                 Tenant tenant = getTenantByIndex(option);
                 if (!Car.getCarList().isEmpty()) {
                     System.out.println(UserInterface.PURPLE + "Please select the desired car :\n\n" + UserInterface.RESET);
-                    System.out.println("Cars displayed based on " + UserInterface.GREEN + tenant.getFirstName() + ' '
-                            + tenant.getLastName() + UserInterface.RESET + "'s account inventory\n\n");
+                    System.out.println(UserInterface.YELLOW + "Cars displayed based on " + UserInterface.RESET + UserInterface.GREEN + tenant.getFirstName() + ' '
+                            + tenant.getLastName() + UserInterface.RESET + UserInterface.YELLOW + "'s account inventory\n\n" + UserInterface.RESET);
                     printCarList(true, tenant);
                     if (getCarRentalStatus()) {
                         option = UserInterface.getUserOption();
@@ -843,12 +844,12 @@ class Agency {
                 System.out.println();
                 int day = UserInterface.validateNumericInput("Please enter the rental period in days : ", UserInterface.GREEN);
                 System.out.println();
-                System.out.println("Do you want to rent a "
-                        + UserInterface.PURPLE + car.getNameModel() + UserInterface.RESET + " car to " + UserInterface.PURPLE + tenant.getFirstName() + ' ' + tenant.getLastName() + UserInterface.RESET +
-                        " for a duration of " + UserInterface.PURPLE + day + UserInterface.RESET + " days?");
+                System.out.println(UserInterface.YELLOW + "Do you want to rent a " + UserInterface.RESET +
+                        UserInterface.GREEN + car.getNameModel() + UserInterface.RESET + UserInterface.YELLOW + " car to " + UserInterface.RESET + UserInterface.GREEN + tenant.getFirstName() + ' ' + tenant.getLastName() + UserInterface.RESET +
+                        UserInterface.YELLOW + " for a duration of " + UserInterface.RESET + UserInterface.GREEN + day + UserInterface.RESET + UserInterface.YELLOW + " days?" + UserInterface.RESET);
 
                 System.out.println();
-                System.out.println("With your confirmation, an amount of " + UserInterface.PURPLE + UserInterface.formattedNumber.format(car.getRentMoney()) + UserInterface.RESET + " Toman will be deducted from " + UserInterface.PURPLE + tenant.getFirstName() + ' ' + tenant.getLastName() + UserInterface.RESET + "'s account\n\n");
+                System.out.println(UserInterface.YELLOW + "With your confirmation, an amount of " + UserInterface.RESET + UserInterface.GREEN + UserInterface.formattedNumber.format(car.getRentMoney()) + UserInterface.RESET + UserInterface.YELLOW + " Toman will be deducted from " + UserInterface.RESET + UserInterface.GREEN + tenant.getFirstName() + ' ' + tenant.getLastName() + UserInterface.RESET + UserInterface.YELLOW + "'s account\n\n" + UserInterface.RESET);
                 UserInterface.showConfirmationPrompt();
                 boolean running = true;
                 while (running) {
@@ -861,9 +862,9 @@ class Agency {
                             Agency.setTotalProfit(Agency.getTotalProfit() + car.getRentMoney() / 10);
                             car.getOwner().getMyTenantsList().add(tenant);
                             car.getOwner().setIncome((car.getRentMoney() * 9 / 10) + (car.getOwner().getIncome()));
-                            System.out.println("A amount of "
-                                    + UserInterface.PURPLE + UserInterface.formattedNumber.format(car.getRentMoney()) + UserInterface.RESET + " Toman has been deducted from " + tenant.getFirstName() + ' ' + tenant.getLastName() +
-                                    "'s account\n\n");
+                            System.out.println(UserInterface.YELLOW + "A amount of " + UserInterface.RESET
+                                    + UserInterface.GREEN + UserInterface.formattedNumber.format(car.getRentMoney()) + UserInterface.RESET + UserInterface.YELLOW + " Toman has been deducted from " + UserInterface.RESET + UserInterface.GREEN + tenant.getFirstName() + ' ' + tenant.getLastName() + UserInterface.RESET +
+                                    UserInterface.YELLOW + "'s account\n\n" + UserInterface.RESET);
                             tenant.setAccountBalance(tenant.getAccountBalance() - car.getRentMoney());
                             tenant.setRentedCar(car);
                             tenant.setRentedCarOwner(car.getOwner());
@@ -893,28 +894,28 @@ class Agency {
         Owner owner = new Owner();
 
         System.out.print("Enter the owner's username: ");
-        System.out.print(UserInterface.GREEN);
+        System.out.print(UserInterface.PURPLE);
         owner.setUsername(scanner.nextLine());
         System.out.print(UserInterface.RESET);
 
         System.out.print("Enter the owner's password: ");
-        System.out.print(UserInterface.GREEN);
+        System.out.print(UserInterface.PURPLE);
         owner.setPassword(scanner.nextLine());
         System.out.print(UserInterface.RESET);
 
         System.out.print("Enter the owner's first name: ");
-        System.out.print(UserInterface.GREEN);
+        System.out.print(UserInterface.PURPLE);
         String firstName = scanner.nextLine();
         System.out.print(UserInterface.RESET);
         owner.setFirstName(firstName);
 
         System.out.print("Enter the owner's last name: ");
-        System.out.print(UserInterface.GREEN);
+        System.out.print(UserInterface.PURPLE);
         String lastName = scanner.nextLine();
         System.out.print(UserInterface.RESET);
         owner.setLastName(lastName);
 
-        int age = UserInterface.validateNumericInput("Enter the owner's age: ", UserInterface.GREEN);
+        int age = UserInterface.validateNumericInput("Enter the owner's age: ", UserInterface.PURPLE);
 
         if (age >= 18 && age <= 250) {
             owner.setAge(age);
@@ -927,7 +928,7 @@ class Agency {
         }
 
         System.out.print("Enter the owner's national code: ");
-        System.out.print(UserInterface.GREEN);
+        System.out.print(UserInterface.PURPLE);
         String nationalCode = scanner.nextLine();
         System.out.print(UserInterface.RESET);
         if (nationalCode.length() == 10) {
@@ -938,7 +939,7 @@ class Agency {
         }
 
         System.out.print("Enter the owner's phone number: ");
-        System.out.print(UserInterface.GREEN);
+        System.out.print(UserInterface.PURPLE);
         String phoneNumber = scanner.nextLine();
         System.out.print(UserInterface.RESET);
         if (phoneNumber.length() == 11) {
@@ -950,10 +951,10 @@ class Agency {
 
 
         System.out.print("Enter the owner's address: ");
-        System.out.print(UserInterface.GREEN);
+        System.out.print(UserInterface.PURPLE);
         owner.setAddress(scanner.nextLine());
         System.out.print(UserInterface.RESET);
-        System.out.println("\nAre you sure about adding " + firstName + ' ' + lastName + " to the list of owners?");
+        System.out.println(UserInterface.YELLOW + "\nAre you sure about adding " + UserInterface.GREEN + firstName + ' ' + lastName + UserInterface.RESET + UserInterface.YELLOW + " to the list of owners?" + UserInterface.RESET);
         UserInterface.showConfirmationPrompt();
         boolean running = true;
         while (running) {
@@ -979,28 +980,28 @@ class Agency {
         Tenant tenant = new Tenant();
 
         System.out.print("Enter the tenant's username: ");
-        System.out.print(UserInterface.GREEN);
+        System.out.print(UserInterface.PURPLE);
         tenant.setUsername(scanner.nextLine());
         System.out.print(UserInterface.RESET);
 
         System.out.print("Enter the tenant's password: ");
-        System.out.print(UserInterface.GREEN);
+        System.out.print(UserInterface.PURPLE);
         tenant.setPassword(scanner.nextLine());
         System.out.print(UserInterface.RESET);
 
         System.out.print("Enter the tenant's first name: ");
-        System.out.print(UserInterface.GREEN);
+        System.out.print(UserInterface.PURPLE);
         String firstName = scanner.nextLine();
         System.out.print(UserInterface.RESET);
         tenant.setFirstName(firstName);
 
         System.out.print("Enter the tenant's last name: ");
-        System.out.print(UserInterface.GREEN);
+        System.out.print(UserInterface.PURPLE);
         String lastName = scanner.nextLine();
         System.out.print(UserInterface.RESET);
         tenant.setLastName(lastName);
 
-        int age = UserInterface.validateNumericInput("Enter the tenant's age: ", UserInterface.GREEN);
+        int age = UserInterface.validateNumericInput("Enter the tenant's age: ", UserInterface.PURPLE);
         if (age >= 18 && age <= 250) {
             tenant.setAge(age);
         } else if (age < 18) {
@@ -1012,7 +1013,7 @@ class Agency {
         }
 
         System.out.print("Enter the tenant's national code: ");
-        System.out.print(UserInterface.GREEN);
+        System.out.print(UserInterface.PURPLE);
         String nationalCode = scanner.nextLine();
         System.out.print(UserInterface.RESET);
         if (nationalCode.length() == 10) {
@@ -1023,7 +1024,7 @@ class Agency {
         }
 
         System.out.print("Enter the tenant's phone number: ");
-        System.out.print(UserInterface.GREEN);
+        System.out.print(UserInterface.PURPLE);
         String phoneNumber = scanner.nextLine();
         System.out.print(UserInterface.RESET);
         if (phoneNumber.length() == 11) {
@@ -1034,11 +1035,11 @@ class Agency {
         }
 
         System.out.print("Enter the tenant's address: ");
-        System.out.print(UserInterface.GREEN);
+        System.out.print(UserInterface.PURPLE);
         tenant.setAddress(scanner.nextLine());
         System.out.print(UserInterface.RESET);
 
-        int accountBalance = UserInterface.validateNumericInput("Enter the tenant's accountBalance: ", UserInterface.GREEN);
+        int accountBalance = UserInterface.validateNumericInput("Enter the tenant's accountBalance: ", UserInterface.PURPLE);
         if (accountBalance >= 1_500_000) {
             tenant.setAccountBalance(accountBalance);
         } else {
@@ -1048,7 +1049,7 @@ class Agency {
             return;
         }
 
-        System.out.println("\nAre you sure about adding " + firstName + ' ' + lastName + " to the list of tenants?");
+        System.out.println(UserInterface.YELLOW + "\nAre you sure about adding " + UserInterface.GREEN + firstName + ' ' + lastName + UserInterface.RESET + UserInterface.YELLOW + " to the list of tenants?" + UserInterface.RESET);
         UserInterface.showConfirmationPrompt();
         boolean running = true;
         while (running) {
@@ -1074,12 +1075,12 @@ class Agency {
         Car car = new Car();
 
         System.out.print("Enter the car's Name Model: ");
-        System.out.print(UserInterface.GREEN);
+        System.out.print(UserInterface.PURPLE);
         String carName = scanner.nextLine();
         System.out.print(UserInterface.RESET);
         car.setNameModel(carName);
 
-        int engineCapacity = UserInterface.validateNumericInput("Enter the car's engine capacity: ", UserInterface.GREEN);
+        int engineCapacity = UserInterface.validateNumericInput("Enter the car's engine capacity: ", UserInterface.PURPLE);
 
         if (engineCapacity > 700) {
             car.setEngineCapacity(engineCapacity);
@@ -1101,7 +1102,7 @@ class Agency {
             }
             car.setOwner(owner);
 
-            int rentMoney = UserInterface.validateNumericInput("Enter the car's rent money: ", UserInterface.GREEN);
+            int rentMoney = UserInterface.validateNumericInput("Enter the car's rent money: ", UserInterface.PURPLE);
 
             if (rentMoney >= 1_500_000) {
                 car.setRentMoney(rentMoney);
@@ -1138,10 +1139,10 @@ class Agency {
                 }
             }
 
-            int lifespan = UserInterface.validateNumericInput("Enter the car's lifespan: ", UserInterface.GREEN);
+            int lifespan = UserInterface.validateNumericInput("Enter the car's lifespan: ", UserInterface.PURPLE);
             car.setLifespan(lifespan);
 
-            System.out.println("\nAre you sure about adding the " + carName + " car to the list of cars?");
+            System.out.println(UserInterface.YELLOW + "\nAre you sure about adding the " + UserInterface.GREEN + carName + UserInterface.RESET + UserInterface.YELLOW + " car to the list of cars?" + UserInterface.RESET);
             UserInterface.showConfirmationPrompt();
             running = true;
             while (running) {
@@ -1483,39 +1484,55 @@ class Agency {
             switch (option) {
                 case 1:
                     System.out.print("Enter First Name : ");
+                    System.out.print(UserInterface.PURPLE);
                     firstname = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
+
                     System.out.print("Enter Last Name : ");
+                    System.out.print(UserInterface.PURPLE);
                     lastname = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
+
                     fullNameOwnerSearch(firstname, lastname);
                     break;
                 case 2:
                     System.out.print("Enter First Name : ");
+                    System.out.print(UserInterface.PURPLE);
                     firstname = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
                     firstNameOwnerSearch(firstname);
                     break;
                 case 3:
                     System.out.print("Enter Last Name : ");
+                    System.out.print(UserInterface.PURPLE);
                     lastname = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
                     lastnameNameOwnerSearch(lastname);
                     break;
                 case 4:
                     System.out.print("Enter National Code : ");
+                    System.out.print(UserInterface.PURPLE);
                     String nationalCode = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
                     nationalCodeOwnerSearch(nationalCode);
                     break;
                 case 5:
                     System.out.print("Enter Phone Number : ");
+                    System.out.print(UserInterface.PURPLE);
                     String phoneNumber = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
                     phoneNumberOwnerSearch(phoneNumber);
                     break;
                 case 6:
                     System.out.print("Enter Username : ");
+                    System.out.print(UserInterface.PURPLE);
                     String username = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
                     usernameOwnerSearch(username);
                     break;
 
                 case 7:
-                    int age = UserInterface.validateNumericInput("Enter the owner's age : ", UserInterface.GREEN);
+                    int age = UserInterface.validateNumericInput("Enter the owner's age : ", UserInterface.PURPLE);
                     ageOwnerSearch(age);
                     break;
 
@@ -1541,42 +1558,56 @@ class Agency {
             switch (option) {
                 case 1:
                     System.out.print("Enter First Name : ");
+                    System.out.print(UserInterface.PURPLE);
                     firstname = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
                     System.out.print("Enter Last Name : ");
+                    System.out.print(UserInterface.PURPLE);
                     lastname = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
                     fullNameTenantSearch(firstname, lastname);
                     break;
                 case 2:
                     System.out.print("Enter First Name : ");
+                    System.out.print(UserInterface.PURPLE);
                     firstname = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
                     firstNameTenantSearch(firstname);
                     break;
                 case 3:
                     System.out.print("Enter Last Name : ");
+                    System.out.print(UserInterface.PURPLE);
                     lastname = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
                     lastNameTenantSearch(lastname);
                     break;
                 case 4:
-                    int accountBalance = UserInterface.validateNumericInput("Enter the tenant's accountBalance: ", UserInterface.GREEN);
+                    int accountBalance = UserInterface.validateNumericInput("Enter the tenant's accountBalance: ", UserInterface.PURPLE);
                     accountBalanceSearch(accountBalance);
                     break;
                 case 5:
                     System.out.print("Enter National Code : ");
+                    System.out.print(UserInterface.PURPLE);
                     String nationalCode = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
                     nationalCodeTenantSearch(nationalCode);
                     break;
                 case 6:
                     System.out.print("Enter Phone Number : ");
+                    System.out.print(UserInterface.PURPLE);
                     String phoneNumber = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
                     phoneNumberTenantSearch(phoneNumber);
                     break;
                 case 7:
                     System.out.print("Enter Username : ");
+                    System.out.print(UserInterface.PURPLE);
                     String username = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
                     usernameTenantSearch(username);
                     break;
                 case 8:
-                    int age = UserInterface.validateNumericInput("Enter the tenant's age : ", UserInterface.GREEN);
+                    int age = UserInterface.validateNumericInput("Enter the tenant's age : ", UserInterface.PURPLE);
                     ageTenantSearch(age);
                     break;
                 case 0:
@@ -1597,27 +1628,33 @@ class Agency {
             int option = UserInterface.getUserOption();
             switch (option) {
                 case 1:
-                    int engineCapacity = UserInterface.validateNumericInput("Enter the car's engine capacity: ", UserInterface.GREEN);
+                    int engineCapacity = UserInterface.validateNumericInput("Enter the car's engine capacity: ", UserInterface.PURPLE);
                     engineCapacitySearch(engineCapacity);
                     break;
                 case 2:
                     System.out.print("Enter Name Model : ");
+                    System.out.print(UserInterface.PURPLE);
                     String nameModel = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
                     nameModelSearch(nameModel);
                     break;
                 case 3:
-                    int rentMoney = UserInterface.validateNumericInput("Enter the car's rent money: ", UserInterface.GREEN);
+                    int rentMoney = UserInterface.validateNumericInput("Enter the car's rent money: ", UserInterface.PURPLE);
                     rentMoneySearch(rentMoney);
                     break;
                 case 4:
-                    int lifeSpan = UserInterface.validateNumericInput("Enter the car's lifespan: ", UserInterface.GREEN);
+                    int lifeSpan = UserInterface.validateNumericInput("Enter the car's lifespan: ", UserInterface.PURPLE);
                     lifeSpanSearch(lifeSpan);
                     break;
                 case 5:
                     System.out.print("Enter First Name : ");
+                    System.out.print(UserInterface.PURPLE);
                     String firstname = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
                     System.out.print("Enter Last Name : ");
+                    System.out.print(UserInterface.PURPLE);
                     String lastname = scanner.nextLine();
+                    System.out.print(UserInterface.RESET);
                     carOwnerSearch(firstname, lastname);
                     break;
                 case 6:
@@ -1625,8 +1662,10 @@ class Agency {
                     System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "High-riding");
                     System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Semi-high-riding");
                     System.out.println();
-                    System.out.print("Enter Type : ");
+                    System.out.print(UserInterface.PURPLE + "Enter Type : " + UserInterface.RESET);
+                    System.out.print(UserInterface.PURPLE);
                     option = scanner.nextInt();
+                    System.out.print(UserInterface.RESET);
                     switch (option) {
                         case 1:
                             typeSearch("Sedan");
@@ -1801,7 +1840,7 @@ class UserInterface {
         System.out.print(RESET);
         if (username.equals(adminUsername) && password.equals(adminPassword)) {
             System.out.println();
-            System.out.println("Welcome, " + GREEN + username + RESET + ":)");
+            System.out.println("Welcome, " + username + " :)");
             System.out.println();
             handleAgencyManagerMenu();
         } else {
@@ -1830,7 +1869,7 @@ class UserInterface {
             System.out.print(RESET);
             if (password.equals(owner.getPassword())) {
                 System.out.println();
-                System.out.println("\nWelcome, " + GREEN + owner.getFirstName() + ":)" + RESET);
+                System.out.println("\nWelcome, " + owner.getFirstName() + " :)");
                 handleOwnerPanelMenu(owner);
             } else {
                 System.out.println();
@@ -1861,7 +1900,7 @@ class UserInterface {
             System.out.print(RESET);
             if (password.equals(tenant.getPassword())) {
                 System.out.println();
-                System.out.println("\nWelcome, " + GREEN + tenant.getFirstName() + ":)" + RESET);
+                System.out.println("\nWelcome, " + tenant.getFirstName() + " :)");
                 handleTenantPanelMenu(tenant);
             } else {
                 System.out.println();
@@ -2359,7 +2398,7 @@ class UserInterface {
     public static int getUserOption() {
         boolean isValidInput = false;
         int option = 0;
-        System.out.print(GREEN + "\n\nEnter your option: " + RESET);
+        System.out.print(PURPLE + "\n\nEnter your option: " + RESET);
         while (!isValidInput) {
             try {
                 option = scanner.nextInt();
@@ -2369,7 +2408,7 @@ class UserInterface {
             } catch (InputMismatchException invalidInput) {
                 scanner.nextLine();
                 System.out.println(RED + "Invalid input. Please enter a valid integer." + RESET);
-                System.out.print(GREEN + "Enter your option: " + RESET);
+                System.out.print(PURPLE + "Enter your option: " + RESET);
             }
         }
         return option;
