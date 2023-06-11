@@ -1987,7 +1987,7 @@ class UserInterface {
                 """;
 
         printBanner(art);
-        typingAnimation("\n\neverything is on " + GREEN + "Principle" + RESET + ", everything is on " + GREEN + "Discipline" + RESET, 90);
+        typingAnimation("\n\neverything is on " + PURPLE + "Principle" + RESET + ", everything is on " + PURPLE + "Discipline" + RESET, 90);
         typingAnimation(PURPLE + "\n======================================\n\n" + RESET, 30);
         typingAnimation(YELLOW + "I am " + RESET + GREEN + "Ali Dehghanpour\n" + RESET, 90);
         System.out.println();
