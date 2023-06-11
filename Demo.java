@@ -1662,24 +1662,26 @@ class Agency {
                     System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "High-riding");
                     System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Semi-high-riding");
                     System.out.println();
-                    System.out.print(UserInterface.PURPLE + "Enter Type : " + UserInterface.RESET);
-                    System.out.print(UserInterface.PURPLE);
-                    option = scanner.nextInt();
-                    System.out.print(UserInterface.RESET);
-                    switch (option) {
-                        case 1:
-                            typeSearch("Sedan");
-                            break;
-                        case 2:
-                            typeSearch("High-riding");
-                            break;
-                        case 3:
-                            typeSearch("Semi-high-riding");
-                            break;
-                        default:
-                            System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
+                    boolean running_type = true;
+                    while (running_type) {
+                        option = UserInterface.validateNumericInput("Enter Type : ", UserInterface.PURPLE);
+                        switch (option) {
+                            case 1:
+                                typeSearch("Sedan");
+                                running_type = false;
+                                break;
+                            case 2:
+                                typeSearch("High-riding");
+                                running_type = false;
+                                break;
+                            case 3:
+                                typeSearch("Semi-high-riding");
+                                running_type = false;
+                                break;
+                            default:
+                                System.out.println(UserInterface.RED + "Invalid option! Please try again" + UserInterface.RESET);
+                        }
                     }
-                    scanner.nextLine();
                     break;
                 case 0:
                     running = false;
