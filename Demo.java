@@ -2270,6 +2270,7 @@ class UserInterface {
             try {
                 System.out.print(userInputColor);
                 inputNumber = scanner.nextInt();
+                scanner.nextLine();
                 System.out.print(RESET);
                 isValidInput = true;
             } catch (InputMismatchException invalidInput) {
