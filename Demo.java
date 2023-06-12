@@ -27,67 +27,67 @@ class Human {
     private String username;
     private String password;
 
-    public String getFirstName() {
+    protected String getFirstName() {
         return firstName;
     }
 
-    public void setFirstName(String firstName) {
+    protected void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
-    public String getLastName() {
+    protected String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    protected void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public Integer getAge() {
+    protected Integer getAge() {
         return age;
     }
 
-    public void setAge(Integer age) {
+    protected void setAge(Integer age) {
         this.age = age;
     }
 
-    public String getNationalCode() {
+    protected String getNationalCode() {
         return nationalCode;
     }
 
-    public void setNationalCode(String nationalCode) {
+    protected void setNationalCode(String nationalCode) {
         this.nationalCode = nationalCode;
     }
 
-    public String getPhoneNumber() {
+    protected String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    protected void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getAddress() {
+    protected String getAddress() {
         return address;
     }
 
-    public void setAddress(String address) {
+    protected void setAddress(String address) {
         this.address = address;
     }
 
-    public String getUsername() {
+    protected String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
+    protected void setUsername(String username) {
         this.username = username;
     }
 
-    public String getPassword() {
+    protected String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    protected void setPassword(String password) {
         this.password = password;
     }
 }
