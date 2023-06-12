@@ -314,7 +314,6 @@ class Agency extends UserInterface {
     // ArrayList --> https://www.youtube.com/watch?v=pruuvCVXIt8
     private static boolean rentedCarStatus = false;
     private static boolean carRentalStatus = false;
-    private static final boolean hasCarStatus = false;
     private static boolean isCarOwner = false;
     private static int transactionCount;
     private static int removedOwnersCount;
@@ -1760,19 +1759,19 @@ class UserInterface {
     private static final Scanner scanner = new Scanner(System.in);
     private static final List<Integer> validIndexes = new ArrayList<>();
 
-    public static List<Integer> getValidIndexes() {
+    protected static List<Integer> getValidIndexes() {
         return validIndexes;
     }
 
-    public static final DecimalFormat formattedNumber = new DecimalFormat("#,###,###");
-    public static final String RESET = "\u001B[0m";
-    public static final String RED = "\u001B[31m";
-    public static final String GREEN = "\u001B[32m";
-    public static final String YELLOW = "\u001B[33m";
-    public static final String PURPLE = "\u001B[35m";
-    public static final String WHITE = "\u001B[37m";
+    protected static final DecimalFormat formattedNumber = new DecimalFormat("#,###,###");
+    protected static final String RESET = "\u001B[0m";
+    protected static final String RED = "\u001B[31m";
+    protected static final String GREEN = "\u001B[32m";
+    protected static final String YELLOW = "\u001B[33m";
+    protected static final String PURPLE = "\u001B[35m";
+    protected static final String WHITE = "\u001B[37m";
 
-    public static void main(String[] args) {
+    protected static void main(String[] args) {
         boolean running = true;
         while (running) {
             displayHomeMenu();
@@ -1807,7 +1806,7 @@ class UserInterface {
         System.out.println(UserInterface.GREEN + "Successful logout!" + UserInterface.RESET);
     }
 
-    public static void adminLogin() {
+    private static void adminLogin() {
         String adminUsername = "admin";
         String adminPassword = "admin";
         System.out.print(YELLOW + "Enter Username : " + RESET);
@@ -1830,7 +1829,7 @@ class UserInterface {
 
     }
 
-    public static void ownerLogin() {
+    private static void ownerLogin() {
         if (!Owner.getOwnerList().isEmpty()) {
             Agency.printOwnerList("username");
             int ownerUsernameIndex = validateNumericInput(YELLOW + "\nSelect Username : " + RESET, UserInterface.PURPLE);
@@ -1861,7 +1860,7 @@ class UserInterface {
 
     }
 
-    public static void tenantLogin() {
+    private static void tenantLogin() {
         if (!Tenant.getTenantList().isEmpty()) {
             Agency.printTenantList("username", false);
             int tenantUsernameIndex = validateNumericInput(YELLOW + "\nSelect Username : " + RESET, UserInterface.PURPLE);
@@ -2081,7 +2080,7 @@ class UserInterface {
         }
     }
 
-    public static void displayHomeMenu() {
+    private static void displayHomeMenu() {
         String art = """
                 ╔═╗┌─┐┬─┐  ╦═╗┌─┐┌┐┌┌┬┐┌─┐┬    ╔═╗┌─┐┌─┐┌┐┌┌─┐┬ ┬
                 ║  ├─┤├┬┘  ╠╦╝├┤ │││ │ ├─┤│    ╠═╣│ ┬├┤ ││││  └┬┘
@@ -2097,7 +2096,7 @@ class UserInterface {
         System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Exit");
     }
 
-    public static void displayAgencyManagerMenu() {
+    private static void displayAgencyManagerMenu() {
         String art = """
                      _    ____  __  __ ___ _   _    ____   _    _   _ _____ _    \s
                     / \\  |  _ \\|  \\/  |_ _| \\ | |  |  _ \\ / \\  | \\ | | ____| |   \s
@@ -2117,7 +2116,7 @@ class UserInterface {
         System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Log out");
     }
 
-    public static void displaySearchMenu() {
+    protected static void displaySearchMenu() {
         System.out.println();
         String art = """
                   ____                      _    \s
@@ -2136,7 +2135,7 @@ class UserInterface {
         System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back");
     }
 
-    public static void displayReportMenu() {
+    protected static void displayReportMenu() {
         String art = """
                 8888888b.  8888888888 8888888b.   .d88888b.  8888888b. 88888888888\s
                 888   Y88b 888        888   Y88b d88P" "Y88b 888   Y88b    888    \s
@@ -2172,7 +2171,7 @@ class UserInterface {
 
     }
 
-    public static void displayAddMenu() {
+    protected static void displayAddMenu() {
         System.out.println();
         String art = """
                      _    ____  ____ \s
@@ -2191,7 +2190,7 @@ class UserInterface {
         System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back");
     }
 
-    public static void displayRemoveMenu() {
+    protected static void displayRemoveMenu() {
         System.out.println();
         String art = """
                   ____  _____ __  __  _____     _______\s
@@ -2210,7 +2209,7 @@ class UserInterface {
         System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back");
     }
 
-    public static void displayOwnerBanner() {
+    protected static void displayOwnerBanner() {
         System.out.println();
         String art = """
                    ___                          \s
@@ -2224,7 +2223,7 @@ class UserInterface {
         System.out.println();
     }
 
-    public static void displayTenantBanner() {
+    protected static void displayTenantBanner() {
         System.out.println();
         String art = """
                   _____                      _  \s
@@ -2238,7 +2237,7 @@ class UserInterface {
         System.out.println();
     }
 
-    public static void displayCarBanner() {
+    protected static void displayCarBanner() {
         System.out.println();
         String art = """
                    ____          \s
@@ -2252,7 +2251,7 @@ class UserInterface {
         System.out.println();
     }
 
-    public static void displayRentBanner() {
+    private static void displayRentBanner() {
         System.out.println();
         String art = """
                   ____  _____ _   _ _____\s
@@ -2266,7 +2265,7 @@ class UserInterface {
         System.out.println();
     }
 
-    public static void displayOwnerSearchMenu() {
+    protected static void displayOwnerSearchMenu() {
         System.out.println();
         String art = """
                    ___                          \s
@@ -2290,7 +2289,7 @@ class UserInterface {
 
     }
 
-    public static void displayTenantSearchMenu() {
+    protected static void displayTenantSearchMenu() {
         System.out.println();
         String art = """
                   _____                      _  \s
@@ -2315,7 +2314,7 @@ class UserInterface {
 
     }
 
-    public static void displayCarSearchMenu() {
+    protected static void displayCarSearchMenu() {
         System.out.println();
         String art = """
                    ____          \s
@@ -2337,13 +2336,13 @@ class UserInterface {
         System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back");
     }
 
-    public static void showConfirmationPrompt() {
+    protected static void showConfirmationPrompt() {
         System.out.println();
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 2 + UserInterface.PURPLE + "]" + UserInterface.RESET + " No");
     }
 
-    public static int validateUserInput(int option) {
+    protected static int validateUserInput(int option) {
         while (!getValidIndexes().contains(option)) {
             System.out.println(RED + "The input is invalid. Please try again" + RESET);
             option = getUserOption();
@@ -2352,7 +2351,7 @@ class UserInterface {
         return option;
     }
 
-    public static int validateNumericInput(String askText, String userInputColor) {
+    protected static int validateNumericInput(String askText, String userInputColor) {
         System.out.print(askText);
         int inputNumber = 0;
         boolean isValidInput = false;
@@ -2373,7 +2372,7 @@ class UserInterface {
         return inputNumber;
     }
 
-    public static int getAndValidateAge(String type) {
+    protected static int getAndValidateAge(String type) {
         int age;
         do {
             age = UserInterface.validateNumericInput("Enter the " + type + "'s age : ", UserInterface.PURPLE);
@@ -2386,7 +2385,7 @@ class UserInterface {
         return age;
     }
 
-    public static String getAndValidateNationalCode(String type) {
+    protected static String getAndValidateNationalCode(String type) {
         String nationalCode;
         do {
             System.out.print("Enter the " + type + "'s national code: ");
@@ -2400,7 +2399,7 @@ class UserInterface {
         return nationalCode;
     }
 
-    public static String getAndValidatePhoneNumber(String type) {
+    protected static String getAndValidatePhoneNumber(String type) {
         String phoneNumber;
         do {
             System.out.print("Enter the " + type + "'s phone number: ");
@@ -2414,7 +2413,7 @@ class UserInterface {
         return phoneNumber;
     }
 
-    public static int getAndValidateEngineCapacity() {
+    protected static int getAndValidateEngineCapacity() {
         int engineCapacity;
         do {
             engineCapacity = UserInterface.validateNumericInput("Enter the car's engine capacity: ", UserInterface.PURPLE);
@@ -2426,7 +2425,7 @@ class UserInterface {
         return engineCapacity;
     }
 
-    public static int getAndValidateMoney(String askText, String errorText) {
+    protected static int getAndValidateMoney(String askText, String errorText) {
         int money;
         do {
             money = UserInterface.validateNumericInput(askText, UserInterface.PURPLE);
@@ -2438,7 +2437,7 @@ class UserInterface {
         return money;
     }
 
-    public static boolean confirmLogout(String location) {
+    private static boolean confirmLogout(String location) {
         System.out.println(YELLOW + "Would you like to log out of the " + location + " ? \n" + RESET);
         showConfirmationPrompt();
         while (true) {
@@ -2455,7 +2454,7 @@ class UserInterface {
         }
     }
 
-    public static void printBanner(String art) {
+    private static void printBanner(String art) {
         int num = art.length() / 2;
         for (int i = 0; i < num; i++) {
             System.out.print(PURPLE + art.charAt(i));
@@ -2476,7 +2475,7 @@ class UserInterface {
 
     }
 
-    public static int getUserOption() {
+    protected static int getUserOption() {
         boolean isValidInput = false;
         int option = 0;
         System.out.print(PURPLE + "\n\nEnter your option: " + RESET);
