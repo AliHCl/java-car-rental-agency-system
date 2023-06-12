@@ -1042,7 +1042,7 @@ class Agency {
 
 
             String askText = "Enter the car's rent money : ";
-            String errorText = UserInterface.YELLOW + "\n\nThe entered rental amount must be above" + UserInterface.RESET + UserInterface.RED + " 1,500,000 " + UserInterface.RESET + UserInterface.YELLOW + "toman\n\n" + UserInterface.RESET;
+            String errorText = UserInterface.YELLOW + "The entered rental amount must be above" + UserInterface.RESET + UserInterface.RED + " 1,500,000 " + UserInterface.RESET + UserInterface.YELLOW + "toman" + UserInterface.RESET;
             int rentMoney = UserInterface.getAndValidateMoney(askText, errorText);
             car.setRentMoney(rentMoney);
 
@@ -1564,7 +1564,9 @@ class Agency {
                     nameModelSearch(nameModel);
                     break;
                 case 3:
-                    int rentMoney = UserInterface.validateNumericInput("Enter the car's rent money: ", UserInterface.PURPLE);
+                    String askText= "Enter the car's rent money : ";
+                    String errorText = UserInterface.YELLOW + "The entered rental amount must be above" + UserInterface.RESET + UserInterface.RED + " 1,500,000 " + UserInterface.RESET + UserInterface.YELLOW + "toman" + UserInterface.RESET;
+                    int rentMoney = UserInterface.getAndValidateMoney(askText, errorText);
                     rentMoneySearch(rentMoney);
                     break;
                 case 4:
@@ -2331,7 +2333,7 @@ class UserInterface {
         do {
             engineCapacity = UserInterface.validateNumericInput("Enter the car's engine capacity: ", UserInterface.PURPLE);
             if (engineCapacity < 700) {
-                System.out.println(UserInterface.YELLOW + "\n\nEngine capacity must be above " + UserInterface.RESET + UserInterface.RED + " 700 cc\n\n" + UserInterface.RESET);
+                System.out.println(UserInterface.YELLOW + "Engine capacity must be above " + UserInterface.RESET + UserInterface.RED + " 700 cc" + UserInterface.RESET);
             }
         } while (engineCapacity < 700);
 
@@ -2339,15 +2341,15 @@ class UserInterface {
     }
 
     public static int getAndValidateMoney(String askText, String errorText) {
-        int accountBalance;
+        int money;
         do {
-            accountBalance = UserInterface.validateNumericInput(askText, UserInterface.PURPLE);
-            if (accountBalance < 1_500_00) {
+            money = UserInterface.validateNumericInput(askText, UserInterface.PURPLE);
+            if (money < 1_500_000) {
                 System.out.println(errorText);
             }
-        } while (accountBalance < 1_500_000);
+        } while (money < 1_500_000);
 
-        return accountBalance;
+        return money;
     }
 
     public static boolean confirmLogout(String location) {
