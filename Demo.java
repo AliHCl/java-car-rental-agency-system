@@ -1773,9 +1773,8 @@ class UserInterface {
             System.out.println();
             handleAgencyManagerMenu();
         } else {
-            System.out.println();
-            System.out.println(RED + "Access denied :(" + RESET);
-            System.out.println();
+            System.out.println(RED + "\nAccess denied :(\n" + RESET);
+
         }
 
     }
