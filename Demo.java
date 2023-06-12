@@ -1418,12 +1418,12 @@ class Agency {
             String lastname;
             switch (option) {
                 case 1:
-                    System.out.print("Enter First Name : ");
+                    System.out.print("Enter the owner's first name : ");
                     System.out.print(UserInterface.PURPLE);
                     firstname = scanner.nextLine();
                     System.out.print(UserInterface.RESET);
 
-                    System.out.print("Enter Last Name : ");
+                    System.out.print("Enter the owner's last name : ");
                     System.out.print(UserInterface.PURPLE);
                     lastname = scanner.nextLine();
                     System.out.print(UserInterface.RESET);
@@ -1431,14 +1431,14 @@ class Agency {
                     fullNameOwnerSearch(firstname, lastname);
                     break;
                 case 2:
-                    System.out.print("Enter First Name : ");
+                    System.out.print("Enter the owner's first name : ");
                     System.out.print(UserInterface.PURPLE);
                     firstname = scanner.nextLine();
                     System.out.print(UserInterface.RESET);
                     firstNameOwnerSearch(firstname);
                     break;
                 case 3:
-                    System.out.print("Enter Last Name : ");
+                    System.out.print("Enter the owner's last name : ");
                     System.out.print(UserInterface.PURPLE);
                     lastname = scanner.nextLine();
                     System.out.print(UserInterface.RESET);
@@ -1453,7 +1453,7 @@ class Agency {
                     phoneNumberOwnerSearch(phoneNumber);
                     break;
                 case 6:
-                    System.out.print("Enter Username : ");
+                    System.out.print("Enter the owner's username : ");
                     System.out.print(UserInterface.PURPLE);
                     String username = scanner.nextLine();
                     System.out.print(UserInterface.RESET);
@@ -1470,7 +1470,7 @@ class Agency {
                     break;
 
                 default:
-                    System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
+                    System.out.println(UserInterface.RED + "Invalid option!" + UserInterface.RESET);
             }
         }
 
@@ -1486,32 +1486,32 @@ class Agency {
             String lastname;
             switch (option) {
                 case 1:
-                    System.out.print("Enter First Name : ");
+                    System.out.print("Enter the tenant's first name : ");
                     System.out.print(UserInterface.PURPLE);
                     firstname = scanner.nextLine();
                     System.out.print(UserInterface.RESET);
-                    System.out.print("Enter Last Name : ");
+                    System.out.print("Enter the tenant's last name : ");
                     System.out.print(UserInterface.PURPLE);
                     lastname = scanner.nextLine();
                     System.out.print(UserInterface.RESET);
                     fullNameTenantSearch(firstname, lastname);
                     break;
                 case 2:
-                    System.out.print("Enter First Name : ");
+                    System.out.print("Enter the tenant's first name : ");
                     System.out.print(UserInterface.PURPLE);
                     firstname = scanner.nextLine();
                     System.out.print(UserInterface.RESET);
                     firstNameTenantSearch(firstname);
                     break;
                 case 3:
-                    System.out.print("Enter Last Name : ");
+                    System.out.print("Enter the tenant's last name : ");
                     System.out.print(UserInterface.PURPLE);
                     lastname = scanner.nextLine();
                     System.out.print(UserInterface.RESET);
                     lastNameTenantSearch(lastname);
                     break;
                 case 4:
-                    String askText  = "Enter the tenant's accountBalance : ";
+                    String askText = "Enter the tenant's accountBalance : ";
                     String errorText = UserInterface.YELLOW + "The minimum accountBalance amount must be " + UserInterface.RESET + UserInterface.RED + "1,500,000" + UserInterface.RESET + UserInterface.YELLOW + " toman" + UserInterface.RESET;
                     int accountBalance = UserInterface.getAndValidateMoney(askText, errorText);
                     accountBalanceSearch(accountBalance);
@@ -1525,7 +1525,7 @@ class Agency {
                     phoneNumberTenantSearch(phoneNumber);
                     break;
                 case 7:
-                    System.out.print("Enter Username : ");
+                    System.out.print("Enter the tenant's username : ");
                     System.out.print(UserInterface.PURPLE);
                     String username = scanner.nextLine();
                     System.out.print(UserInterface.RESET);
@@ -1540,7 +1540,7 @@ class Agency {
                     break;
 
                 default:
-                    System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
+                    System.out.println(UserInterface.RED + "Invalid option!" + UserInterface.RESET);
             }
         }
 
@@ -1557,14 +1557,14 @@ class Agency {
                     engineCapacitySearch(engineCapacity);
                     break;
                 case 2:
-                    System.out.print("Enter Name Model : ");
+                    System.out.print("Enter the car name model : ");
                     System.out.print(UserInterface.PURPLE);
                     String nameModel = scanner.nextLine();
                     System.out.print(UserInterface.RESET);
                     nameModelSearch(nameModel);
                     break;
                 case 3:
-                    String askText= "Enter the car's rent money : ";
+                    String askText = "Enter the car's rent money : ";
                     String errorText = UserInterface.YELLOW + "The entered rental amount must be above" + UserInterface.RESET + UserInterface.RED + " 1,500,000 " + UserInterface.RESET + UserInterface.YELLOW + "toman" + UserInterface.RESET;
                     int rentMoney = UserInterface.getAndValidateMoney(askText, errorText);
                     rentMoneySearch(rentMoney);
@@ -1574,11 +1574,11 @@ class Agency {
                     lifeSpanSearch(lifeSpan);
                     break;
                 case 5:
-                    System.out.print("Enter First Name : ");
+                    System.out.print("Enter the owner's first name : ");
                     System.out.print(UserInterface.PURPLE);
                     String firstname = scanner.nextLine();
                     System.out.print(UserInterface.RESET);
-                    System.out.print("Enter Last Name : ");
+                    System.out.print("Enter the owner's last name : ");
                     System.out.print(UserInterface.PURPLE);
                     String lastname = scanner.nextLine();
                     System.out.print(UserInterface.RESET);
@@ -1591,7 +1591,7 @@ class Agency {
                     System.out.println();
                     boolean running_type = true;
                     while (running_type) {
-                        option = UserInterface.validateNumericInput("Enter Type : ", UserInterface.PURPLE);
+                        option = UserInterface.validateNumericInput("Enter the car type : ", UserInterface.PURPLE);
                         switch (option) {
                             case 1:
                                 typeSearch("Sedan");
@@ -1606,7 +1606,7 @@ class Agency {
                                 running_type = false;
                                 break;
                             default:
-                                System.out.println(UserInterface.RED + "Invalid option! Please try again" + UserInterface.RESET);
+                                System.out.println(UserInterface.RED + "Invalid option!" + UserInterface.RESET);
                         }
                     }
                     break;
@@ -1615,7 +1615,7 @@ class Agency {
                     break;
 
                 default:
-                    System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
+                    System.out.println(UserInterface.RED + "Invalid option!" + UserInterface.RESET);
             }
         }
 
