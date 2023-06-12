@@ -1511,7 +1511,9 @@ class Agency {
                     lastNameTenantSearch(lastname);
                     break;
                 case 4:
-                    int accountBalance = UserInterface.validateNumericInput("Enter the tenant's accountBalance: ", UserInterface.PURPLE);
+                    String askText  = "Enter the tenant's accountBalance : ";
+                    String errorText = UserInterface.YELLOW + "The minimum accountBalance amount must be " + UserInterface.RESET + UserInterface.RED + "1,500,000" + UserInterface.RESET + UserInterface.YELLOW + " toman" + UserInterface.RESET;
+                    int accountBalance = UserInterface.getAndValidateMoney(askText, errorText);
                     accountBalanceSearch(accountBalance);
                     break;
                 case 5:
