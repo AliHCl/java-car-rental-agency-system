@@ -1,5 +1,5 @@
+import javax.naming.directory.InvalidAttributeIdentifierException;
 import java.text.DecimalFormat;
-import java.time.Year;
 import java.util.InputMismatchException;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -915,39 +915,14 @@ class Agency {
         System.out.print(UserInterface.RESET);
         owner.setLastName(lastName);
 
-        int age = UserInterface.validateNumericInput("Enter the owner's age: ", UserInterface.PURPLE);
+        int age = UserInterface.getAndValidateAge("owner");
+        owner.setAge(age);
 
-        if (age >= 18 && age <= 250) {
-            owner.setAge(age);
-        } else if (age < 18) {
-            System.out.println(UserInterface.RED + "\n\nYou have not reached the legal age\n\n" + UserInterface.RESET);
-            return;
-        } else {
-            System.out.println(UserInterface.RED + "\n\nInvalid age entered\n\n" + UserInterface.RESET);
-            return;
-        }
+        String nationalCode = UserInterface.getAndValidateNationalCode("owner");
+        owner.setNationalCode(nationalCode);
 
-        System.out.print("Enter the owner's national code: ");
-        System.out.print(UserInterface.PURPLE);
-        String nationalCode = scanner.nextLine();
-        System.out.print(UserInterface.RESET);
-        if (nationalCode.length() == 10) {
-            owner.setNationalCode(nationalCode);
-        } else {
-            System.out.println(UserInterface.RED + "\n\nInvalid national code entered\n\n" + UserInterface.RESET);
-            return;
-        }
-
-        System.out.print("Enter the owner's phone number: ");
-        System.out.print(UserInterface.PURPLE);
-        String phoneNumber = scanner.nextLine();
-        System.out.print(UserInterface.RESET);
-        if (phoneNumber.length() == 11) {
-            owner.setPhoneNumber(phoneNumber);
-        } else {
-            System.out.println(UserInterface.RED + "\n\nInvalid phone number entered\n\n" + UserInterface.RESET);
-            return;
-        }
+        String phoneNumber = UserInterface.getAndValidatePhoneNumber("owner");
+        owner.setPhoneNumber(phoneNumber);
 
 
         System.out.print("Enter the owner's address: ");
@@ -1001,53 +976,24 @@ class Agency {
         System.out.print(UserInterface.RESET);
         tenant.setLastName(lastName);
 
-        int age = UserInterface.validateNumericInput("Enter the tenant's age: ", UserInterface.PURPLE);
-        if (age >= 18 && age <= 250) {
-            tenant.setAge(age);
-        } else if (age < 18) {
-            System.out.println(UserInterface.RED + "\n\nYou have not reached the legal age\n\n" + UserInterface.RESET);
-            return;
-        } else {
-            System.out.println(UserInterface.RED + "\n\nInvalid age entered\n\n" + UserInterface.RESET);
-            return;
-        }
+        int age = UserInterface.getAndValidateAge("tenant");
+        tenant.setAge(age);
 
-        System.out.print("Enter the tenant's national code: ");
-        System.out.print(UserInterface.PURPLE);
-        String nationalCode = scanner.nextLine();
-        System.out.print(UserInterface.RESET);
-        if (nationalCode.length() == 10) {
-            tenant.setNationalCode(nationalCode);
-        } else {
-            System.out.println(UserInterface.RED + "\n\nInvalid national code entered\n\n" + UserInterface.RESET);
-            return;
-        }
+        String nationalCode = UserInterface.getAndValidateNationalCode("tenant");
+        tenant.setNationalCode(nationalCode);
 
-        System.out.print("Enter the tenant's phone number: ");
-        System.out.print(UserInterface.PURPLE);
-        String phoneNumber = scanner.nextLine();
-        System.out.print(UserInterface.RESET);
-        if (phoneNumber.length() == 11) {
-            tenant.setPhoneNumber(phoneNumber);
-        } else {
-            System.out.println(UserInterface.RED + "\n\nInvalid phone number entered\n\n" + UserInterface.RESET);
-            return;
-        }
+        String phoneNumber = UserInterface.getAndValidatePhoneNumber("tenant");
+        tenant.setPhoneNumber(phoneNumber);
 
         System.out.print("Enter the tenant's address: ");
         System.out.print(UserInterface.PURPLE);
         tenant.setAddress(scanner.nextLine());
         System.out.print(UserInterface.RESET);
 
-        int accountBalance = UserInterface.validateNumericInput("Enter the tenant's accountBalance: ", UserInterface.PURPLE);
-        if (accountBalance >= 1_500_000) {
-            tenant.setAccountBalance(accountBalance);
-        } else {
-            System.out.println();
-            System.out.println(UserInterface.YELLOW + "The minimum accountBalance amount must be " + UserInterface.RESET + UserInterface.RED + "1,500,000" + UserInterface.RESET + UserInterface.YELLOW + " toman" + UserInterface.RESET);
-            System.out.println();
-            return;
-        }
+        String errorText = UserInterface.YELLOW + "The minimum accountBalance amount must be " + UserInterface.RESET + UserInterface.RED + "1,500,000" + UserInterface.RESET + UserInterface.YELLOW + " toman" + UserInterface.RESET;
+        String askText = "Enter the tenant's accountBalance : ";
+        int accountBalance = UserInterface.getAndValidateMoney(askText, errorText);
+        tenant.setAccountBalance(accountBalance);
 
         System.out.println(UserInterface.YELLOW + "\nAre you sure about adding " + UserInterface.GREEN + firstName + ' ' + lastName + UserInterface.RESET + UserInterface.YELLOW + " to the list of tenants?" + UserInterface.RESET);
         UserInterface.showConfirmationPrompt();
@@ -1080,17 +1026,9 @@ class Agency {
         System.out.print(UserInterface.RESET);
         car.setNameModel(carName);
 
-        int engineCapacity = UserInterface.validateNumericInput("Enter the car's engine capacity: ", UserInterface.PURPLE);
+        int engineCapacity = UserInterface.getAndValidateEngineCapacity();
+        car.setEngineCapacity(engineCapacity);
 
-        if (engineCapacity > 700) {
-            car.setEngineCapacity(engineCapacity);
-            System.out.print(UserInterface.RESET);
-            System.out.println();
-        } else {
-            System.out.print(UserInterface.RESET);
-            System.out.println(UserInterface.YELLOW + "\n\nEngine capacity must be above " + UserInterface.RESET + UserInterface.RED + " 700 cc\n\n" + UserInterface.RESET);
-            return;
-        }
         if (!Owner.getOwnerList().isEmpty()) {
             System.out.println(UserInterface.PURPLE + "Please select the car owner\n" + UserInterface.RESET);
             printOwnerList("name");
@@ -1102,16 +1040,13 @@ class Agency {
             }
             car.setOwner(owner);
 
-            int rentMoney = UserInterface.validateNumericInput("Enter the car's rent money: ", UserInterface.PURPLE);
 
-            if (rentMoney >= 1_500_000) {
-                car.setRentMoney(rentMoney);
-                System.out.print(UserInterface.RESET);
-            } else {
-                System.out.print(UserInterface.RESET);
-                System.out.println(UserInterface.YELLOW + "\n\nThe entered rental amount must be above" + UserInterface.RESET + UserInterface.RED + " 1,500,000 " + UserInterface.RESET + UserInterface.YELLOW + "toman\n\n" + UserInterface.RESET);
-                return;
-            }
+            String askText = "Enter the car's rent money : ";
+            String errorText = UserInterface.YELLOW + "\n\nThe entered rental amount must be above" + UserInterface.RESET + UserInterface.RED + " 1,500,000 " + UserInterface.RESET + UserInterface.YELLOW + "toman\n\n" + UserInterface.RESET;
+            int rentMoney = UserInterface.getAndValidateMoney(askText, errorText);
+            car.setRentMoney(rentMoney);
+
+
             System.out.println();
             System.out.println(UserInterface.PURPLE + "Please select the type of car\n" + UserInterface.RESET);
             System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Sedan");
@@ -1510,17 +1445,11 @@ class Agency {
                     lastnameNameOwnerSearch(lastname);
                     break;
                 case 4:
-                    System.out.print("Enter National Code : ");
-                    System.out.print(UserInterface.PURPLE);
-                    String nationalCode = scanner.nextLine();
-                    System.out.print(UserInterface.RESET);
+                    String nationalCode = UserInterface.getAndValidateNationalCode("owner");
                     nationalCodeOwnerSearch(nationalCode);
                     break;
                 case 5:
-                    System.out.print("Enter Phone Number : ");
-                    System.out.print(UserInterface.PURPLE);
-                    String phoneNumber = scanner.nextLine();
-                    System.out.print(UserInterface.RESET);
+                    String phoneNumber = UserInterface.getAndValidatePhoneNumber("owner");
                     phoneNumberOwnerSearch(phoneNumber);
                     break;
                 case 6:
@@ -1532,7 +1461,7 @@ class Agency {
                     break;
 
                 case 7:
-                    int age = UserInterface.validateNumericInput("Enter the owner's age : ", UserInterface.PURPLE);
+                    int age = UserInterface.getAndValidateAge("owner");
                     ageOwnerSearch(age);
                     break;
 
@@ -1586,17 +1515,11 @@ class Agency {
                     accountBalanceSearch(accountBalance);
                     break;
                 case 5:
-                    System.out.print("Enter National Code : ");
-                    System.out.print(UserInterface.PURPLE);
-                    String nationalCode = scanner.nextLine();
-                    System.out.print(UserInterface.RESET);
+                    String nationalCode = UserInterface.getAndValidateNationalCode("tenant");
                     nationalCodeTenantSearch(nationalCode);
                     break;
                 case 6:
-                    System.out.print("Enter Phone Number : ");
-                    System.out.print(UserInterface.PURPLE);
-                    String phoneNumber = scanner.nextLine();
-                    System.out.print(UserInterface.RESET);
+                    String phoneNumber = UserInterface.getAndValidatePhoneNumber("tenant");
                     phoneNumberTenantSearch(phoneNumber);
                     break;
                 case 7:
@@ -1607,7 +1530,7 @@ class Agency {
                     usernameTenantSearch(username);
                     break;
                 case 8:
-                    int age = UserInterface.validateNumericInput("Enter the tenant's age : ", UserInterface.PURPLE);
+                    int age = UserInterface.getAndValidateAge("tenant");
                     ageTenantSearch(age);
                     break;
                 case 0:
@@ -1628,7 +1551,7 @@ class Agency {
             int option = UserInterface.getUserOption();
             switch (option) {
                 case 1:
-                    int engineCapacity = UserInterface.validateNumericInput("Enter the car's engine capacity: ", UserInterface.PURPLE);
+                    int engineCapacity = UserInterface.getAndValidateEngineCapacity();
                     engineCapacitySearch(engineCapacity);
                     break;
                 case 2:
@@ -2357,6 +2280,71 @@ class UserInterface {
             }
         }
         return inputNumber;
+    }
+
+    public static int getAndValidateAge(String type) {
+        int age;
+        do {
+            age = UserInterface.validateNumericInput("Enter the " + type + "'s age : ", UserInterface.PURPLE);
+            if (age < 18) {
+                System.out.println(UserInterface.RED + "You have not reached the legal age" + UserInterface.RESET);
+            } else if (age > 150) {
+                System.out.println(UserInterface.RED + "Invalid age entered" + UserInterface.RESET);
+            }
+        } while (age < 18 || age > 150);
+        return age;
+    }
+
+    public static String getAndValidateNationalCode(String type) {
+        String nationalCode;
+        do {
+            System.out.print("Enter the " + type + "'s national code: ");
+            System.out.print(UserInterface.PURPLE);
+            nationalCode = scanner.nextLine();
+            System.out.print(UserInterface.RESET);
+            if (nationalCode.length() != 10) {
+                System.out.println(UserInterface.RED + "Invalid national code entered" + UserInterface.RESET);
+            }
+        } while (nationalCode.length() != 10);
+        return nationalCode;
+    }
+
+    public static String getAndValidatePhoneNumber(String type) {
+        String phoneNumber;
+        do {
+            System.out.print("Enter the " + type + "'s phone number: ");
+            System.out.print(UserInterface.PURPLE);
+            phoneNumber = scanner.nextLine();
+            System.out.print(UserInterface.RESET);
+            if (phoneNumber.length() != 11) {
+                System.out.println(UserInterface.RED + "Invalid phone number entered" + UserInterface.RESET);
+            }
+        } while (phoneNumber.length() != 11);
+        return phoneNumber;
+    }
+
+    public static int getAndValidateEngineCapacity() {
+        int engineCapacity;
+        do {
+            engineCapacity = UserInterface.validateNumericInput("Enter the car's engine capacity: ", UserInterface.PURPLE);
+            if (engineCapacity < 700) {
+                System.out.println(UserInterface.YELLOW + "\n\nEngine capacity must be above " + UserInterface.RESET + UserInterface.RED + " 700 cc\n\n" + UserInterface.RESET);
+            }
+        } while (engineCapacity < 700);
+
+        return engineCapacity;
+    }
+
+    public static int getAndValidateMoney(String askText, String errorText) {
+        int accountBalance;
+        do {
+            accountBalance = UserInterface.validateNumericInput(askText, UserInterface.PURPLE);
+            if (accountBalance < 1_500_00) {
+                System.out.println(errorText);
+            }
+        } while (accountBalance < 1_500_000);
+
+        return accountBalance;
     }
 
     public static boolean confirmLogout(String location) {
