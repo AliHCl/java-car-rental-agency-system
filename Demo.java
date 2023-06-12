@@ -447,43 +447,6 @@ class Agency {
         Tenant.getTenantList().remove(tenant);
     }
 
-    public static void printReport() {
-        String art = """
-                8888888b.  8888888888 8888888b.   .d88888b.  8888888b. 88888888888\s
-                888   Y88b 888        888   Y88b d88P" "Y88b 888   Y88b    888    \s
-                888    888 888        888    888 888     888 888    888    888    \s
-                888   d88P 8888888    888   d88P 888     888 888   d88P    888    \s
-                8888888P"  888        8888888P"  888     888 8888888P"     888    \s
-                888 T88b   888        888        888     888 888 T88b      888    \s
-                888  T88b  888        888        Y88b. .d88P 888  T88b     888    \s
-                888   T88b 8888888888 888         "Y88888P"  888   T88b    888    \s
-                                                                                  \s
-                                                                                  \s
-                                                                                  \s
-                """;
-        UserInterface.printBanner(art);
-        int totalCustomers = Owner.getOwnerList().size() + Tenant.getTenantList().size() + getRemovedTenantsCount() + getRemovedOwnersCount();
-        System.out.println("The total number of customers                          " + UserInterface.PURPLE + "[" + UserInterface.WHITE + totalCustomers + UserInterface.PURPLE + "]" + UserInterface.RESET);
-        System.out.println("The current number of tenants                          " + UserInterface.PURPLE + "[" + UserInterface.WHITE + Tenant.getTenantList().size() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-        System.out.println("The current number of owners                           " + UserInterface.PURPLE + "[" + UserInterface.WHITE + Owner.getOwnerList().size() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-        System.out.println("The current number of cars                             " + UserInterface.PURPLE + "[" + UserInterface.WHITE + Car.getCarList().size() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-        System.out.println("Number of tenants removed                              " + UserInterface.PURPLE + "[" + UserInterface.WHITE + getRemovedTenantsCount() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-        System.out.println("Number of owners removed                               " + UserInterface.PURPLE + "[" + UserInterface.WHITE + getRemovedOwnersCount() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-        System.out.println("Number of cars removed                                 " + UserInterface.PURPLE + "[" + UserInterface.WHITE + getRemovedCarsCount() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-        System.out.println("The number of transactions today                       " + UserInterface.PURPLE + "[" + UserInterface.WHITE + getTransactionCount() + UserInterface.PURPLE + "]" + UserInterface.RESET);
-        System.out.println("The value of transactions conducted                    " + UserInterface.PURPLE + "[" + UserInterface.WHITE + UserInterface.formattedNumber.format(getTotalTransactionValue()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
-        System.out.println("Agency profit (calculated at 10% for each transaction) " + UserInterface.PURPLE + "[" + UserInterface.WHITE + UserInterface.formattedNumber.format(getTotalProfit()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
-        System.out.println();
-        Agency.printOwners();
-        System.out.println();
-        Agency.printTenants();
-        System.out.println();
-        Agency.printCars();
-        System.out.println();
-
-
-    }
-
     public static boolean getIsCarOwner() {
         return isCarOwner;
     }
@@ -494,7 +457,7 @@ class Agency {
 
     public static void printOwners() {
         if (!Owner.getOwnerList().isEmpty()) {
-            System.out.println(UserInterface.PURPLE + "List of Owners :\n" + UserInterface.WHITE);
+            System.out.println(UserInterface.PURPLE + "\nList of Owners :\n" + UserInterface.WHITE);
             for (Owner owner : Owner.getOwnerList()) {
                 System.out.println();
                 System.out.println("Username       " + UserInterface.PURPLE + "[" + UserInterface.RESET + owner.getUsername() + UserInterface.PURPLE + "]" + UserInterface.RESET);
@@ -526,7 +489,7 @@ class Agency {
 
     public static void printTenants() {
         if (!Tenant.getTenantList().isEmpty()) {
-            System.out.println(UserInterface.PURPLE + "List of Tenants :\n" + UserInterface.WHITE);
+            System.out.println(UserInterface.PURPLE + "\nList of Tenants :\n" + UserInterface.WHITE);
             for (Tenant tenant : Tenant.getTenantList()) {
                 System.out.println();
                 System.out.println("Username            " + UserInterface.PURPLE + "[" + UserInterface.RESET + tenant.getUsername() + UserInterface.PURPLE + "]" + UserInterface.RESET);
@@ -566,7 +529,7 @@ class Agency {
 
     public static void printCars() {
         if (!Car.getCarList().isEmpty()) {
-            System.out.println(UserInterface.PURPLE + "List of Cars :\n" + UserInterface.WHITE);
+            System.out.println(UserInterface.PURPLE + "\nList of Cars :\n" + UserInterface.WHITE);
             for (Car car : Car.getCarList()) {
                 System.out.println();
                 System.out.println("Name Model      " + UserInterface.PURPLE + "[" + UserInterface.RESET + car.getNameModel() + UserInterface.PURPLE + "]" + UserInterface.RESET);
@@ -1030,7 +993,7 @@ class Agency {
         car.setEngineCapacity(engineCapacity);
 
         if (!Owner.getOwnerList().isEmpty()) {
-            System.out.println(UserInterface.PURPLE + "Please select the car owner\n" + UserInterface.RESET);
+            System.out.println(UserInterface.PURPLE + "\nPlease select the car owner\n" + UserInterface.RESET);
             printOwnerList("name");
             int option = UserInterface.getUserOption();
             option = UserInterface.validateUserInput(option);
@@ -1641,10 +1604,98 @@ class Agency {
                     break;
 
                 default:
-                    System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
+                    System.out.println(UserInterface.RED + "Invalid option!" + UserInterface.RESET);
             }
         }
 
+    }
+
+    public static void handleReportMenu() {
+        boolean running = true;
+        while (running) {
+            UserInterface.displayReportMenu();
+            int option = UserInterface.getUserOption();
+            switch (option) {
+                case 1:
+                    handlePrintOwnersList();
+                    break;
+
+                case 2:
+                    handlePrintTenantsList();
+                    break;
+
+                case 3:
+                    handlePrintCarsList();
+                    break;
+
+                case 0:
+                    running = false;
+                    break;
+
+                default:
+                    System.out.println(UserInterface.RED + "Invalid option!\n" + UserInterface.RESET);
+                    break;
+
+
+            }
+        }
+    }
+
+    private static void handlePrintOwnersList() {
+        boolean running = true;
+        if (!Owner.getOwnerList().isEmpty()) {
+            printOwners();
+            System.out.println(UserInterface.PURPLE + "\n[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
+            while (running) {
+                int option = UserInterface.getUserOption();
+                if (option == 0) {
+                    running = false;
+                } else {
+                    System.out.println(UserInterface.RED + "Invalid option!" + UserInterface.RESET);
+                }
+            }
+
+        } else {
+            System.out.println(UserInterface.RED + "No owner has been registered :(\n\n" + UserInterface.RESET);
+        }
+    }
+
+    private static void handlePrintTenantsList() {
+        boolean running = true;
+        if (!Tenant.getTenantList().isEmpty()) {
+            printTenants();
+            System.out.println(UserInterface.PURPLE + "\n[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
+            while (running) {
+                int option = UserInterface.getUserOption();
+                if (option == 0) {
+                    running = false;
+                } else {
+                    System.out.println(UserInterface.RED + "Invalid option!" + UserInterface.RESET);
+                }
+            }
+
+        } else {
+            System.out.println(UserInterface.RED + "No tenant has been registered :(\n\n" + UserInterface.RESET);
+        }
+    }
+
+    private static void handlePrintCarsList() {
+        boolean running = true;
+        if (!Car.getCarList().isEmpty()) {
+            printCars();
+            System.out.println(UserInterface.PURPLE + "\n[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
+            while (running) {
+                int option = UserInterface.getUserOption();
+                if (option == 0) {
+                    running = false;
+                } else {
+                    System.out.println(UserInterface.RED + "Invalid option!" + UserInterface.RESET);
+                }
+            }
+
+        } else {
+            System.out.println(UserInterface.RED + "No car has been registered :(\n\n" + UserInterface.RESET);
+        }
     }
 
     public static void handleAddMainMenuManager() {
@@ -1953,7 +2004,7 @@ class UserInterface {
                     Agency.rent();
                     break;
                 case 5:
-                    Agency.printReport();
+                    Agency.handleReportMenu();
                     break;
                 case 0:
                     running = confirmLogout("admin panel");
@@ -2083,6 +2134,42 @@ class UserInterface {
         System.out.println(PURPLE + "[" + WHITE + 2 + PURPLE + "] " + WHITE + "Tenants");
         System.out.println(PURPLE + "[" + WHITE + 3 + PURPLE + "] " + WHITE + "Cars");
         System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back");
+    }
+
+    public static void displayReportMenu() {
+        String art = """
+                8888888b.  8888888888 8888888b.   .d88888b.  8888888b. 88888888888\s
+                888   Y88b 888        888   Y88b d88P" "Y88b 888   Y88b    888    \s
+                888    888 888        888    888 888     888 888    888    888    \s
+                888   d88P 8888888    888   d88P 888     888 888   d88P    888    \s
+                8888888P"  888        8888888P"  888     888 8888888P"     888    \s
+                888 T88b   888        888        888     888 888 T88b      888    \s
+                888  T88b  888        888        Y88b. .d88P 888  T88b     888    \s
+                888   T88b 8888888888 888         "Y88888P"  888   T88b    888    \s
+                                                                                  \s
+                                                                                  \s
+                                                                                  \s
+                """;
+        UserInterface.printBanner(art);
+        int totalCustomers = Owner.getOwnerList().size() + Tenant.getTenantList().size() + Agency.getRemovedTenantsCount() + Agency.getRemovedOwnersCount();
+        System.out.println("The total number of customers                          " + UserInterface.PURPLE + "[" + UserInterface.WHITE + totalCustomers + UserInterface.PURPLE + "]" + UserInterface.RESET);
+        System.out.println("The current number of tenants                          " + UserInterface.PURPLE + "[" + UserInterface.WHITE + Tenant.getTenantList().size() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+        System.out.println("The current number of owners                           " + UserInterface.PURPLE + "[" + UserInterface.WHITE + Owner.getOwnerList().size() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+        System.out.println("The current number of cars                             " + UserInterface.PURPLE + "[" + UserInterface.WHITE + Car.getCarList().size() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+        System.out.println("Number of tenants removed                              " + UserInterface.PURPLE + "[" + UserInterface.WHITE + Agency.getRemovedTenantsCount() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+        System.out.println("Number of owners removed                               " + UserInterface.PURPLE + "[" + UserInterface.WHITE + Agency.getRemovedOwnersCount() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+        System.out.println("Number of cars removed                                 " + UserInterface.PURPLE + "[" + UserInterface.WHITE + Agency.getRemovedCarsCount() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+        System.out.println("The number of transactions today                       " + UserInterface.PURPLE + "[" + UserInterface.WHITE + Agency.getTransactionCount() + UserInterface.PURPLE + "]" + UserInterface.RESET);
+        System.out.println("The value of transactions conducted                    " + UserInterface.PURPLE + "[" + UserInterface.WHITE + UserInterface.formattedNumber.format(Agency.getTotalTransactionValue()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
+        System.out.println("Agency profit (calculated at 10% for each transaction) " + UserInterface.PURPLE + "[" + UserInterface.WHITE + UserInterface.formattedNumber.format(Agency.getTotalProfit()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
+        System.out.println();
+        System.out.println();
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Owners List");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Tenants List");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Cars List");
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
+
+
     }
 
     public static void displayAddMenu() {
