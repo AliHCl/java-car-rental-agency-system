@@ -46,11 +46,9 @@ class Login {
 class Human {
 
     /**
-
-     The Human class represents a basic model for a human entity. It encapsulates
-     properties such as first name, last name, age, national code, phone number, address, username, and password
-     It provides getter and setter methods for accessing and modifying these properties.
-
+     * The Human class represents a basic model for a human entity. It encapsulates
+     * properties such as first name, last name, age, national code, phone number, address, username, and password
+     * It provides getter and setter methods for accessing and modifying these properties.
      */
 
     private String firstName;
@@ -130,11 +128,9 @@ class Human {
 class Car {
 
     /**
-
-     The Car class represents a car object with various properties such as the model name,
-     engine capacity, owner, rent money, type, and lifespan
-     It provides getter and setter methods for accessing and modifying these properties
-
+     * The Car class represents a car object with various properties such as the model name,
+     * engine capacity, owner, rent money, type, and lifespan
+     * It provides getter and setter methods for accessing and modifying these properties
      */
 
     private String nameModel;
@@ -283,11 +279,24 @@ class Tenant extends Human {
 }
 
 class Owner extends Human {
-    private int income;
-    private int numberOfCars;
-    private final List<Tenant> myTenantsList = new ArrayList<>();
-    private static final List<Owner> ownerList = new ArrayList<>();
-    private final List<Car> ownerCarList = new ArrayList<>();
+
+    /*
+            The Owner class represents an owner, which is a subclass of the Human class
+            It extends the Human class to inherit its properties and methods
+            In addition to the inherited properties, the Owner class has specific properties such as income,
+            isCarOwner, numberOfCars, myTenantsList, ownerList, and ownerCarList
+            It provides getter and setter methods for accessing and modifying the numberOfCars and income properties
+            It also provides methods to display the owner's cars, filtered owner cars, and the list of tenants
+
+     */
+
+    private int income; // Maintaining the income from rented cars for the owner
+    private int numberOfCars; // Maintaining the number of cars owned by the owner
+    private final List<Tenant> myTenantsList = new ArrayList<>(); // Maintaining the list of tenants belonging to the owner
+    private static final List<Owner> ownerList = new ArrayList<>(); // Maintaining the list of all existing owners
+    private final List<Car> ownerCarList = new ArrayList<>(); // Maintaining the list of cars owned by the owner
+    private boolean isCarOwner = false; // Determines whether the owner has any cars or not
+
 
     int getNumberOfCars() {
         return numberOfCars;
@@ -317,14 +326,26 @@ class Owner extends Human {
         this.income = income;
     }
 
+    boolean getIsCarOwner() {
+        return isCarOwner;
+    }
+
+    void setIsCarOwner(Boolean value) {
+        isCarOwner = value;
+    }
+
     static void displayMyCars(Owner owner) {
+
+        // Displays the list of all cars owned by the owner
+
         boolean running = true;
         while (running) {
             System.out.println(UserInterface.PURPLE + "\nThe list of your cars \n" + UserInterface.RESET);
-            Agency.setIsCarOwner(false);
-            Owner.displayOwnerCarsFiltered(owner);
-            if (Agency.getIsCarOwner()) {
+            owner.setIsCarOwner(false);
+            Owner.displayOwnerCarsFiltered(owner); // Finds the cars owned by the specified owner among all cars
+            if (owner.getIsCarOwner()) {
                 System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + Car.getCarList().size() + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
+                // Consider the last element of the car list as the "Back" option and add it to the list of valid choices that the user can enter, so that the "Back" option works
                 UserInterface.getValidIndexes().add(Car.getCarList().size());
                 int option = UserInterface.getUserOption();
                 option = UserInterface.validateUserInput(option);
@@ -332,6 +353,7 @@ class Owner extends Human {
                     running = false;
                 } else {
                     Car car = Agency.getCarByIndex(option);
+                    // Displaying the list of cars owned by the owner
                     Agency.printCar(car);
                     System.out.println("Is the car rented by a tenant? " + UserInterface.PURPLE + "[" + UserInterface.RESET + (Agency.isCarRented(car) ? UserInterface.GREEN + "Yes" + UserInterface.RESET : UserInterface.RED + "No" + UserInterface.RESET) + UserInterface.PURPLE + "]" + UserInterface.RESET);
                 }
@@ -344,9 +366,18 @@ class Owner extends Human {
 
     static void displayOwnerCarsFiltered(Owner owner) {
 
+        /*
+
+           This method displays the filtered list of cars owned by the owner
+           It iterates through the Car objects in the Car.getCarList() and checks if the owner of each car matches the given owner
+           If a match is found, the car's information is printed along with an index for selection
+           The valid indexes are added to the UserInterface.getValidIndexes() for user input validation
+
+         */
+
         for (Car car : Car.getCarList()) {
             if (car.getOwner().equals(owner)) {
-                Agency.setIsCarOwner(true);
+                owner.setIsCarOwner(true);
                 System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + Car.getCarList().indexOf(car) + UserInterface.PURPLE + "]" + UserInterface.RESET + " " + car.getNameModel());
                 UserInterface.getValidIndexes().add(Car.getCarList().indexOf(car));
             }
@@ -354,6 +385,14 @@ class Owner extends Human {
     }
 
     static void printMyTenantsList(Owner owner) {
+
+        /*
+             This method prints the list of tenants belonging to the owner
+             It iterates through the owner.getMyTenantsList() and prints the first name and last name of each tenant along with an index for selection
+             The counter variable is used to keep track of the index
+             If no tenants are found, it displays a message indicating that the owner doesn't have any tenants
+         */
+
         int counter = 1;
         for (Tenant tenant : owner.getMyTenantsList()) {
             System.out.println(UserInterface.PURPLE + "[" + counter + UserInterface.PURPLE + "]" + UserInterface.RESET + " " + tenant.getFirstName() + ' ' + tenant.getLastName());
@@ -370,7 +409,6 @@ class Agency extends UserInterface {
     // ArrayList --> https://www.youtube.com/watch?v=pruuvCVXIt8
     private static boolean rentedCarStatus = false;
     private static boolean carRentalStatus = false;
-    private static boolean isCarOwner = false;
     private static int transactionCount;
     private static int removedOwnersCount;
     private static long totalTransactionValue;
@@ -502,13 +540,6 @@ class Agency extends UserInterface {
         Tenant.getTenantList().remove(tenant);
     }
 
-    static boolean getIsCarOwner() {
-        return isCarOwner;
-    }
-
-    static void setIsCarOwner(Boolean value) {
-        isCarOwner = value;
-    }
 
     static void printOwners() {
         if (!Owner.getOwnerList().isEmpty()) {
@@ -744,10 +775,10 @@ class Agency extends UserInterface {
             System.out.println(YELLOW + "Do you want to remove " + RESET + GREEN + owner.getFirstName() +
                     ' ' + owner.getLastName() + RESET + YELLOW + " from the list of owners?" + RESET);
             System.out.println();
-            setIsCarOwner(false);
+            owner.setIsCarOwner(false);
             Owner.displayOwnerCarsFiltered(owner);
             System.out.println();
-            if (getIsCarOwner()) {
+            if (owner.getIsCarOwner()) {
                 System.out.println(YELLOW + "Please note that by removing " + RESET + GREEN + owner.getFirstName() + ' ' +
                         owner.getLastName() + RESET + YELLOW + " from the list of owners of the above cars, they will be removed from the list" + RESET);
             } else {
@@ -763,7 +794,7 @@ class Agency extends UserInterface {
                         Car.getCarList().removeAll(owner.getOwnerCarList());
                         System.out.println(GREEN + owner.getFirstName() + ' ' + owner.getLastName() + RESET +
                                 " has been " + RED + "removed" + RESET + " from the list of owners\n\n");
-                        if (getIsCarOwner()) {
+                        if (owner.getIsCarOwner()) {
                             System.out.println("Furthermore, " + GREEN + owner.getOwnerCarList().size() + RESET + " cars owned by the mentioned owner have also been removed from the list of cars");
                             Agency.setRemovedCarsCount(Agency.getRemovedCarsCount() + owner.getOwnerCarList().size());
                         }
@@ -772,7 +803,7 @@ class Agency extends UserInterface {
                         running = false;
                         break;
                     case 2:
-                        setIsCarOwner(false);
+                        owner.setIsCarOwner(false);
                         System.out.println(RED + "The operation has been canceled :(\n\n" + RESET);
                         running = false;
                         break;
