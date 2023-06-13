@@ -44,6 +44,15 @@ class Login {
 
 
 class Human {
+
+    /**
+
+     The Human class represents a basic model for a human entity. It encapsulates
+     properties such as first name, last name, age, national code, phone number, address, username, and password
+     It provides getter and setter methods for accessing and modifying these properties.
+
+     */
+
     private String firstName;
     private String lastName;
     private Integer age;
