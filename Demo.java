@@ -407,14 +407,23 @@ class Owner extends Human {
 
 class Agency extends UserInterface {
     // ArrayList --> https://www.youtube.com/watch?v=pruuvCVXIt8
-    private static boolean rentedCarStatus = false;
-    private static boolean carRentalStatus = false;
-    private static int transactionCount;
-    private static int removedOwnersCount;
-    private static long totalTransactionValue;
-    private static int removedTenantsCount;
-    private static int removedCarsCount;
-    private static long totalProfit;
+
+    /*
+
+        This class manages all the items inside the admin panel,
+        including adding tenants, owners, cars, and deleting them,
+        performing car rental operations, search operations, and more.
+
+     */
+
+    private static boolean rentedCarStatus = false; // Set the initial status of the rented car as false
+    private static boolean carRentalStatus = false;  // Set the initial status of the car rental as false
+    private static int transactionCount; // private static integer variable to keep track of the transaction count
+    private static int removedOwnersCount; // variable to keep track of the count of removed owners
+    private static long totalTransactionValue; // variable to store the total transaction value
+    private static int removedTenantsCount; // variable to keep track of the count of removed tenants
+    private static int removedCarsCount; // variable to keep track of the count of removed cars
+    private static long totalProfit; // variable to store the total profit
     private static final Scanner scanner = new Scanner(System.in);
 
     static int getRemovedTenantsCount() {
@@ -481,36 +490,6 @@ class Agency extends UserInterface {
         Agency.rentedCarStatus = rentedCarStatus;
     }
 
-    static Owner getOwnerByIndex(int index) {
-        if (index >= 0 && index < Owner.getOwnerList().size()) {
-            return Owner.getOwnerList().get(index);
-        } else {
-            System.out.println(RED + "\nOwner not found :(\n" + RESET);
-            return null;
-        }
-    }
-
-    static Tenant getTenantByIndex(int index) {
-        if (index >= 0 && index < Tenant.getTenantList().size()) {
-            return Tenant.getTenantList().get(index);
-        } else {
-            System.out.println();
-            System.out.println(RED + "\nTenant not found :(\n" + RESET);
-            System.out.println();
-            return null;
-        }
-    }
-
-    static Car getCarByIndex(int index) {
-        if (index >= 0 && index < Car.getCarList().size()) {
-            return Car.getCarList().get(index);
-        } else {
-            System.out.println();
-            System.out.println("Car not found :(");
-            System.out.println();
-            return null;
-        }
-    }
 
     static void addOwner(Owner owner) {
         Owner.getOwnerList().add(owner);
@@ -540,8 +519,42 @@ class Agency extends UserInterface {
         Tenant.getTenantList().remove(tenant);
     }
 
+    static Owner getOwnerByIndex(int index) {
+        // This method for to find an owner object using the entered index
+        if (index >= 0 && index < Owner.getOwnerList().size()) {
+            return Owner.getOwnerList().get(index);
+        } else {
+            System.out.println(RED + "\nOwner not found :(\n" + RESET);
+            return null;
+        }
+    }
+
+    static Tenant getTenantByIndex(int index) {
+        // This method for to find a tenant object using the entered index
+        if (index >= 0 && index < Tenant.getTenantList().size()) {
+            return Tenant.getTenantList().get(index);
+        } else {
+            System.out.println();
+            System.out.println(RED + "\nTenant not found :(\n" + RESET);
+            System.out.println();
+            return null;
+        }
+    }
+
+    static Car getCarByIndex(int index) {
+        // This method for to find a car object using the entered index
+        if (index >= 0 && index < Car.getCarList().size()) {
+            return Car.getCarList().get(index);
+        } else {
+            System.out.println();
+            System.out.println("Car not found :(");
+            System.out.println();
+            return null;
+        }
+    }
 
     static void printOwners() {
+        // This method is used to display information of all owners
         if (!Owner.getOwnerList().isEmpty()) {
             System.out.println(PURPLE + "\nList of Owners :\n" + WHITE);
             for (Owner owner : Owner.getOwnerList()) {
@@ -559,6 +572,7 @@ class Agency extends UserInterface {
     }
 
     static void printOwner(Owner owner) {
+        // This method is used to display information of the given owner
         if (!Owner.getOwnerList().isEmpty()) {
             System.out.println();
             System.out.println("Information of " + GREEN + owner.getFirstName() + ' ' + owner.getLastName() + RESET + " \n");
@@ -574,6 +588,7 @@ class Agency extends UserInterface {
     }
 
     static void printTenants() {
+        // This method is used to display information of all tenants
         if (!Tenant.getTenantList().isEmpty()) {
             System.out.println(PURPLE + "\nList of Tenants :\n" + WHITE);
             for (Tenant tenant : Tenant.getTenantList()) {
@@ -595,6 +610,7 @@ class Agency extends UserInterface {
     }
 
     static void printTenant(Tenant tenant) {
+        // This method is used to display information of the given tenant
         if (!Tenant.getTenantList().isEmpty()) {
             System.out.println();
             System.out.println("Information of " + GREEN + tenant.getFirstName() + ' ' + tenant.getLastName() + RESET + " \n");
@@ -614,6 +630,7 @@ class Agency extends UserInterface {
     }
 
     static void printCars() {
+        // This method is used to display information of all cars
         if (!Car.getCarList().isEmpty()) {
             System.out.println(PURPLE + "\nList of Cars :\n" + WHITE);
             for (Car car : Car.getCarList()) {
@@ -629,6 +646,7 @@ class Agency extends UserInterface {
     }
 
     static void printCar(Car car) {
+        // This method is used to display information of the given car
         if (!Car.getCarList().isEmpty()) {
             System.out.println();
             System.out.println("Information of  " + GREEN + car.getNameModel() + RESET + " car  \n");
@@ -642,6 +660,13 @@ class Agency extends UserInterface {
     }
 
     static void printOwnerList(String type) {
+        /*
+
+              Prints the owner list based on the specified type.
+              param type The type of information to display ("username" or "name")
+
+         */
+
         if (type.equalsIgnoreCase("username")) {
             for (Owner owner : Owner.getOwnerList()) {
                 System.out.println(PURPLE + "[" + RESET + Owner.getOwnerList().indexOf(owner) + PURPLE + "] " + RESET + owner.getUsername());
@@ -657,9 +682,13 @@ class Agency extends UserInterface {
         }
     }
 
-    static void printCarList(boolean exception, Tenant user) {
+    static void printCarList(Tenant user) {
+
+        // This method prints the list of available cars, but if a tenant object is provided,
+        // it displays only the cars that the tenant has the financial capability to rent.
+
         for (Car car : Car.getCarList()) {
-            if (exception && user != null) {
+            if (user != null) {
                 if (!Car.getRentedCarList().contains(car) && user.getAccountBalance() >= car.getRentMoney()) {
                     carRentalStatus = true;
                     System.out.println(PURPLE + "[" + RESET + Car.getCarList().indexOf(car) + PURPLE + "]" + RESET + " " + car.getNameModel());
@@ -675,6 +704,12 @@ class Agency extends UserInterface {
     }
 
     static Boolean isCarRented(Car car) {
+        /*
+            Checks if a car is currently rented
+            param car The car object to check
+            return True if the car is rented, False otherwise
+
+         */
         for (Tenant tenant : Tenant.getTenantList()) {
             if (tenant.getRentedCar() != null) {
                 if (tenant.getRentedCar().equals(car)) {
@@ -686,8 +721,16 @@ class Agency extends UserInterface {
     }
 
     static void printTenantList(String type, boolean exception) {
+
+    /*
+            Prints the tenant list based on the specified type
+            param type The type of information to display ("username" or "name")
+
+     */
+
         if (type.equalsIgnoreCase("username")) {
             for (Tenant tenant : Tenant.getTenantList()) {
+                // By specifying the exception, only tenants who have not rented a car will be printed
                 if (exception) {
                     if (tenant.getRentedCar() == null) {
                         rentedCarStatus = true;
@@ -821,7 +864,7 @@ class Agency extends UserInterface {
     static void removeFromCarList() {
         if (!Car.getCarList().isEmpty()) {
             System.out.println("Please select the desired car : \n\n");
-            printCarList(false, null);
+            printCarList(null);
             int option = getUserOption();
             option = validateUserInput(option);
             Car car = getCarByIndex(option);
@@ -871,7 +914,7 @@ class Agency extends UserInterface {
                     System.out.println(PURPLE + "Please select the desired car :\n\n" + RESET);
                     System.out.println(YELLOW + "Cars displayed based on " + RESET + GREEN + tenant.getFirstName() + ' '
                             + tenant.getLastName() + RESET + YELLOW + "'s account inventory\n\n" + RESET);
-                    printCarList(true, tenant);
+                    printCarList(tenant);
                     if (getCarRentalStatus()) {
                         option = getUserOption();
                         option = validateUserInput(option);
