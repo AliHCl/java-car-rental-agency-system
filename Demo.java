@@ -1,19 +1,44 @@
-import javax.naming.directory.InvalidAttributeIdentifierException;
 import java.text.DecimalFormat;
-import java.util.InputMismatchException;
 import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Scanner;
 
-public class Demo {
-    public static void main(String[] args) {
-        // اون کلاسی که ااوله و مین داره اجرا میشه
-        // اصن کاری به این خط پایینی و اسم فایل نداره
-        // اگه خط پایین رو پاک کنی بازم کلاس رابط کاربری اجرا میشه
-        UserInterface.main(null);
-        System.out.println(UserInterface.RESET); // reset color console
+class Demo {
+    protected static void main(String[] args) {
+        boolean running = true;
+        while (running) {
+            UserInterface.displayHomeMenu();
+            int option = UserInterface.getUserOption();
+            switch (option) {
+                case 1:
+                    UserInterface.adminLogin();
+                    break;
 
+                case 2:
+                    UserInterface.ownerLogin();
+                    break;
+
+                case 3:
+                    UserInterface.tenantLogin();
+                    break;
+
+                case 4:
+                    UserInterface.displayDeveloperInfo();
+                    break;
+
+                case 0:
+                    running = UserInterface.confirmLogout("System");
+                    break;
+
+                default:
+                    System.out.println();
+                    System.out.println(UserInterface.RED + "Invalid option! Please try again" + UserInterface.RESET);
+            }
+        }
+        System.out.println(UserInterface.GREEN + "Successful logout!" + UserInterface.RESET);
     }
+
 }
 
 
@@ -102,59 +127,59 @@ class Car {
     private static final List<Car> carList = new ArrayList<>();
     private static final List<Car> rentedCarList = new ArrayList<>();
 
-    public Integer getEngineCapacity() {
+    Integer getEngineCapacity() {
         return engineCapacity;
     }
 
-    public void setEngineCapacity(Integer engineCapacity) {
+    void setEngineCapacity(Integer engineCapacity) {
         this.engineCapacity = engineCapacity;
     }
 
-    public Owner getOwner() {
+    Owner getOwner() {
         return owner;
     }
 
-    public void setOwner(Owner owner) {
+    void setOwner(Owner owner) {
         this.owner = owner;
     }
 
-    public String getNameModel() {
+    String getNameModel() {
         return nameModel;
     }
 
-    public void setNameModel(String nameModel) {
+    void setNameModel(String nameModel) {
         this.nameModel = nameModel;
     }
 
-    public Integer getRentMoney() {
+    Integer getRentMoney() {
         return rentMoney;
     }
 
-    public void setRentMoney(Integer rentMoney) {
+    void setRentMoney(Integer rentMoney) {
         this.rentMoney = rentMoney;
     }
 
-    public String getType() {
+    String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    void setType(String type) {
         this.type = type;
     }
 
-    public Integer getLifespan() {
+    Integer getLifespan() {
         return lifespan;
     }
 
-    public void setLifespan(Integer lifespan) {
+    void setLifespan(Integer lifespan) {
         this.lifespan = lifespan;
     }
 
-    public static List<Car> getCarList() {
+    static List<Car> getCarList() {
         return carList;
     }
 
-    public static List<Car> getRentedCarList() {
+    static List<Car> getRentedCarList() {
         return rentedCarList;
     }
 }
@@ -166,35 +191,35 @@ class Tenant extends Human {
     private static final Scanner scanner = new Scanner(System.in);
     private static final List<Tenant> tenantList = new ArrayList<>();
 
-    public Integer getAccountBalance() {
+    Integer getAccountBalance() {
         return accountBalance;
     }
 
-    public void setAccountBalance(Integer accountBalance) {
+    void setAccountBalance(Integer accountBalance) {
         this.accountBalance = accountBalance;
     }
 
-    public Owner getRentedCarOwner() {
+    Owner getRentedCarOwner() {
         return rentedCarOwner;
     }
 
-    public void setRentedCarOwner(Owner rentedCarOwner) {
+    void setRentedCarOwner(Owner rentedCarOwner) {
         this.rentedCarOwner = rentedCarOwner;
     }
 
-    public Car getRentedCar() {
+    Car getRentedCar() {
         return rentedCar;
     }
 
-    public void setRentedCar(Car car) {
+    void setRentedCar(Car car) {
         this.rentedCar = car;
     }
 
-    public static List<Tenant> getTenantList() {
+    static List<Tenant> getTenantList() {
         return tenantList;
     }
 
-    public static void increaseAccountBalance(Tenant tenant) {
+    static void increaseAccountBalance(Tenant tenant) {
         System.out.print(UserInterface.YELLOW + "Please enter the desired amount : " + UserInterface.RESET);
         System.out.print(UserInterface.GREEN);
         int amount = scanner.nextInt();
@@ -233,35 +258,35 @@ class Owner extends Human {
     private static final List<Owner> ownerList = new ArrayList<>();
     private final List<Car> ownerCarList = new ArrayList<>();
 
-    public int getNumberOfCars() {
+    int getNumberOfCars() {
         return numberOfCars;
     }
 
-    public void setNumberOfCars(int numberOfCars) {
+    void setNumberOfCars(int numberOfCars) {
         this.numberOfCars = numberOfCars;
     }
 
-    public List<Tenant> getMyTenantsList() {
+    List<Tenant> getMyTenantsList() {
         return myTenantsList;
     }
 
-    public static List<Owner> getOwnerList() {
+    static List<Owner> getOwnerList() {
         return ownerList;
     }
 
-    public List<Car> getOwnerCarList() {
+    List<Car> getOwnerCarList() {
         return ownerCarList;
     }
 
-    public int getIncome() {
+    int getIncome() {
         return income;
     }
 
-    public void setIncome(int income) {
+    void setIncome(int income) {
         this.income = income;
     }
 
-    public static void displayMyCars(Owner owner) {
+    static void displayMyCars(Owner owner) {
         boolean running = true;
         while (running) {
             System.out.println(UserInterface.PURPLE + "\nThe list of your cars \n" + UserInterface.RESET);
@@ -286,7 +311,7 @@ class Owner extends Human {
         }
     }
 
-    public static void displayOwnerCarsFiltered(Owner owner) {
+    static void displayOwnerCarsFiltered(Owner owner) {
 
         for (Car car : Car.getCarList()) {
             if (car.getOwner().equals(owner)) {
@@ -297,7 +322,7 @@ class Owner extends Human {
         }
     }
 
-    public static void printMyTenantsList(Owner owner) {
+    static void printMyTenantsList(Owner owner) {
         int counter = 1;
         for (Tenant tenant : owner.getMyTenantsList()) {
             System.out.println(UserInterface.PURPLE + "[" + counter + UserInterface.PURPLE + "]" + UserInterface.RESET + " " + tenant.getFirstName() + ' ' + tenant.getLastName());
@@ -323,71 +348,71 @@ class Agency extends UserInterface {
     private static long totalProfit;
     private static final Scanner scanner = new Scanner(System.in);
 
-    public static int getRemovedTenantsCount() {
+    static int getRemovedTenantsCount() {
         return removedTenantsCount;
     }
 
-    public static void setRemovedTenantsCount(int removedTenantsCount) {
+    static void setRemovedTenantsCount(int removedTenantsCount) {
         Agency.removedTenantsCount = removedTenantsCount;
     }
 
-    public static int getRemovedCarsCount() {
+    static int getRemovedCarsCount() {
         return removedCarsCount;
     }
 
-    public static void setRemovedCarsCount(int removedCarsCount) {
+    static void setRemovedCarsCount(int removedCarsCount) {
         Agency.removedCarsCount = removedCarsCount;
     }
 
-    public static long getTotalProfit() {
+    static long getTotalProfit() {
         return totalProfit;
     }
 
-    public static void setTotalProfit(long totalProfit) {
+    static void setTotalProfit(long totalProfit) {
         Agency.totalProfit = totalProfit;
     }
 
-    public static long getTotalTransactionValue() {
+    static long getTotalTransactionValue() {
         return totalTransactionValue;
     }
 
-    public static void setTotalTransactionValue(long totalTransactionValue) {
+    static void setTotalTransactionValue(long totalTransactionValue) {
         Agency.totalTransactionValue = totalTransactionValue;
     }
 
-    public static int getTransactionCount() {
+    static int getTransactionCount() {
         return transactionCount;
     }
 
-    public static void setTransactionCount(int transactionCount) {
+    static void setTransactionCount(int transactionCount) {
         Agency.transactionCount = transactionCount;
     }
 
-    public static int getRemovedOwnersCount() {
+    static int getRemovedOwnersCount() {
         return removedOwnersCount;
     }
 
-    public static void setRemovedOwnersCount(int removedOwnersCount) {
+    static void setRemovedOwnersCount(int removedOwnersCount) {
         Agency.removedOwnersCount = removedOwnersCount;
     }
 
-    public static Boolean getCarRentalStatus() {
+    static Boolean getCarRentalStatus() {
         return carRentalStatus;
     }
 
-    public static void setCarRentalStatus(boolean carRentalStatus) {
+    static void setCarRentalStatus(boolean carRentalStatus) {
         Agency.carRentalStatus = carRentalStatus;
     }
 
-    public static Boolean getRentedCarStatus() {
+    static Boolean getRentedCarStatus() {
         return rentedCarStatus;
     }
 
-    public static void setRentedCarStatus(boolean rentedCarStatus) {
+    static void setRentedCarStatus(boolean rentedCarStatus) {
         Agency.rentedCarStatus = rentedCarStatus;
     }
 
-    public static Owner getOwnerByIndex(int index) {
+    static Owner getOwnerByIndex(int index) {
         if (index >= 0 && index < Owner.getOwnerList().size()) {
             return Owner.getOwnerList().get(index);
         } else {
@@ -396,7 +421,7 @@ class Agency extends UserInterface {
         }
     }
 
-    public static Tenant getTenantByIndex(int index) {
+    static Tenant getTenantByIndex(int index) {
         if (index >= 0 && index < Tenant.getTenantList().size()) {
             return Tenant.getTenantList().get(index);
         } else {
@@ -407,7 +432,7 @@ class Agency extends UserInterface {
         }
     }
 
-    public static Car getCarByIndex(int index) {
+    static Car getCarByIndex(int index) {
         if (index >= 0 && index < Car.getCarList().size()) {
             return Car.getCarList().get(index);
         } else {
@@ -418,43 +443,43 @@ class Agency extends UserInterface {
         }
     }
 
-    public static void addOwner(Owner owner) {
+    static void addOwner(Owner owner) {
         Owner.getOwnerList().add(owner);
     }
 
-    public static void addTenant(Tenant tenant) {
+    static void addTenant(Tenant tenant) {
         Tenant.getTenantList().add(tenant);
     }
 
-    public static void addCar(Car car) {
+    static void addCar(Car car) {
         Car.getCarList().add(car);
     }
 
-    public static void addRentedCarList(Car car) {
+    static void addRentedCarList(Car car) {
         Car.getRentedCarList().add(car);
     }
 
-    public static void removeCar(Car car) {
+    static void removeCar(Car car) {
         Car.getCarList().remove(car);
     }
 
-    public static void removeOwner(Owner owner) {
+    static void removeOwner(Owner owner) {
         Owner.getOwnerList().remove(owner);
     }
 
-    public static void removeTenant(Tenant tenant) {
+    static void removeTenant(Tenant tenant) {
         Tenant.getTenantList().remove(tenant);
     }
 
-    public static boolean getIsCarOwner() {
+    static boolean getIsCarOwner() {
         return isCarOwner;
     }
 
-    public static void setIsCarOwner(Boolean value) {
+    static void setIsCarOwner(Boolean value) {
         isCarOwner = value;
     }
 
-    public static void printOwners() {
+    static void printOwners() {
         if (!Owner.getOwnerList().isEmpty()) {
             System.out.println(PURPLE + "\nList of Owners :\n" + WHITE);
             for (Owner owner : Owner.getOwnerList()) {
@@ -471,7 +496,7 @@ class Agency extends UserInterface {
         }
     }
 
-    public static void printOwner(Owner owner) {
+    static void printOwner(Owner owner) {
         if (!Owner.getOwnerList().isEmpty()) {
             System.out.println();
             System.out.println("Information of " + GREEN + owner.getFirstName() + ' ' + owner.getLastName() + RESET + " \n");
@@ -486,7 +511,7 @@ class Agency extends UserInterface {
         }
     }
 
-    public static void printTenants() {
+    static void printTenants() {
         if (!Tenant.getTenantList().isEmpty()) {
             System.out.println(PURPLE + "\nList of Tenants :\n" + WHITE);
             for (Tenant tenant : Tenant.getTenantList()) {
@@ -507,7 +532,7 @@ class Agency extends UserInterface {
         }
     }
 
-    public static void printTenant(Tenant tenant) {
+    static void printTenant(Tenant tenant) {
         if (!Tenant.getTenantList().isEmpty()) {
             System.out.println();
             System.out.println("Information of " + GREEN + tenant.getFirstName() + ' ' + tenant.getLastName() + RESET + " \n");
@@ -526,7 +551,7 @@ class Agency extends UserInterface {
         }
     }
 
-    public static void printCars() {
+    static void printCars() {
         if (!Car.getCarList().isEmpty()) {
             System.out.println(PURPLE + "\nList of Cars :\n" + WHITE);
             for (Car car : Car.getCarList()) {
@@ -541,7 +566,7 @@ class Agency extends UserInterface {
         }
     }
 
-    public static void printCar(Car car) {
+    static void printCar(Car car) {
         if (!Car.getCarList().isEmpty()) {
             System.out.println();
             System.out.println("Information of  " + GREEN + car.getNameModel() + RESET + " car  \n");
@@ -554,7 +579,7 @@ class Agency extends UserInterface {
         }
     }
 
-    public static void printOwnerList(String type) {
+    static void printOwnerList(String type) {
         if (type.equalsIgnoreCase("username")) {
             for (Owner owner : Owner.getOwnerList()) {
                 System.out.println(PURPLE + "[" + RESET + Owner.getOwnerList().indexOf(owner) + PURPLE + "] " + RESET + owner.getUsername());
@@ -570,7 +595,7 @@ class Agency extends UserInterface {
         }
     }
 
-    public static void printCarList(boolean exception, Tenant user) {
+    static void printCarList(boolean exception, Tenant user) {
         for (Car car : Car.getCarList()) {
             if (exception && user != null) {
                 if (!Car.getRentedCarList().contains(car) && user.getAccountBalance() >= car.getRentMoney()) {
@@ -587,7 +612,7 @@ class Agency extends UserInterface {
         }
     }
 
-    public static Boolean isCarRented(Car car) {
+    static Boolean isCarRented(Car car) {
         for (Tenant tenant : Tenant.getTenantList()) {
             if (tenant.getRentedCar() != null) {
                 if (tenant.getRentedCar().equals(car)) {
@@ -598,7 +623,7 @@ class Agency extends UserInterface {
         return false;
     }
 
-    public static void printTenantList(String type, boolean exception) {
+    static void printTenantList(String type, boolean exception) {
         if (type.equalsIgnoreCase("username")) {
             for (Tenant tenant : Tenant.getTenantList()) {
                 if (exception) {
@@ -632,7 +657,7 @@ class Agency extends UserInterface {
         }
     }
 
-    public static void removeFromTenantList() {
+    static void removeFromTenantList() {
         if (!Tenant.getTenantList().isEmpty()) {
             System.out.println(PURPLE + "Please select the desired tenant : \n\n" + RESET);
             printTenantList("name", false);
@@ -676,7 +701,7 @@ class Agency extends UserInterface {
 
     }
 
-    public static void removeFromOwnerList() {
+    static void removeFromOwnerList() {
         if (!Owner.getOwnerList().isEmpty()) {
             System.out.println(PURPLE + "Please select the desired owner : \n\n" + RESET);
             printOwnerList("name");
@@ -731,7 +756,7 @@ class Agency extends UserInterface {
 
     }
 
-    public static void removeFromCarList() {
+    static void removeFromCarList() {
         if (!Car.getCarList().isEmpty()) {
             System.out.println("Please select the desired car : \n\n");
             printCarList(false, null);
@@ -771,7 +796,7 @@ class Agency extends UserInterface {
 
     }
 
-    public static void rent() {
+    static void rent() {
         if (!Tenant.getTenantList().isEmpty()) {
             System.out.println(PURPLE + "Please select the desired tenant : \n\n" + RESET);
             printTenantList("name", true);
@@ -852,7 +877,7 @@ class Agency extends UserInterface {
 
     }
 
-    public static void addOwner() {
+    static void addOwner() {
         Owner owner = new Owner();
 
         System.out.print("Enter the owner's username: ");
@@ -913,7 +938,7 @@ class Agency extends UserInterface {
         }
     }
 
-    public static void addTenant() {
+    static void addTenant() {
         Tenant tenant = new Tenant();
 
         System.out.print("Enter the tenant's username: ");
@@ -979,7 +1004,7 @@ class Agency extends UserInterface {
         }
     }
 
-    public static void addCar() {
+    static void addCar() {
         Car car = new Car();
 
         System.out.print("Enter the car's Name Model: ");
@@ -1583,7 +1608,7 @@ class Agency extends UserInterface {
 
     }
 
-    public static void handleSearchMainMenuManager() {
+    static void handleSearchMainMenuManager() {
         boolean running = true;
         while (running) {
             displaySearchMenu();
@@ -1609,7 +1634,7 @@ class Agency extends UserInterface {
 
     }
 
-    public static void handleReportMenu() {
+    static void handleReportMenu() {
         boolean running = true;
         while (running) {
             displayReportMenu();
@@ -1697,7 +1722,7 @@ class Agency extends UserInterface {
         }
     }
 
-    public static void handleAddMainMenuManager() {
+    static void handleAddMainMenuManager() {
         boolean running = true;
         while (running) {
             displayAddMenu();
@@ -1725,7 +1750,7 @@ class Agency extends UserInterface {
         }
     }
 
-    public static void handleRemoveMainMenuManager() {
+    static void handleRemoveMainMenuManager() {
         boolean running = true;
         while (running) {
             displayRemoveMenu();
@@ -1771,42 +1796,7 @@ class UserInterface {
     protected static final String PURPLE = "\u001B[35m";
     protected static final String WHITE = "\u001B[37m";
 
-    protected static void main(String[] args) {
-        boolean running = true;
-        while (running) {
-            displayHomeMenu();
-            int option = getUserOption();
-            switch (option) {
-                case 1:
-                    adminLogin();
-                    break;
-
-                case 2:
-                    ownerLogin();
-                    break;
-
-                case 3:
-                    tenantLogin();
-                    break;
-
-                case 4:
-                    displayDeveloperInfo();
-                    break;
-
-                case 0:
-                    running = confirmLogout("System");
-                    break;
-
-                default:
-                    System.out.println();
-                    System.out.println(RED + "Invalid option! Please try again" + RESET);
-            }
-        }
-        scanner.close();
-        System.out.println(UserInterface.GREEN + "Successful logout!" + UserInterface.RESET);
-    }
-
-    private static void adminLogin() {
+    static void adminLogin() {
         String adminUsername = "admin";
         String adminPassword = "admin";
         System.out.print(YELLOW + "Enter Username : " + RESET);
@@ -1829,7 +1819,7 @@ class UserInterface {
 
     }
 
-    private static void ownerLogin() {
+    static void ownerLogin() {
         if (!Owner.getOwnerList().isEmpty()) {
             Agency.printOwnerList("username");
             int ownerUsernameIndex = validateNumericInput(YELLOW + "\nSelect Username : " + RESET, UserInterface.PURPLE);
@@ -1860,7 +1850,7 @@ class UserInterface {
 
     }
 
-    private static void tenantLogin() {
+    static void tenantLogin() {
         if (!Tenant.getTenantList().isEmpty()) {
             Agency.printTenantList("username", false);
             int tenantUsernameIndex = validateNumericInput(YELLOW + "\nSelect Username : " + RESET, UserInterface.PURPLE);
@@ -1954,7 +1944,7 @@ class UserInterface {
         System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Log out");
     }
 
-    private static void displayDeveloperInfo() {
+    static void displayDeveloperInfo() {
         String art = """
                  __        ___   _  ___       _    __  __    ___   ___\s
                  \\ \\      / / | | |/ _ \\     / \\  |  \\/  |  |_ _| |__ \\
@@ -2080,7 +2070,7 @@ class UserInterface {
         }
     }
 
-    private static void displayHomeMenu() {
+    static void displayHomeMenu() {
         String art = """
                 ╔═╗┌─┐┬─┐  ╦═╗┌─┐┌┐┌┌┬┐┌─┐┬    ╔═╗┌─┐┌─┐┌┐┌┌─┐┬ ┬
                 ║  ├─┤├┬┘  ╠╦╝├┤ │││ │ ├─┤│    ╠═╣│ ┬├┤ ││││  └┬┘
@@ -2437,7 +2427,7 @@ class UserInterface {
         return money;
     }
 
-    private static boolean confirmLogout(String location) {
+    static boolean confirmLogout(String location) {
         System.out.println(YELLOW + "Would you like to log out of the " + location + " ? \n" + RESET);
         showConfirmationPrompt();
         while (true) {
@@ -2495,3 +2485,4 @@ class UserInterface {
 
     }
 }
+// چک کردن استاتیک ها
