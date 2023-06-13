@@ -128,14 +128,23 @@ class Human {
 }
 
 class Car {
+
+    /**
+
+     The Car class represents a car object with various properties such as the model name,
+     engine capacity, owner, rent money, type, and lifespan
+     It provides getter and setter methods for accessing and modifying these properties
+
+     */
+
     private String nameModel;
     private Integer engineCapacity;
     private Owner owner;
     private Integer rentMoney;
     private String type;
     private Integer lifespan;
-    private static final List<Car> carList = new ArrayList<>();
-    private static final List<Car> rentedCarList = new ArrayList<>();
+    private static final List<Car> carList = new ArrayList<>(); // A list of all available cars
+    private static final List<Car> rentedCarList = new ArrayList<>(); // A list of cars that are currently rented
 
     Integer getEngineCapacity() {
         return engineCapacity;
