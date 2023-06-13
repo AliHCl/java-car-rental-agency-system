@@ -4,12 +4,13 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-class Demo {
-    protected static void main(String[] args) {
+class Login {
+    //  Users can log in as an admin, owner, or tenant
+    public static void main(String[] args) {
         boolean running = true;
         while (running) {
-            UserInterface.displayHomeMenu();
-            int option = UserInterface.getUserOption();
+            UserInterface.displayHomeMenu(); // display home banner menu
+            int option = UserInterface.getUserOption(); // Receiving a numerical input option from the user
             switch (option) {
                 case 1:
                     UserInterface.adminLogin();
@@ -28,12 +29,12 @@ class Demo {
                     break;
 
                 case 0:
+                    // Getting system confirmation for logout from the user with a corresponding message print
                     running = UserInterface.confirmLogout("System");
                     break;
 
                 default:
-                    System.out.println();
-                    System.out.println(UserInterface.RED + "Invalid option! Please try again" + UserInterface.RESET);
+                    System.out.println(UserInterface.RED + "\nInvalid option!" + UserInterface.RESET);
             }
         }
         System.out.println(UserInterface.GREEN + "Successful logout!" + UserInterface.RESET);
