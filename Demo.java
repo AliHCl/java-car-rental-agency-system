@@ -4,7 +4,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-class Login {
+abstract class Login {
     //  Users can log in as an admin, owner, or tenant
     public static void main(String[] args) {
         boolean running = true;
@@ -43,7 +43,7 @@ class Login {
 }
 
 
-class Human {
+abstract class Human {
 
     /**
      * The Human class represents a basic model for a human entity. It encapsulates
@@ -1885,7 +1885,7 @@ class Agency extends UserInterface {
     }
 }
 
-class UserInterface {
+abstract class UserInterface {
     private static final Scanner scanner = new Scanner(System.in);
     private static final List<Integer> validIndexes = new ArrayList<>();
 
