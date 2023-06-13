@@ -204,11 +204,20 @@ class Car {
 }
 
 class Tenant extends Human {
-    private Integer accountBalance;
-    private Car rentedCar;
-    private Owner rentedCarOwner;
+    /*
+
+     The Tenant class represents a tenant, which is a subclass of the Human class
+     It extends the Human class to inherit its properties and methods
+     In addition to the inherited properties,
+     the Tenant class has specific properties such as accountBalance,
+     rentedCar, rentedCarOwner, scanner, and tenantList
+
+     */
+    private Integer accountBalance; // Maintaining the account balance of the tenant
+    private Car rentedCar; // Maintaining the details of the rented car by the tenant
+    private Owner rentedCarOwner; // Maintaining the details of the owner of the car rented by the tenant
     private static final Scanner scanner = new Scanner(System.in);
-    private static final List<Tenant> tenantList = new ArrayList<>();
+    private static final List<Tenant> tenantList = new ArrayList<>(); // Maintaining a list of all existing tenants
 
     Integer getAccountBalance() {
         return accountBalance;
@@ -239,6 +248,9 @@ class Tenant extends Human {
     }
 
     static void increaseAccountBalance(Tenant tenant) {
+
+        // this method to allow tenants to increase their account balance
+
         System.out.print(UserInterface.YELLOW + "Please enter the desired amount : " + UserInterface.RESET);
         System.out.print(UserInterface.GREEN);
         int amount = scanner.nextInt();
