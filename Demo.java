@@ -366,7 +366,7 @@ class Tenant extends Human {
         System.out.println(UserInterface.RESET);
         System.out.println(UserInterface.YELLOW + "Do you want to increase your account balance by " + UserInterface.GREEN + UserInterface.formattedNumber.format(amount) + UserInterface.RESET + UserInterface.YELLOW + " toman?" + UserInterface.RESET);
         System.out.println();
-        UserInterface.showConfirmationPrompt();
+        UserInterface.showYesNoOptions();
         boolean running = true;
         while (running) {
             int option = UserInterface.getUserOption();
@@ -935,7 +935,7 @@ class Agency extends UserInterface {
             System.out.println();
             System.out.println(YELLOW + "Do you want to remove " + RESET + GREEN + tenant.getFirstName() +
                     ' ' + tenant.getLastName() + RESET + YELLOW + " from the list of tenants?" + RESET);
-            showConfirmationPrompt(); // Ask for confirmation
+            showYesNoOptions(); // Ask for confirmation
 
             boolean running = true;
             while (running) {
@@ -990,7 +990,7 @@ class Agency extends UserInterface {
             } else {
                 System.out.println(PURPLE + "This owner does not have any car with their name" + PURPLE);
             }
-            showConfirmationPrompt(); // Ask for confirmation
+            showYesNoOptions(); // Ask for confirmation
 
             boolean running = true;
             while (running) {
@@ -1036,7 +1036,7 @@ class Agency extends UserInterface {
             System.out.println();
             System.out.println(YELLOW + "Do you want to remove the " + RESET + PURPLE + car.getNameModel() + RESET +
                     YELLOW + " car from the list of cars?" + RESET);
-            showConfirmationPrompt(); // Ask for confirmation
+            showYesNoOptions(); // Ask for confirmation
 
             boolean running = true;
             while (running) {
@@ -1108,7 +1108,7 @@ class Agency extends UserInterface {
 
                 System.out.println();
                 System.out.println(YELLOW + "With your confirmation, an amount of " + RESET + GREEN + formattedNumber.format(car.getRentMoney()) + RESET + YELLOW + " Toman will be deducted from " + RESET + GREEN + tenant.getFirstName() + ' ' + tenant.getLastName() + RESET + YELLOW + "'s account\n\n" + RESET);
-                showConfirmationPrompt(); // Ask for confirmation
+                showYesNoOptions(); // Ask for confirmation
 
                 boolean running = true;
                 while (running) {
@@ -1195,7 +1195,7 @@ class Agency extends UserInterface {
         owner.setAddress(scanner.nextLine());
         System.out.print(RESET);
         System.out.println(YELLOW + "\nAre you sure about adding " + GREEN + firstName + ' ' + lastName + RESET + YELLOW + " to the list of owners?" + RESET);
-        showConfirmationPrompt();
+        showYesNoOptions();
         boolean running = true;
         while (running) {
             int option = getUserOption();
@@ -1269,7 +1269,7 @@ class Agency extends UserInterface {
         tenant.setAccountBalance(accountBalance);
 
         System.out.println(YELLOW + "\nAre you sure about adding " + GREEN + firstName + ' ' + lastName + RESET + YELLOW + " to the list of tenants?" + RESET);
-        showConfirmationPrompt();
+        showYesNoOptions();
         boolean running = true;
         while (running) {
             int option = getUserOption();
@@ -1362,7 +1362,7 @@ class Agency extends UserInterface {
             car.setLifespan(lifespan);
 
             System.out.println(YELLOW + "\nAre you sure about adding the " + GREEN + carName + RESET + YELLOW + " car to the list of cars?" + RESET);
-            showConfirmationPrompt();
+            showYesNoOptions();
             running = true;
             while (running) {
                 option = getUserOption();
@@ -2302,13 +2302,16 @@ abstract class UserInterface {
      */
 
     private static final Scanner scanner = new Scanner(System.in);
-    private static final List<Integer> validIndexes = new ArrayList<>();
+    private static final List<Integer> validIndexes = new ArrayList<>(); // Initializes an empty list to store valid indexes
 
     protected static List<Integer> getValidIndexes() {
         return validIndexes;
     }
 
+    // Creating an instance of the DecimalFormat class to separate monetary values into groups of three digits
     protected static final DecimalFormat formattedNumber = new DecimalFormat("#,###,###");
+
+    // Colors
     protected static final String RESET = "\u001B[0m";
     protected static final String RED = "\u001B[31m";
     protected static final String GREEN = "\u001B[32m";
@@ -2316,36 +2319,51 @@ abstract class UserInterface {
     protected static final String PURPLE = "\u001B[35m";
     protected static final String WHITE = "\u001B[37m";
 
-
     private static void typingAnimation(String text, int delay) {
+
+        /*
+         * Displays the text in a typing animation with a specified delay.
+         *
+         * param text  The text to display.
+         * param delay The delay between each character in milliseconds.
+         */
+
         try {
             for (int i = 0; i < text.length(); i++) {
-                System.out.print(text.charAt(i));
-                Thread.sleep(delay);
+                System.out.print(text.charAt(i)); // Print the current character
+                Thread.sleep(delay); // Pause for the specified delay
             }
         } catch (InterruptedException error) {
-            error.printStackTrace();
+            error.printStackTrace(); // Ignoring the error
         }
     }
 
     static void displayOwnerPanelMenu(Owner owner) {
+
+        // Print the banner
         System.out.println();
         String art = """
-                   _____        ___   _ _____ ____     ____   _    _   _ _____ _    \s
-                  / _ \\ \\      / / \\ | | ____|  _ \\   |  _ \\ / \\  | \\ | | ____| |   \s
-                 | | | \\ \\ /\\ / /|  \\| |  _| | |_) |  | |_) / _ \\ |  \\| |  _| | |   \s
-                 | |_| |\\ V  V / | |\\  | |___|  _ <   |  __/ ___ \\| |\\  | |___| |___\s
+                   _____        ___   _ _____ ____     ____   _    _   _ _____ _ \s
+                  / _ \\ \\      / / \\ | | ____|  _ \\   |  _ \\ / \\  | \\ | | ____| | \s
+                 | | | \\ \\ /\\ / /|  \\| |  _| | |_) |  | |_) / _ \\ |  \\| |  _| | | \s
+                 | |_| |\\ V  V / | |\\  | |___|  _ <   |  __/ ___ \\| |\\  | |___| |___
                   \\___/  \\_/\\_/  |_| \\_|_____|_| \\_\\  |_| /_/   \\_\\_| \\_|_____|_____|
-                                                                                    \s
+
                 """;
         printBanner(art);
         System.out.println();
+
+        // Display owner information
         System.out.println("Number of your tenants                      " + PURPLE + "[" + WHITE + GREEN + owner.getMyTenantsList().size() + RESET + PURPLE + "] " + WHITE);
         System.out.println("Number of cars owned by you                 " + PURPLE + "[" + WHITE + GREEN + owner.getNumberOfCars() + RESET + PURPLE + "] " + WHITE);
         System.out.println("My income (with 90% profit per transaction) " + PURPLE + "[" + WHITE + GREEN + formattedNumber.format(owner.getIncome()) + RESET + PURPLE + "] " + WHITE);
         System.out.println();
+
+        // Print owner details
         Agency.printOwner(owner);
         System.out.println();
+
+        // Display menu options
         System.out.println(PURPLE + "Please select an option :\n" + RESET);
         System.out.println(PURPLE + "[" + WHITE + 1 + PURPLE + "] " + WHITE + "My Cars ");
         System.out.println(PURPLE + "[" + WHITE + 2 + PURPLE + "] " + WHITE + "My tenants");
@@ -2353,21 +2371,29 @@ abstract class UserInterface {
     }
 
     static void displayTenantPanelMenu(Tenant tenant) {
+
+        // Print the banner
         System.out.println();
         String art = """
-                  _____ _____ _   _    _    _   _ _____    ____   _    _   _ _____ _    \s
-                 |_   _| ____| \\ | |  / \\  | \\ | |_   _|  |  _ \\ / \\  | \\ | | ____| |   \s
-                   | | |  _| |  \\| | / _ \\ |  \\| | | |    | |_) / _ \\ |  \\| |  _| | |   \s
-                   | | | |___| |\\  |/ ___ \\| |\\  | | |    |  __/ ___ \\| |\\  | |___| |___\s
+                  _____ _____ _   _    _    _   _ _____    ____   _    _   _ _____ _
+                 |_   _| ____| \\ | |  / \\  | \\ | |_   _|  |  _ \\ / \\  | \\ | | ____| |
+                   | | |  _| |  \\| | / _ \\ |  \\| | | |    | |_) / _ \\ |  \\| |  _| | |
+                   | | | |___| |\\  |/ ___ \\| |\\  | | |    |  __/ ___ \\| |\\  | |___| |___
                    |_| |_____|_| \\_/_/   \\_\\_| \\_| |_|    |_| /_/   \\_\\_| \\_|_____|_____|
-                                                                                        \s
+
                 """;
         printBanner(art);
         System.out.println();
+
+        // Display account balance
         System.out.println("My account balance " + PURPLE + "[" + WHITE + GREEN + formattedNumber.format(tenant.getAccountBalance()) + RESET + PURPLE + "] " + WHITE);
         System.out.println();
+
+        // Print tenant details
         Agency.printTenant(tenant);
         System.out.println();
+
+        // Display rented car information
         Car rentalCar = tenant.getRentedCar();
         if (rentalCar != null) {
             Agency.printCar(rentalCar);
@@ -2375,6 +2401,8 @@ abstract class UserInterface {
             System.out.println(PURPLE + "You did not rent a car" + RESET);
         }
         System.out.println();
+
+        // Display menu options
         System.out.println(PURPLE + "Please select an option :\n" + RESET);
         System.out.println(PURPLE + "[" + WHITE + 1 + PURPLE + "] " + WHITE + "Increase Account Balance ");
         System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Log out");
@@ -2382,52 +2410,49 @@ abstract class UserInterface {
 
     static void displayDeveloperInfo() {
         String art = """
-                 __        ___   _  ___       _    __  __    ___   ___\s
+                 __        ___   _  ___       _    __  __    ___   ___
                  \\ \\      / / | | |/ _ \\     / \\  |  \\/  |  |_ _| |__ \\
                   \\ \\ /\\ / /| |_| | | | |   / _ \\ | |\\/| |   | |    / /
-                   \\ V  V / |  _  | |_| |  / ___ \\| |  | |   | |   |_|\s
-                    \\_/\\_/  |_| |_|\\___/  /_/   \\_\\_|  |_|  |___|  (_)\s
-                                                                                                   
+                   \\ V  V / |  _  | |_| |  / ___ \\| |  | |   | |   |_|
+                    \\_/\\_/  |_| |_|\\___/  /_/   \\_\\_|  |_|  |___|  (_)
+
                 """;
 
-        printBanner(art);
-        typingAnimation("\n\neverything is on " + PURPLE + "Principle" + RESET + ", everything is on " + PURPLE + "Discipline" + RESET, 90);
+        printBanner(art); // Display the banner using ASCII art
+        typingAnimation("\n\neverything is on " + PURPLE + "Principle" + RESET + ", everything is on " + PURPLE + "Discipline" + RESET, 90); // Typing animation for a message
         typingAnimation(PURPLE + "\n======================================\n\n" + RESET, 30);
-        typingAnimation(YELLOW + "I am " + RESET + GREEN + "Ali Dehghanpour\n" + RESET, 90);
+        typingAnimation(YELLOW + "I am " + RESET + GREEN + "Ali Dehghanpour\n" + RESET, 90); // Typing animation for the developer's name
         System.out.println();
-        showProjectHours();
+        showProjectHours(); // Display project hours
         System.out.println();
-        typingAnimation("Email    " + PURPLE + "[" + WHITE + GREEN + "ali75847584@gmail.com" + RESET + PURPLE + "]" + RESET, 90);
+        typingAnimation("Email    " + PURPLE + "[" + WHITE + GREEN + "ali75847584@gmail.com" + RESET + PURPLE + "]" + RESET, 90); // Typing animation for the developer's email
         System.out.println();
-        typingAnimation("GitHub   " + PURPLE + "[" + WHITE + GREEN + "AliHCl" + RESET + PURPLE + "]" + RESET, 90);
+        typingAnimation("GitHub   " + PURPLE + "[" + WHITE + GREEN + "AliHCl" + RESET + PURPLE + "]" + RESET, 90); // Typing animation for the developer's GitHub username
         System.out.println();
-        typingAnimation("Telegram " + PURPLE + "[" + WHITE + GREEN + "@Ali_4201" + RESET + PURPLE + "]" + RESET, 90);
+        typingAnimation("Telegram " + PURPLE + "[" + WHITE + GREEN + "@Ali_4201" + RESET + PURPLE + "]" + RESET, 90); // Typing animation for the developer's Telegram username
         System.out.println();
         typingAnimation(PURPLE + "\n======================================\n\n" + RESET, 30);
         System.out.println();
-
-
     }
 
     private static void showProjectHours() {
         try {
             int animationSpeed = 90;
             int projectHours = 54;
-            typingAnimation("\r" + YELLOW + "I worked on this project for " + RESET, 90);
+            typingAnimation("\r" + YELLOW + "I worked on this project for " + RESET, 90); // Typing animation for the initial message
             for (int i = 0; i <= projectHours; i++) {
                 if (i < 10) {
-                    System.out.print("\r" + YELLOW + "I worked on this project for " + RESET + i);
+                    System.out.print("\r" + YELLOW + "I worked on this project for " + RESET + i); // Displaying the hours with color formatting
                 } else if (i < 25) {
                     System.out.print("\r" + YELLOW + "I worked on this project for " + RESET + GREEN + i + RESET);
                 } else if (i < 30) {
                     System.out.print("\r" + YELLOW + "I worked on this project for " + RESET + YELLOW + i + RESET);
-
                 } else {
                     System.out.print("\r" + YELLOW + "I worked on this project for " + RESET + RED + i + RESET);
                 }
                 Thread.sleep(animationSpeed);
             }
-            typingAnimation(YELLOW + " hours" + RESET, 90);
+            typingAnimation(YELLOW + " hours" + RESET, 90); // Typing animation for displaying "hours"
             System.out.println();
         } catch (InterruptedException error) {
             error.printStackTrace();
@@ -2438,72 +2463,70 @@ abstract class UserInterface {
         String art = """
                 ╔═╗┌─┐┬─┐  ╦═╗┌─┐┌┐┌┌┬┐┌─┐┬    ╔═╗┌─┐┌─┐┌┐┌┌─┐┬ ┬
                 ║  ├─┤├┬┘  ╠╦╝├┤ │││ │ ├─┤│    ╠═╣│ ┬├┤ ││││  └┬┘
-                ╚═╝┴ ┴┴└─  ╩╚═└─┘┘└┘ ┴ ┴ ┴┴─┘  ╩ ╩└─┘└─┘┘└┘└─┘ ┴\s
+                ╚═╝┴ ┴┴└─  ╩╚═└─┘┘└┘ ┴ ┴ ┴┴─┘  ╩ ╩└─┘└─┘┘└┘└─┘ ┴
                 """;
-        printBanner(art);
+        printBanner(art); // Display the banner art
         System.out.println("Welcome to the Agency Management System\n");
         System.out.println(PURPLE + "Who are you:\n" + RESET);
-        System.out.println(PURPLE + "[" + WHITE + 1 + PURPLE + "] " + WHITE + "Agency Manager");
-        System.out.println(PURPLE + "[" + WHITE + 2 + PURPLE + "] " + WHITE + "Owner");
-        System.out.println(PURPLE + "[" + WHITE + 3 + PURPLE + "] " + WHITE + "Tenant");
-        System.out.println(PURPLE + "[" + WHITE + 4 + PURPLE + "] " + WHITE + "About me");
-        System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Exit");
+        System.out.println(PURPLE + "[" + WHITE + 1 + PURPLE + "] " + WHITE + "Agency Manager"); // Option for Agency Manager
+        System.out.println(PURPLE + "[" + WHITE + 2 + PURPLE + "] " + WHITE + "Owner"); // Option for Owner
+        System.out.println(PURPLE + "[" + WHITE + 3 + PURPLE + "] " + WHITE + "Tenant"); // Option for Tenant
+        System.out.println(PURPLE + "[" + WHITE + 4 + PURPLE + "] " + WHITE + "About me"); // Option for About me
+        System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Exit"); // Option to Exit the system
     }
 
     protected static void displayAgencyManagerMenu() {
         String art = """
-                     _    ____  __  __ ___ _   _    ____   _    _   _ _____ _    \s
-                    / \\  |  _ \\|  \\/  |_ _| \\ | |  |  _ \\ / \\  | \\ | | ____| |   \s
-                   / _ \\ | | | | |\\/| || ||  \\| |  | |_) / _ \\ |  \\| |  _| | |   \s
-                  / ___ \\| |_| | |  | || || |\\  |  |  __/ ___ \\| |\\  | |___| |___\s
+                     _    ____  __  __ ___ _   _    ____   _    _   _ _____ _
+                    / \\  |  _ \\|  \\/  |_ _| \\ | |  |  _ \\ / \\  | \\ | | ____| |
+                   / _ \\ | | | | |\\/| || ||  \\| |  | |_) / _ \\ |  \\| |  _| | |
+                  / ___ \\| |_| | |  | || || |\\  |  |  __/ ___ \\| |\\  | |___| |___
                  /_/   \\_\\____/|_|  |_|___|_| \\_|  |_| /_/   \\_\\_| \\_|_____|_____|
-                                                                                 \s
+                                                                                 
                 """;
-        printBanner(art);
+        printBanner(art); // Display the banner art
         System.out.println();
         System.out.println(PURPLE + "Please select an option \n" + RESET);
-        System.out.println(PURPLE + "[" + WHITE + 1 + PURPLE + "] " + WHITE + "Add");
-        System.out.println(PURPLE + "[" + WHITE + 2 + PURPLE + "] " + WHITE + "Remove");
-        System.out.println(PURPLE + "[" + WHITE + 3 + PURPLE + "] " + WHITE + "Search");
-        System.out.println(PURPLE + "[" + WHITE + 4 + PURPLE + "] " + WHITE + "Rent");
-        System.out.println(PURPLE + "[" + WHITE + 5 + PURPLE + "] " + WHITE + "Print Report");
-        System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Log out");
+        System.out.println(PURPLE + "[" + WHITE + 1 + PURPLE + "] " + WHITE + "Add"); // Option to add
+        System.out.println(PURPLE + "[" + WHITE + 2 + PURPLE + "] " + WHITE + "Remove"); // Option to remove
+        System.out.println(PURPLE + "[" + WHITE + 3 + PURPLE + "] " + WHITE + "Search"); // Option to search
+        System.out.println(PURPLE + "[" + WHITE + 4 + PURPLE + "] " + WHITE + "Rent"); // Option to rent
+        System.out.println(PURPLE + "[" + WHITE + 5 + PURPLE + "] " + WHITE + "Print Report"); // Option to print report
+        System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Log out"); // Option to log out
     }
 
     protected static void displaySearchMenu() {
         System.out.println();
         String art = """
-                  ____                      _    \s
-                 / ___|  ___  __ _ _ __ ___| |__ \s
-                 \\___ \\ / _ \\/ _` | '__/ __| '_ \\\s
+                  ____                      _
+                 / ___|  ___  __ _ _ __ ___| |__
+                 \\___ \\ / _ \\/ _` | '__/ __| '_ \\
                   ___) |  __/ (_| | | | (__| | | |
                  |____/ \\___|\\__,_|_|  \\___|_| |_|
-                                                 \s
+                                                 
                 """;
-        printBanner(art);
+        printBanner(art); // Display the banner art
         System.out.println();
         System.out.println(PURPLE + "Please select an option \n" + RESET);
-        System.out.println(PURPLE + "[" + WHITE + 1 + PURPLE + "] " + WHITE + "Owners");
-        System.out.println(PURPLE + "[" + WHITE + 2 + PURPLE + "] " + WHITE + "Tenants");
-        System.out.println(PURPLE + "[" + WHITE + 3 + PURPLE + "] " + WHITE + "Cars");
-        System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back");
+        System.out.println(PURPLE + "[" + WHITE + 1 + PURPLE + "] " + WHITE + "Owners"); // Option to search for owners
+        System.out.println(PURPLE + "[" + WHITE + 2 + PURPLE + "] " + WHITE + "Tenants"); // Option to search for tenants
+        System.out.println(PURPLE + "[" + WHITE + 3 + PURPLE + "] " + WHITE + "Cars"); // Option to search for cars
+        System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back"); // Option to go back
     }
 
     protected static void displayReportMenu() {
         String art = """
-                8888888b.  8888888888 8888888b.   .d88888b.  8888888b. 88888888888\s
-                888   Y88b 888        888   Y88b d88P" "Y88b 888   Y88b    888    \s
-                888    888 888        888    888 888     888 888    888    888    \s
-                888   d88P 8888888    888   d88P 888     888 888   d88P    888    \s
-                8888888P"  888        8888888P"  888     888 8888888P"     888    \s
-                888 T88b   888        888        888     888 888 T88b      888    \s
-                888  T88b  888        888        Y88b. .d88P 888  T88b     888    \s
-                888   T88b 8888888888 888         "Y88888P"  888   T88b    888    \s
-                                                                                  \s
-                                                                                  \s
-                                                                                  \s
+                8888888b.  8888888888 8888888b.   .d88888b.  8888888b. 88888888888
+                888   Y88b 888        888   Y88b d88P" "Y88b 888   Y88b    888
+                888    888 888        888    888 888     888 888    888    888
+                888   d88P 8888888    888   d88P 888     888 888   d88P    888
+                8888888P"  888        8888888P"  888     888 8888888P"     888
+                888 T88b   888        888        888     888 888 T88b      888
+                888  T88b  888        888        Y88b. .d88P 888  T88b     888
+                888   T88b 8888888888 888         "Y88888P"  888   T88b    888
+                                                                           
                 """;
-        UserInterface.printBanner(art);
+        UserInterface.printBanner(art); // Display the banner art
         int totalCustomers = Owner.getOwnerList().size() + Tenant.getTenantList().size() + Agency.getRemovedTenantsCount() + Agency.getRemovedOwnersCount();
         System.out.println("The total number of customers                          " + UserInterface.PURPLE + "[" + UserInterface.WHITE + totalCustomers + UserInterface.PURPLE + "]" + UserInterface.RESET);
         System.out.println("The current number of tenants                          " + UserInterface.PURPLE + "[" + UserInterface.WHITE + Tenant.getTenantList().size() + UserInterface.PURPLE + "]" + UserInterface.RESET);
@@ -2517,119 +2540,117 @@ abstract class UserInterface {
         System.out.println("Agency profit (calculated at 10% for each transaction) " + UserInterface.PURPLE + "[" + UserInterface.WHITE + UserInterface.formattedNumber.format(Agency.getTotalProfit()) + UserInterface.PURPLE + "]" + UserInterface.RESET);
         System.out.println();
         System.out.println();
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Owners List");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Tenants List");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Cars List");
-        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back");
-
-
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 1 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Owners List"); // Option to view owners list
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 2 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Tenants List"); // Option to view tenants list
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 3 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Cars List"); // Option to view cars list
+        System.out.println(UserInterface.PURPLE + "[" + UserInterface.WHITE + 0 + UserInterface.PURPLE + "] " + UserInterface.WHITE + "Back"); // Option to go back
     }
 
     protected static void displayAddMenu() {
         System.out.println();
         String art = """
-                     _    ____  ____ \s
-                    / \\  |  _ \\|  _ \\\s
+                     _    ____  ____
+                    / \\  |  _ \\|  _ \\
                    / _ \\ | | | | | | |
                   / ___ \\| |_| | |_| |
-                 /_/   \\_\\____/|____/\s
-                                     \s
+                 /_/   \\_\\____/|____/
+                                     
                 """;
-        printBanner(art);
+        printBanner(art); // Display the banner art
         System.out.println();
         System.out.println(PURPLE + "Please select an option \n" + RESET);
-        System.out.println(PURPLE + "[" + WHITE + 1 + PURPLE + "] " + WHITE + "Add Owner");
-        System.out.println(PURPLE + "[" + WHITE + 2 + PURPLE + "] " + WHITE + "Add Tenant");
-        System.out.println(PURPLE + "[" + WHITE + 3 + PURPLE + "] " + WHITE + "Add Car");
-        System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back");
+        System.out.println(PURPLE + "[" + WHITE + 1 + PURPLE + "] " + WHITE + "Add Owner"); // Option to add an owner
+        System.out.println(PURPLE + "[" + WHITE + 2 + PURPLE + "] " + WHITE + "Add Tenant"); // Option to add a tenant
+        System.out.println(PURPLE + "[" + WHITE + 3 + PURPLE + "] " + WHITE + "Add Car"); // Option to add a car
+        System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back"); // Option to go back
     }
 
     protected static void displayRemoveMenu() {
         System.out.println();
         String art = """
-                  ____  _____ __  __  _____     _______\s
+                  ____  _____ __  __  _____     _______
                  |  _ \\| ____|  \\/  |/ _ \\ \\   / / ____|
-                 | |_) |  _| | |\\/| | | | \\ \\ / /|  _| \s
-                 |  _ <| |___| |  | | |_| |\\ V / | |___\s
+                 | |_) |  _| | |\\/| | | | \\ \\ / /|  _|
+                 |  _ <| |___| |  | | |_| |\\ V / | |___
                  |_| \\_\\_____|_|  |_|\\___/  \\_/  |_____|
-                                                       \s
+                                                       
                 """;
-        printBanner(art);
+        printBanner(art); // Display the banner art
         System.out.println();
         System.out.println(PURPLE + "Please select an option \n" + RESET);
-        System.out.println(PURPLE + "[" + WHITE + 1 + PURPLE + "] " + WHITE + "Remove Owner");
-        System.out.println(PURPLE + "[" + WHITE + 2 + PURPLE + "] " + WHITE + "Remove Tenant");
-        System.out.println(PURPLE + "[" + WHITE + 3 + PURPLE + "] " + WHITE + "Remove Car");
-        System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back");
+        System.out.println(PURPLE + "[" + WHITE + 1 + PURPLE + "] " + WHITE + "Remove Owner"); // Option to remove an owner
+        System.out.println(PURPLE + "[" + WHITE + 2 + PURPLE + "] " + WHITE + "Remove Tenant"); // Option to remove a tenant
+        System.out.println(PURPLE + "[" + WHITE + 3 + PURPLE + "] " + WHITE + "Remove Car"); // Option to remove a car
+        System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back"); // Option to go back
     }
 
     protected static void displayOwnerBanner() {
         System.out.println();
         String art = """
-                   ___                          \s
-                  / _ \\__      ___ __   ___ _ __\s
+                   ___
+                  / _ \\__      ___ __   ___ _ __
                  | | | \\ \\ /\\ / / '_ \\ / _ \\ '__|
-                 | |_| |\\ V  V /| | | |  __/ |  \s
-                  \\___/  \\_/\\_/ |_| |_|\\___|_|  \s
-                                                \s
+                 | |_| |\\ V  V /| | | |  __/ |
+                  \\___/  \\_/\\_/ |_| |_|\\___|_|
+                                               
                 """;
-        printBanner(art);
+        printBanner(art); // Display the owner banner art
         System.out.println();
     }
 
     protected static void displayTenantBanner() {
         System.out.println();
         String art = """
-                  _____                      _  \s
-                 |_   _|__ _ __   __ _ _ __ | |_\s
+                  _____                      _
+                 |_   _|__ _ __   __ _ _ __ | |_
                    | |/ _ \\ '_ \\ / _` | '_ \\| __|
-                   | |  __/ | | | (_| | | | | |_\s
+                   | |  __/ | | | (_| | | | | |_
                    |_|\\___|_| |_|\\__,_|_| |_|\\__|
-                                                \s
+                                               
                 """;
-        printBanner(art);
+        printBanner(art); // Display the tenant banner art
         System.out.println();
     }
 
     protected static void displayCarBanner() {
         System.out.println();
         String art = """
-                   ____          \s
-                  / ___|__ _ _ __\s
+                   ____
+                  / ___|__ _ _ __
                  | |   / _` | '__|
-                 | |__| (_| | |  \s
-                  \\____\\__,_|_|  \s
-                                 \s
+                 | |__| (_| | |
+                  \\____\\__,_|_|
+                                 
                 """;
-        printBanner(art);
+        printBanner(art); // Display the car banner art
         System.out.println();
     }
 
     protected static void displayRentBanner() {
         System.out.println();
         String art = """
-                  ____  _____ _   _ _____\s
+                  ____  _____ _   _ _____
                  |  _ \\| ____| \\ | |_   _|
-                 | |_) |  _| |  \\| | | | \s
-                 |  _ <| |___| |\\  | | | \s
-                 |_| \\_\\_____|_| \\_| |_| \s
-                                         \s
+                 | |_) |  _| |  \\| | | |
+                 |  _ <| |___| |\\  | | |
+                 |_| \\_\\_____|_| \\_| |_|
+                                         
                 """;
-        printBanner(art);
+        printBanner(art); // Display the rent banner art
         System.out.println();
     }
 
     protected static void displayOwnerSearchMenu() {
         System.out.println();
         String art = """
-                   ___                          \s
-                  / _ \\__      ___ __   ___ _ __\s
+                   ___
+                  / _ \\__      ___ __   ___ _ __
                  | | | \\ \\ /\\ / / '_ \\ / _ \\ '__|
-                 | |_| |\\ V  V /| | | |  __/ |  \s
-                  \\___/  \\_/\\_/ |_| |_|\\___|_|  \s
-                                                \s
+                 | |_| |\\ V  V /| | | |  __/ |
+                  \\___/  \\_/\\_/ |_| |_|\\___|_|
+                                                
                 """;
-        printBanner(art);
+        printBanner(art); // Display the owner search menu banner art
         System.out.println();
         System.out.println(PURPLE + "Which of the following options do you intend to search within? \n" + RESET);
         System.out.println(PURPLE + "[" + WHITE + 1 + PURPLE + "] " + WHITE + "First/Last Name");
@@ -2640,20 +2661,19 @@ abstract class UserInterface {
         System.out.println(PURPLE + "[" + WHITE + 6 + PURPLE + "] " + WHITE + "Username");
         System.out.println(PURPLE + "[" + WHITE + 7 + PURPLE + "] " + WHITE + "Age");
         System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back");
-
     }
 
     protected static void displayTenantSearchMenu() {
         System.out.println();
         String art = """
-                  _____                      _  \s
-                 |_   _|__ _ __   __ _ _ __ | |_\s
+                  _____                      _
+                 |_   _|__ _ __   __ _ _ __ | |_
                    | |/ _ \\ '_ \\ / _` | '_ \\| __|
-                   | |  __/ | | | (_| | | | | |_\s
+                   | |  __/ | | | (_| | | | | |_
                    |_|\\___|_| |_|\\__,_|_| |_|\\__|
-                                                \s
+                                                
                 """;
-        printBanner(art);
+        printBanner(art); // Display the tenant search menu banner art
         System.out.println();
         System.out.println(PURPLE + "Which of the following options do you intend to search within? \n" + RESET);
         System.out.println(PURPLE + "[" + WHITE + 1 + PURPLE + "] " + WHITE + "First/Last Name");
@@ -2665,20 +2685,19 @@ abstract class UserInterface {
         System.out.println(PURPLE + "[" + WHITE + 7 + PURPLE + "] " + WHITE + "Username");
         System.out.println(PURPLE + "[" + WHITE + 8 + PURPLE + "] " + WHITE + "Age");
         System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back");
-
     }
 
     protected static void displayCarSearchMenu() {
         System.out.println();
         String art = """
-                   ____          \s
-                  / ___|__ _ _ __\s
+                   ____
+                  / ___|__ _ _ __
                  | |   / _` | '__|
-                 | |__| (_| | |  \s
-                  \\____\\__,_|_|  \s
-                                 \s
+                 | |__| (_| | |
+                  \\____\\__,_|_|
+                                
                 """;
-        printBanner(art);
+        printBanner(art); // Display the car search menu banner art
         System.out.println();
         System.out.println(PURPLE + "Which of the following options do you intend to search within? \n" + RESET);
         System.out.println(PURPLE + "[" + WHITE + 1 + PURPLE + "] " + WHITE + "Engine Capacity");
@@ -2690,117 +2709,155 @@ abstract class UserInterface {
         System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back");
     }
 
-    protected static void showConfirmationPrompt() {
+    protected static void showYesNoOptions() {
         System.out.println();
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 1 + UserInterface.PURPLE + "]" + UserInterface.RESET + " Yes");
         System.out.println(UserInterface.PURPLE + "[" + UserInterface.RESET + 2 + UserInterface.PURPLE + "]" + UserInterface.RESET + " No");
     }
 
     protected static int validateUserInput(int option) {
+        // Check if the option is valid by comparing it with the valid indexes
         while (!getValidIndexes().contains(option)) {
             System.out.println(RED + "The input is invalid. Please try again" + RESET);
+            // Prompt the user again to enter a valid option
             option = getUserOption();
         }
+        // Clear the valid indexes for the next validation
         getValidIndexes().clear();
+        // Return the validated option
         return option;
     }
 
     protected static int validateNumericInput(String askText, String userInputColor) {
+        // Print the askText to prompt the user for input
         System.out.print(askText);
-        int inputNumber = 0;
-        boolean isValidInput = false;
+
+        // Initialize variables
+        int inputNumber = 0; // Variable to store the user input
+        boolean isValidInput = false; // Flag to track if the input is valid
+
+        // Continue looping until a valid input is entered
         while (!isValidInput) {
             try {
-                System.out.print(userInputColor);
-                inputNumber = scanner.nextInt();
-                scanner.nextLine();
-                System.out.print(RESET);
-                isValidInput = true;
-            } catch (InputMismatchException invalidInput) {
-                scanner.nextLine();
-                System.out.println(RED + "Invalid input. Please enter a valid integer." + RESET);
-                System.out.print(askText);
+                System.out.print(userInputColor); // Set the color for user input
+                inputNumber = scanner.nextInt(); // Read the user input as an integer
+                scanner.nextLine(); // Consume the remaining newline character
+                System.out.print(RESET); // Reset the color
 
+                isValidInput = true; // Set the flag to indicate a valid input
+            } catch (InputMismatchException invalidInput) {
+                scanner.nextLine(); // Consume the invalid input
+                System.out.println(RED + "Invalid input. Please enter a valid integer." + RESET);
+                System.out.print(askText); // Print the askText again to prompt for valid input
             }
         }
-        return inputNumber;
+
+        return inputNumber; // Return the validated input number
     }
 
     protected static int getAndValidateAge(String type) {
         int age;
+
+        // Continue looping until a valid age is entered
         do {
-            age = UserInterface.validateNumericInput("Enter the " + type + "'s age : ", UserInterface.PURPLE);
+            age = UserInterface.validateNumericInput("Enter the " + type + "'s age: ", UserInterface.PURPLE);
+
+            // Check if the age is below 18
             if (age < 18) {
                 System.out.println(UserInterface.RED + "You have not reached the legal age" + UserInterface.RESET);
-            } else if (age > 150) {
+            }
+            // Check if the age is above 150
+            else if (age > 150) {
                 System.out.println(UserInterface.RED + "Invalid age entered" + UserInterface.RESET);
             }
         } while (age < 18 || age > 150);
-        return age;
+
+        return age; // Return the validated age
     }
 
     protected static String getAndValidateNationalCode(String type) {
         String nationalCode;
+
+        // Continue looping until a valid national code is entered
         do {
             System.out.print("Enter the " + type + "'s national code: ");
             System.out.print(UserInterface.PURPLE);
             nationalCode = scanner.nextLine();
             System.out.print(UserInterface.RESET);
+
+            // Check if the length of the national code is not equal to 10
             if (nationalCode.length() != 10) {
                 System.out.println(UserInterface.RED + "Invalid national code entered" + UserInterface.RESET);
             }
         } while (nationalCode.length() != 10);
-        return nationalCode;
+
+        return nationalCode; // Return the validated national code
     }
 
     protected static String getAndValidatePhoneNumber(String type) {
         String phoneNumber;
+
+        // Continue looping until a valid phone number is entered
         do {
             System.out.print("Enter the " + type + "'s phone number: ");
             System.out.print(UserInterface.PURPLE);
             phoneNumber = scanner.nextLine();
             System.out.print(UserInterface.RESET);
+
+            // Check if the length of the phone number is not equal to 11
             if (phoneNumber.length() != 11) {
                 System.out.println(UserInterface.RED + "Invalid phone number entered" + UserInterface.RESET);
             }
         } while (phoneNumber.length() != 11);
-        return phoneNumber;
+
+        return phoneNumber; // Return the validated phone number
     }
 
     protected static int getAndValidateEngineCapacity() {
         int engineCapacity;
+
+        // Continue looping until a valid engine capacity is entered
         do {
             engineCapacity = UserInterface.validateNumericInput("Enter the car's engine capacity: ", UserInterface.PURPLE);
+
+            // Check if the engine capacity is less than 700 cc
             if (engineCapacity < 700) {
                 System.out.println(UserInterface.YELLOW + "Engine capacity must be above " + UserInterface.RESET + UserInterface.RED + " 700 cc" + UserInterface.RESET);
             }
         } while (engineCapacity < 700);
 
-        return engineCapacity;
+        return engineCapacity; // Return the validated engine capacity
     }
 
     protected static int getAndValidateMoney(String askText, String errorText) {
         int money;
+
+        // Continue looping until a valid amount of money is entered
         do {
             money = UserInterface.validateNumericInput(askText, UserInterface.PURPLE);
+
+            // Check if the money is less than 1,500,000
             if (money < 1_500_000) {
                 System.out.println(errorText);
             }
         } while (money < 1_500_000);
 
-        return money;
+        return money; // Return the validated amount of money
     }
 
     static boolean confirmLogout(String location) {
-        System.out.println(YELLOW + "Would you like to log out of the " + location + " ? \n" + RESET);
-        showConfirmationPrompt();
+        System.out.println(YELLOW + "Would you like to log out of " + location + "?\n" + RESET);
+        showYesNoOptions();
+
         while (true) {
             int option = getUserOption();
+
+            // Check the user's option and return the corresponding boolean value
             switch (option) {
                 case 1:
-                    return false;
+                    return false; // User chose "No", so return false to indicate not logging out
                 case 2:
-                    return true;
+                    return true; // User chose "Yes", so return true to indicate logging out
                 default:
                     System.out.println(UserInterface.RED + "\nInvalid input" + UserInterface.RESET);
                     break;
@@ -2810,43 +2867,55 @@ abstract class UserInterface {
 
     private static void printBanner(String art) {
         int num = art.length() / 2;
+
+        // Print the first half of the banner with purple color
         for (int i = 0; i < num; i++) {
             System.out.print(PURPLE + art.charAt(i));
             try {
-                Thread.sleep(2);
+                Thread.sleep(2); // Pause for a short period of time to create an effect
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
+
+        // Print the second half of the banner with white color
         for (int i = num; i < art.length(); i++) {
             System.out.print(WHITE + art.charAt(i));
             try {
-                Thread.sleep(2);
+                Thread.sleep(2); // Pause for a short period of time to create an effect
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
-
     }
 
     protected static int getUserOption() {
+        // Initialize variables
         boolean isValidInput = false;
         int option = 0;
+
+        // Display prompt for user input
         System.out.print(PURPLE + "\n\nEnter your option: " + RESET);
+
+        // Loop until a valid input is provided
         while (!isValidInput) {
             try {
+                // Read the user's input as an integer
                 option = scanner.nextInt();
                 System.out.println();
                 scanner.nextLine();
-                isValidInput = true;
+                isValidInput = true; // Set the flag to true to exit the loop
             } catch (InputMismatchException invalidInput) {
+                // Handle invalid input (non-integer)
                 scanner.nextLine();
                 System.out.println(RED + "Invalid input. Please enter a valid integer." + RESET);
                 System.out.print(PURPLE + "Enter your option: " + RESET);
             }
         }
-        return option;
 
+        // Return the valid option chosen by the user
+        return option;
     }
+
 }
 // چک کردن استاتیک ها
