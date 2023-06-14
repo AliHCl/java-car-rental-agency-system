@@ -417,7 +417,7 @@ class Agency extends UserInterface {
      */
 
     private static boolean rentedCarStatus = false; // Set the initial status of the rented car as false
-    private static boolean carRentalStatus = false;  // Set the initial status of the car rental as false
+    private static boolean isAffordableCarsListEmpty = false; // Indicates whether the list of affordable cars is empty or not
     private static int transactionCount; // private static integer variable to keep track of the transaction count
     private static int removedOwnersCount; // variable to keep track of the count of removed owners
     private static long totalTransactionValue; // variable to store the total transaction value
@@ -474,12 +474,12 @@ class Agency extends UserInterface {
         Agency.removedOwnersCount = removedOwnersCount;
     }
 
-    static Boolean getCarRentalStatus() {
-        return carRentalStatus;
+    static Boolean getIsAffordableCarsListEmpty() {
+        return isAffordableCarsListEmpty;
     }
 
-    static void setCarRentalStatus(boolean carRentalStatus) {
-        Agency.carRentalStatus = carRentalStatus;
+    static void setIsAffordableCarsListEmpty(boolean isAffordableCarsListEmpty) {
+        Agency.isAffordableCarsListEmpty = isAffordableCarsListEmpty;
     }
 
     static Boolean getRentedCarStatus() {
@@ -690,7 +690,7 @@ class Agency extends UserInterface {
         for (Car car : Car.getCarList()) {
             if (user != null) {
                 if (!Car.getRentedCarList().contains(car) && user.getAccountBalance() >= car.getRentMoney()) {
-                    carRentalStatus = true;
+                    isAffordableCarsListEmpty = true;
                     System.out.println(PURPLE + "[" + RESET + Car.getCarList().indexOf(car) + PURPLE + "]" + RESET + " " + car.getNameModel());
                     getValidIndexes().add(Car.getCarList().indexOf(car));
                 }
@@ -763,39 +763,41 @@ class Agency extends UserInterface {
     }
 
     static void removeFromTenantList() {
-        if (!Tenant.getTenantList().isEmpty()) {
+        if (!Tenant.getTenantList().isEmpty()) { // Check if the list of tenants is not empty
             System.out.println(PURPLE + "Please select the desired tenant : \n\n" + RESET);
-            printTenantList("name", false);
-            int option = getUserOption();
-            option = validateUserInput(option);
-            Tenant tenant = Agency.getTenantByIndex(option);
-            Agency.printTenant(tenant);
+            printTenantList("name", false); // Print the list of tenants
+            int option = getUserOption(); // Get user's choice
+            option = validateUserInput(option); // Validate the user's input
+            Tenant tenant = Agency.getTenantByIndex(option); // Get the selected tenant from the Agency
+            Agency.printTenant(tenant); // Print the details of the selected tenant
             System.out.println();
             System.out.println(YELLOW + "Do you want to remove " + RESET + GREEN + tenant.getFirstName() +
                     ' ' + tenant.getLastName() + RESET + YELLOW + " from the list of tenants?" + RESET);
-            showConfirmationPrompt();
+            showConfirmationPrompt(); // Ask for confirmation
+
             boolean running = true;
             while (running) {
-                option = getUserOption();
+                option = getUserOption(); // Get user's choice
                 switch (option) {
-                    case 1:
-                        removeTenant(tenant);
+                    case 1: // User confirmed removal
+                        removeTenant(tenant); // Remove the tenant from the list of tenants
                         try {
-                            tenant.getRentedCarOwner().getMyTenantsList().remove(tenant);
+                            tenant.getRentedCarOwner().getMyTenantsList().remove(tenant); // Remove the tenant from the list of the owner's tenants
                         } catch (java.lang.NullPointerException ignored) {
                         }
-                        Agency.setRemovedTenantsCount(Agency.getRemovedTenantsCount() + 1);
+                        Agency.setRemovedTenantsCount(Agency.getRemovedTenantsCount() + 1); // Increment the count of removed tenants
 
                         System.out.println(GREEN + tenant.getFirstName() + ' ' + tenant.getLastName() + RESET +
                                 " has been " + RED + "removed " + RESET + "from the list of tenants\n\n");
-                        running = false;
+                        running = false; // Exit the loop
                         break;
 
-                    case 2:
+                    case 2: // User canceled the operation
                         System.out.println(RED + "The operation has been canceled :(\n\n" + RESET);
-                        running = false;
+                        running = false; // Exit the loop
                         break;
-                    default:
+
+                    default: // Invalid input
                         System.out.println(RED + "Invalid input" + RESET);
                         break;
                 }
@@ -803,23 +805,22 @@ class Agency extends UserInterface {
         } else {
             System.out.println(RED + "No tenant has been registered :(\n\n" + RESET);
         }
-
     }
 
     static void removeFromOwnerList() {
-        if (!Owner.getOwnerList().isEmpty()) {
+        if (!Owner.getOwnerList().isEmpty()) { // Check if the list of owners is not empty
             System.out.println(PURPLE + "Please select the desired owner : \n\n" + RESET);
-            printOwnerList("name");
-            int option = getUserOption();
-            option = validateUserInput(option);
-            Owner owner = Agency.getOwnerByIndex(option);
-            Agency.printOwner(owner);
+            printOwnerList("name"); // Print the list of owners
+            int option = getUserOption(); // Get user's choice
+            option = validateUserInput(option); // Validate the user's input
+            Owner owner = Agency.getOwnerByIndex(option); // Get the selected owner from the Agency
+            Agency.printOwner(owner); // Print the details of the selected owner
             System.out.println();
             System.out.println(YELLOW + "Do you want to remove " + RESET + GREEN + owner.getFirstName() +
                     ' ' + owner.getLastName() + RESET + YELLOW + " from the list of owners?" + RESET);
             System.out.println();
-            owner.setIsCarOwner(false);
-            Owner.displayOwnerCarsFiltered(owner);
+            owner.setIsCarOwner(false); // Set the owner's car ownership status to false
+            Owner.displayOwnerCarsFiltered(owner); // Display the cars owned by the owner
             System.out.println();
             if (owner.getIsCarOwner()) {
                 System.out.println(YELLOW + "Please note that by removing " + RESET + GREEN + owner.getFirstName() + ' ' +
@@ -827,30 +828,32 @@ class Agency extends UserInterface {
             } else {
                 System.out.println(PURPLE + "This owner does not have any car with their name" + PURPLE);
             }
-            showConfirmationPrompt();
+            showConfirmationPrompt(); // Ask for confirmation
+
             boolean running = true;
             while (running) {
-                option = getUserOption();
+                option = getUserOption(); // Get user's choice
                 switch (option) {
-                    case 1:
-                        removeOwner(owner);
-                        Car.getCarList().removeAll(owner.getOwnerCarList());
+                    case 1: // User confirmed removal
+                        removeOwner(owner); // Remove the owner from the list of owners
+                        Car.getCarList().removeAll(owner.getOwnerCarList()); // Remove all cars owned by the owner from the list of cars
                         System.out.println(GREEN + owner.getFirstName() + ' ' + owner.getLastName() + RESET +
                                 " has been " + RED + "removed" + RESET + " from the list of owners\n\n");
                         if (owner.getIsCarOwner()) {
                             System.out.println("Furthermore, " + GREEN + owner.getOwnerCarList().size() + RESET + " cars owned by the mentioned owner have also been removed from the list of cars");
-                            Agency.setRemovedCarsCount(Agency.getRemovedCarsCount() + owner.getOwnerCarList().size());
+                            Agency.setRemovedCarsCount(Agency.getRemovedCarsCount() + owner.getOwnerCarList().size()); // Increment the count of removed cars
                         }
-                        Agency.setRemovedOwnersCount(Agency.getRemovedOwnersCount() + 1);
+                        Agency.setRemovedOwnersCount(Agency.getRemovedOwnersCount() + 1); // Increment the count of removed owners
                         System.out.println();
-                        running = false;
+                        running = false; // Exit the loop
                         break;
-                    case 2:
-                        owner.setIsCarOwner(false);
+
+                    case 2: // User canceled the operation
                         System.out.println(RED + "The operation has been canceled :(\n\n" + RESET);
-                        running = false;
+                        running = false; // Exit the loop
                         break;
-                    default:
+
+                    default: // Invalid input
                         System.out.println(RED + "Invalid input" + RESET);
                         break;
                 }
@@ -858,83 +861,84 @@ class Agency extends UserInterface {
         } else {
             System.out.println(RED + "No Owner has been registered :(" + RESET);
         }
-
     }
 
     static void removeFromCarList() {
-        if (!Car.getCarList().isEmpty()) {
+        if (!Car.getCarList().isEmpty()) { // Check if the list of cars is not empty
             System.out.println("Please select the desired car : \n\n");
-            printCarList(null);
-            int option = getUserOption();
-            option = validateUserInput(option);
-            Car car = getCarByIndex(option);
-            printCar(car);
+            printCarList(null); // Print the list of cars
+            int option = getUserOption(); // Get user's choice
+            option = validateUserInput(option); // Validate the user's input
+            Car car = getCarByIndex(option); // Get the selected car
+            printCar(car); // Print the details of the selected car
             System.out.println();
             System.out.println(YELLOW + "Do you want to remove the " + RESET + PURPLE + car.getNameModel() + RESET +
                     YELLOW + " car from the list of cars?" + RESET);
-            showConfirmationPrompt();
+            showConfirmationPrompt(); // Ask for confirmation
+
             boolean running = true;
             while (running) {
-                option = getUserOption();
+                option = getUserOption(); // Get user's choice
                 switch (option) {
-                    case 1:
-                        removeCar(car);
-                        car.getOwner().setNumberOfCars(car.getOwner().getNumberOfCars() - 1);
-                        Agency.setRemovedCarsCount(Agency.getRemovedCarsCount() + 1);
+                    case 1: // User confirmed removal
+                        removeCar(car); // Remove the car from the list of cars
+                        car.getOwner().setNumberOfCars(car.getOwner().getNumberOfCars() - 1); // Decrease the car count for the owner
+                        Agency.setRemovedCarsCount(Agency.getRemovedCarsCount() + 1); // Increment the count of removed cars
                         System.out.println(PURPLE + car.getNameModel() + RESET + " has been" + RED + " removed " + RESET + "from the list of cars\n\n");
-                        running = false;
+                        running = false; // Exit the loop
                         break;
 
-                    case 2:
+                    case 2: // User canceled the operation
                         System.out.println(RED + "The operation has been canceled :(\n\n" + RESET);
-                        running = false;
+                        running = false; // Exit the loop
                         break;
-                    default:
+
+                    default: // Invalid input
                         System.out.println(RED + "\nInvalid input" + RESET);
                         break;
                 }
-
             }
         } else {
             System.out.println(RED + "No car has been registered :(" + RESET);
         }
-
     }
 
     static void rent() {
-        if (!Tenant.getTenantList().isEmpty()) {
+        if (!Tenant.getTenantList().isEmpty()) { // Check if the list of tenants is not empty
             System.out.println(PURPLE + "Please select the desired tenant : \n\n" + RESET);
-            printTenantList("name", true);
-            if (getRentedCarStatus()) {
-                int option = getUserOption();
-                option = validateUserInput(option);
-                setRentedCarStatus(false);
-                Tenant tenant = getTenantByIndex(option);
-                if (!Car.getCarList().isEmpty()) {
+            printTenantList("name", true); // Display the list of tenants who have not rented a car yet
+
+            if (getRentedCarStatus()) { // Check if there are available cars to rent
+                int option = getUserOption(); // Get user's choice
+                option = validateUserInput(option); // Validate the user's input
+                setRentedCarStatus(false); // Set the rented car status to false
+                Tenant tenant = getTenantByIndex(option); // Get the selected tenant
+
+                if (!Car.getCarList().isEmpty()) { // Check if the list of cars is not empty
                     System.out.println(PURPLE + "Please select the desired car :\n\n" + RESET);
                     System.out.println(YELLOW + "Cars displayed based on " + RESET + GREEN + tenant.getFirstName() + ' '
                             + tenant.getLastName() + RESET + YELLOW + "'s account inventory\n\n" + RESET);
-                    printCarList(tenant);
-                    if (getCarRentalStatus()) {
-                        option = getUserOption();
-                        option = validateUserInput(option);
-                        setCarRentalStatus(false);
+                    printCarList(tenant); // Print the list of cars that the tenant has the financial capability to rent
+
+                    if (getIsAffordableCarsListEmpty()) { // Check if there are available cars to rent for the tenant
+                        option = getUserOption(); // Get user's choice
+                        option = validateUserInput(option); // Validate the user's input
+                        setIsAffordableCarsListEmpty(false); // Return the list of cost-effective cars to their default state
                     } else {
                         System.out.println(YELLOW + "All cars have been rented out\n\n" + YELLOW);
                         return;
                     }
-
                 } else {
                     System.out.println("No car has been registered :(");
                     return;
                 }
 
-                printTenant(tenant);
-                Car car = getCarByIndex(option);
+                printTenant(tenant); // Print the details of the selected tenant
+                Car car = getCarByIndex(option); // Get the selected car
                 System.out.println();
-                printCar(car);
-                System.out.println();
-                int day = validateNumericInput("Please enter the rental period in days : ", GREEN);
+                printCar(car); // Print the details of the selected car
+
+                int day = validateNumericInput("Please enter the rental period in days : ", GREEN); // Get the rental period in days from the user
                 System.out.println();
                 System.out.println(YELLOW + "Do you want to rent a " + RESET +
                         GREEN + car.getNameModel() + RESET + YELLOW + " car to " + RESET + GREEN + tenant.getFirstName() + ' ' + tenant.getLastName() + RESET +
@@ -942,36 +946,36 @@ class Agency extends UserInterface {
 
                 System.out.println();
                 System.out.println(YELLOW + "With your confirmation, an amount of " + RESET + GREEN + formattedNumber.format(car.getRentMoney()) + RESET + YELLOW + " Toman will be deducted from " + RESET + GREEN + tenant.getFirstName() + ' ' + tenant.getLastName() + RESET + YELLOW + "'s account\n\n" + RESET);
-                showConfirmationPrompt();
+                showConfirmationPrompt(); // Ask for confirmation
+
                 boolean running = true;
                 while (running) {
-                    option = getUserOption();
+                    option = getUserOption(); // Get user's choice
                     switch (option) {
-                        case 1:
+                        case 1: // User confirmed the rental
                             System.out.println(GREEN + "\n\nThe car has been successfully rented :)\n\n" + RESET);
-                            Agency.setTransactionCount(Agency.getTransactionCount() + 1);
-                            Agency.setTotalTransactionValue(Agency.getTotalTransactionValue() + car.getRentMoney());
-                            Agency.setTotalProfit(Agency.getTotalProfit() + car.getRentMoney() / 10);
-                            car.getOwner().getMyTenantsList().add(tenant);
-                            car.getOwner().setIncome((car.getRentMoney() * 9 / 10) + (car.getOwner().getIncome()));
-                            System.out.println(YELLOW + "A amount of " + RESET
+                            Agency.setTransactionCount(Agency.getTransactionCount() + 1); // Increment the transaction count
+                            Agency.setTotalTransactionValue(Agency.getTotalTransactionValue() + car.getRentMoney()); // Update the total transaction value
+                            Agency.setTotalProfit(Agency.getTotalProfit() + car.getRentMoney() / 10); // Update the total profit
+                            car.getOwner().getMyTenantsList().add(tenant); // Add the tenant to the owner's list of tenants
+                            car.getOwner().setIncome((car.getRentMoney() * 9 / 10) + (car.getOwner().getIncome())); // Update the owner's income
+                            System.out.println(YELLOW + "An amount of " + RESET
                                     + GREEN + formattedNumber.format(car.getRentMoney()) + RESET + YELLOW + " Toman has been deducted from " + RESET + GREEN + tenant.getFirstName() + ' ' + tenant.getLastName() + RESET +
                                     YELLOW + "'s account\n\n" + RESET);
-                            tenant.setAccountBalance(tenant.getAccountBalance() - car.getRentMoney());
-                            tenant.setRentedCar(car);
-                            tenant.setRentedCarOwner(car.getOwner());
-                            addRentedCarList(car);
-                            running = false;
+                            tenant.setAccountBalance(tenant.getAccountBalance() - car.getRentMoney()); // Update the tenant's account balance
+                            tenant.setRentedCar(car); // Set the rented car for the tenant
+                            tenant.setRentedCarOwner(car.getOwner()); // Set the owner of the rented car for the tenant
+                            addRentedCarList(car); // Add the rented car to the rented car list
+                            running = false; // Exit the loop
                             break;
-                        case 2:
+                        case 2: // User canceled the operation
                             System.out.println(RED + "The operation has been canceled :(\n\n" + RESET);
-                            running = false;
+                            running = false; // Exit the loop
                             break;
-                        default:
+                        default: // Invalid input
                             System.out.println(RED + "Invalid input" + RESET);
                             break;
                     }
-
                 }
             } else {
                 System.out.println(GREEN + "All tenants have rented a car\n\n" + RESET);
@@ -979,10 +983,17 @@ class Agency extends UserInterface {
         } else {
             System.out.println(RED + "No tenant has been registered :(\n\n" + RESET);
         }
-
     }
 
     static void addOwner() {
+
+        /*
+         * Prompts the user to add a new owner to the system.
+         * Collects the owner's details such as username, password, first name, last name, age, national code, phone number, and address.
+         * Displays a confirmation message and allows the user to confirm or cancel the addition.
+         * If confirmed, the owner is added to the list of owners.
+         */
+
         Owner owner = new Owner();
 
         System.out.print("Enter the owner's username: ");
@@ -1044,6 +1055,14 @@ class Agency extends UserInterface {
     }
 
     static void addTenant() {
+
+        /*
+         * Prompts the user to add a new tenant to the system.
+         * Collects the tenant's details such as username, password, first name, last name, age, national code, phone number, address, and account balance.
+         * Displays a confirmation message and allows the user to confirm or cancel the addition.
+         * If confirmed, the tenant is added to the list of tenants.
+         */
+
         Tenant tenant = new Tenant();
 
         System.out.print("Enter the tenant's username: ");
@@ -1110,6 +1129,17 @@ class Agency extends UserInterface {
     }
 
     static void addCar() {
+
+        /*
+         * Prompts the user to add a new car to the system.
+         * Collects the car's details such as name model, engine capacity, owner, rent money, type, and lifespan.
+         * Displays a list of available owners and allows the user to select an owner for the car.
+         * Asks for the car's rent money and type (sedan, high-riding, semi-high-riding).
+         * Asks for the car's lifespan.
+         * Displays a confirmation message and allows the user to confirm or cancel the addition.
+         * If confirmed, the car is added to the list of cars and associated with the selected owner.
+         */
+
         Car car = new Car();
 
         System.out.print("Enter the car's Name Model: ");
@@ -1199,6 +1229,16 @@ class Agency extends UserInterface {
     }
 
     private static void fullNameOwnerSearch(String firstName, String lastName) {
+
+        /*
+         * Searches for owners based on their full name (combination of first name and last name).
+         * Prints the details of the matching owners if found.
+         * If no matching owners are found, displays a "Not found" message.
+         *
+         * param firstName The first name of the owner to search for.
+         * param lastName  The last name of the owner to search for.
+         */
+
         boolean foundStatus = false;
         for (Owner owner : Owner.getOwnerList()) {
             if ((owner.getFirstName() + owner.getLastName()).equalsIgnoreCase(firstName + lastName)) {
@@ -1213,6 +1253,15 @@ class Agency extends UserInterface {
     }
 
     private static void firstNameOwnerSearch(String firstName) {
+
+        /*
+         * Searches for owners based on their first name.
+         * Prints the details of the matching owners if found.
+         * If no matching owners are found, displays a "Not found" message.
+         *
+         * param firstName The first name of the owner to search for.
+         */
+
         boolean foundStatus = false;
         for (Owner owner : Owner.getOwnerList()) {
             if (owner.getFirstName().equalsIgnoreCase(firstName)) {
@@ -1227,6 +1276,15 @@ class Agency extends UserInterface {
     }
 
     private static void lastnameNameOwnerSearch(String lastName) {
+
+        /*
+         * Searches for owners based on their last name.
+         * Prints the details of the matching owners if found.
+         * If no matching owners are found, displays a "Not found" message.
+         *
+         * param lastName The last name of the owner to search for.
+         */
+
         boolean foundStatus = false;
         for (Owner owner : Owner.getOwnerList()) {
             if (owner.getLastName().equalsIgnoreCase(lastName)) {
@@ -1241,6 +1299,15 @@ class Agency extends UserInterface {
     }
 
     private static void nationalCodeOwnerSearch(String nationalCode) {
+
+        /*
+         * Searches for owners based on their national code.
+         * Prints the details of the matching owners if found.
+         * If no matching owners are found, displays a "Not found" message.
+         *
+         * param nationalCode The national code of the owner to search for.
+         */
+
         boolean foundStatus = false;
         for (Owner owner : Owner.getOwnerList()) {
             if (owner.getNationalCode().equals(nationalCode)) {
@@ -1255,6 +1322,15 @@ class Agency extends UserInterface {
     }
 
     private static void phoneNumberOwnerSearch(String phoneNumber) {
+
+        /*
+         * Searches for owners based on their phone number.
+         * Prints the details of the matching owners if found.
+         * If no matching owners are found, displays a "Not found" message.
+         *
+         * param phoneNumber The phone number of the owner to search for.
+         */
+
         boolean foundStatus = false;
         for (Owner owner : Owner.getOwnerList()) {
             if (owner.getPhoneNumber().equals(phoneNumber)) {
@@ -1269,6 +1345,15 @@ class Agency extends UserInterface {
     }
 
     private static void usernameOwnerSearch(String userName) {
+
+        /*
+         * Searches for owners based on their username.
+         * Prints the details of the matching owners if found.
+         * If no matching owners are found, displays a "Not found" message.
+         *
+         * param userName The username of the owner to search for.
+         */
+
         boolean foundStatus = false;
         for (Owner owner : Owner.getOwnerList()) {
             if (owner.getUsername().equalsIgnoreCase(userName)) {
@@ -1283,6 +1368,15 @@ class Agency extends UserInterface {
     }
 
     private static void ageOwnerSearch(int age) {
+
+        /*
+         * Searches for owners based on their age.
+         * Prints the details of the owners whose age is less than or equal to the specified age.
+         * If no matching owners are found, displays a "Not found" message.
+         *
+         * param age The maximum age to search for.
+         */
+
         boolean foundStatus = false;
         for (Owner owner : Owner.getOwnerList()) {
             if (owner.getAge() <= age) {
@@ -1297,6 +1391,16 @@ class Agency extends UserInterface {
     }
 
     private static void fullNameTenantSearch(String firstName, String lastName) {
+
+        /*
+         * Searches for tenants based on their full name.
+         * Prints the details of the tenants whose full name matches the specified first name and last name.
+         * If no matching tenants are found, displays a "Not found" message.
+         *
+         * param firstName The first name to search for.
+         * param lastName  The last name to search for.
+         */
+
         boolean foundStatus = false;
         for (Tenant tenant : Tenant.getTenantList()) {
             if ((tenant.getFirstName() + tenant.getLastName()).equalsIgnoreCase(firstName + lastName)) {
@@ -1311,6 +1415,15 @@ class Agency extends UserInterface {
     }
 
     private static void firstNameTenantSearch(String firstName) {
+
+        /*
+         * Searches for tenants based on their first name.
+         * Prints the details of the tenants whose first name matches the specified first name.
+         * If no matching tenants are found, displays a "Not found" message.
+         *
+         * param firstName The first name to search for.
+         */
+
         boolean foundStatus = false;
         for (Tenant tenant : Tenant.getTenantList()) {
             if (tenant.getFirstName().equalsIgnoreCase(firstName)) {
@@ -1325,6 +1438,15 @@ class Agency extends UserInterface {
     }
 
     private static void lastNameTenantSearch(String lastName) {
+
+        /*
+         * Searches for tenants based on their last name.
+         * Prints the details of the tenants whose last name matches the specified last name.
+         * If no matching tenants are found, displays a "Not found" message.
+         *
+         * param lastName The last name to search for.
+         */
+
         boolean foundStatus = false;
         for (Tenant tenant : Tenant.getTenantList()) {
             if (tenant.getLastName().equalsIgnoreCase(lastName)) {
@@ -1339,6 +1461,15 @@ class Agency extends UserInterface {
     }
 
     private static void nationalCodeTenantSearch(String nationalCode) {
+
+        /*
+         * Searches for tenants based on their national code.
+         * Prints the details of the tenants whose national code matches the specified national code.
+         * If no matching tenants are found, displays a "Not found" message.
+         *
+         * param nationalCode The national code to search for.
+         */
+
         boolean foundStatus = false;
         for (Tenant tenant : Tenant.getTenantList()) {
             if (tenant.getNationalCode().equals(nationalCode)) {
@@ -1354,6 +1485,15 @@ class Agency extends UserInterface {
     }
 
     private static void phoneNumberTenantSearch(String phoneNumber) {
+
+        /*
+         * Searches for tenants based on their phone number.
+         * Prints the details of the tenants whose phone number matches the specified phone number.
+         * If no matching tenants are found, displays a "Not found" message.
+         *
+         * param phoneNumber The phone number to search for.
+         */
+
         boolean foundStatus = false;
         for (Tenant tenant : Tenant.getTenantList()) {
             if (tenant.getPhoneNumber().equals(phoneNumber)) {
@@ -1368,6 +1508,15 @@ class Agency extends UserInterface {
     }
 
     private static void usernameTenantSearch(String userName) {
+
+        /*
+         * Searches for tenants based on their username.
+         * Prints the details of the tenants whose username matches the specified username.
+         * If no matching tenants are found, displays a "Not found" message.
+         *
+         * param userName The username to search for.
+         */
+
         boolean foundStatus = false;
         for (Tenant tenant : Tenant.getTenantList()) {
             if (tenant.getUsername().equalsIgnoreCase(userName)) {
@@ -1383,6 +1532,15 @@ class Agency extends UserInterface {
     }
 
     private static void ageTenantSearch(int age) {
+
+        /*
+         * Searches for tenants based on their age.
+         * Prints the details of the tenants whose age is less than or equal to the specified age.
+         * If no matching tenants are found, displays a "Not found" message.
+         *
+         * param age The maximum age to search for.
+         */
+
         boolean foundStatus = false;
         for (Tenant tenant : Tenant.getTenantList()) {
             if (tenant.getAge() <= age) {
@@ -1398,6 +1556,15 @@ class Agency extends UserInterface {
     }
 
     private static void accountBalanceSearch(int accountBalance) {
+
+        /*
+         * Searches for tenants based on their account balance.
+         * Prints the details of the tenants whose account balance is less than or equal to the specified amount.
+         * If no matching tenants are found, displays a "Not found" message.
+         *
+         * param accountBalance The maximum account balance to search for.
+         */
+
         boolean foundStatus = false;
         for (Tenant tenant : Tenant.getTenantList()) {
             if (tenant.getAccountBalance() <= accountBalance) {
@@ -1413,6 +1580,15 @@ class Agency extends UserInterface {
     }
 
     private static void engineCapacitySearch(int engineCapacity) {
+
+        /*
+         * Searches for cars based on their engine capacity.
+         * Prints the details of the cars whose engine capacity is less than or equal to the specified amount.
+         * If no matching cars are found, displays a "Not found" message.
+         *
+         * param engineCapacity The maximum engine capacity to search for.
+         */
+
         boolean foundStatus = false;
         for (Car car : Car.getCarList()) {
             if (car.getEngineCapacity() <= engineCapacity) {
@@ -1428,6 +1604,15 @@ class Agency extends UserInterface {
     }
 
     private static void nameModelSearch(String nameModel) {
+
+        /*
+         * Searches for cars based on their name model.
+         * Prints the details of the cars whose name model matches the specified value.
+         * If no matching cars are found, displays a "Not found" message.
+         *
+         * param nameModel The name model to search for.
+         */
+
         boolean foundStatus = false;
         for (Car car : Car.getCarList()) {
             if (car.getNameModel().equalsIgnoreCase(nameModel)) {
@@ -1443,6 +1628,15 @@ class Agency extends UserInterface {
     }
 
     private static void rentMoneySearch(int rentMoney) {
+
+        /*
+         * Searches for cars based on their rent money.
+         * Prints the details of the cars whose rent money is less than or equal to the specified value.
+         * If no matching cars are found, displays a "Not found" message.
+         *
+         * param rentMoney The rent money to search for.
+         */
+
         boolean foundStatus = false;
         for (Car car : Car.getCarList()) {
             if (car.getRentMoney() <= rentMoney) {
@@ -1458,6 +1652,15 @@ class Agency extends UserInterface {
     }
 
     private static void lifeSpanSearch(int lifeSpan) {
+
+        /*
+         * Searches for cars based on their lifespan.
+         * Prints the details of the cars whose lifespan is less than or equal to the specified value.
+         * If no matching cars are found, displays a "Not found" message.
+         *
+         * param lifeSpan The lifespan to search for.
+         */
+
         boolean foundStatus = false;
         for (Car car : Car.getCarList()) {
             if (car.getLifespan() <= lifeSpan) {
@@ -1473,6 +1676,16 @@ class Agency extends UserInterface {
     }
 
     private static void carOwnerSearch(String firstName, String lastName) {
+
+        /*
+         * Searches for cars based on the owner's full name.
+         * Prints the details of the cars owned by a person with the specified first name and last name.
+         * If no matching cars are found, displays a "Not found" message.
+         *
+         * param firstName The first name of the owner.
+         * param lastName  The last name of the owner.
+         */
+
         boolean foundStatus = false;
         for (Car car : Car.getCarList()) {
             if ((car.getOwner().getFirstName() + car.getOwner().getLastName()).equalsIgnoreCase(firstName + lastName)) {
@@ -1487,6 +1700,15 @@ class Agency extends UserInterface {
     }
 
     private static void typeSearch(String type) {
+
+        /*
+         * Searches for cars based on the car type.
+         * Prints the details of the cars that match the specified car type.
+         * If no matching cars are found, displays a "Not found" message.
+         *
+         * param type The car type to search for.
+         */
+
         boolean foundStatus = false;
         for (Car car : Car.getCarList()) {
             if (car.getType().equalsIgnoreCase(type)) {
@@ -1504,8 +1726,8 @@ class Agency extends UserInterface {
     private static void handleSearchOwnerManager() {
         boolean running = true;
         while (running) {
-            displayOwnerSearchMenu();
-            int option = getUserOption();
+            displayOwnerSearchMenu(); // Display the owner search menu
+            int option = getUserOption(); // Get the user input option
             String firstname;
             String lastname;
             switch (option) {
@@ -1520,60 +1742,55 @@ class Agency extends UserInterface {
                     lastname = scanner.nextLine();
                     System.out.print(RESET);
 
-                    fullNameOwnerSearch(firstname, lastname);
+                    fullNameOwnerSearch(firstname, lastname); // Perform a search by full name
                     break;
                 case 2:
                     System.out.print("Enter the owner's first name : ");
                     System.out.print(PURPLE);
                     firstname = scanner.nextLine();
                     System.out.print(RESET);
-                    firstNameOwnerSearch(firstname);
+                    firstNameOwnerSearch(firstname); // Perform a search by first name
                     break;
                 case 3:
                     System.out.print("Enter the owner's last name : ");
                     System.out.print(PURPLE);
                     lastname = scanner.nextLine();
                     System.out.print(RESET);
-                    lastnameNameOwnerSearch(lastname);
+                    lastnameNameOwnerSearch(lastname); // Perform a search by last name
                     break;
                 case 4:
                     String nationalCode = getAndValidateNationalCode("owner");
-                    nationalCodeOwnerSearch(nationalCode);
+                    nationalCodeOwnerSearch(nationalCode); // Perform a search by national code
                     break;
                 case 5:
                     String phoneNumber = getAndValidatePhoneNumber("owner");
-                    phoneNumberOwnerSearch(phoneNumber);
+                    phoneNumberOwnerSearch(phoneNumber); // Perform a search by phone number
                     break;
                 case 6:
                     System.out.print("Enter the owner's username : ");
                     System.out.print(PURPLE);
                     String username = scanner.nextLine();
                     System.out.print(RESET);
-                    usernameOwnerSearch(username);
+                    usernameOwnerSearch(username); // Perform a search by username
                     break;
-
                 case 7:
                     int age = getAndValidateAge("owner");
-                    ageOwnerSearch(age);
+                    ageOwnerSearch(age); // Perform a search by age
                     break;
-
                 case 0:
-                    running = false;
+                    running = false; // Exit the loop
                     break;
-
                 default:
                     System.out.println(RED + "Invalid option!" + RESET);
             }
         }
-
-
     }
 
     private static void handleSearchTenantManager() {
         boolean running = true;
         while (running) {
-            displayTenantSearchMenu();
-            int option = getUserOption();
+            displayTenantSearchMenu(); // Display the tenant search menu
+            int option = getUserOption(); // Get the user input option
             String firstname;
             String lastname;
             switch (option) {
@@ -1586,84 +1803,82 @@ class Agency extends UserInterface {
                     System.out.print(PURPLE);
                     lastname = scanner.nextLine();
                     System.out.print(RESET);
-                    fullNameTenantSearch(firstname, lastname);
+                    fullNameTenantSearch(firstname, lastname); // Perform a search by full name
                     break;
                 case 2:
                     System.out.print("Enter the tenant's first name : ");
                     System.out.print(PURPLE);
                     firstname = scanner.nextLine();
                     System.out.print(RESET);
-                    firstNameTenantSearch(firstname);
+                    firstNameTenantSearch(firstname); // Perform a search by first name
                     break;
                 case 3:
                     System.out.print("Enter the tenant's last name : ");
                     System.out.print(PURPLE);
                     lastname = scanner.nextLine();
                     System.out.print(RESET);
-                    lastNameTenantSearch(lastname);
+                    lastNameTenantSearch(lastname); // Perform a search by last name
                     break;
                 case 4:
                     String askText = "Enter the tenant's accountBalance : ";
                     String errorText = YELLOW + "The minimum accountBalance amount must be " + RESET + RED + "1,500,000" + RESET + YELLOW + " toman" + RESET;
                     int accountBalance = getAndValidateMoney(askText, errorText);
-                    accountBalanceSearch(accountBalance);
+                    accountBalanceSearch(accountBalance); // Perform a search by account balance
                     break;
                 case 5:
                     String nationalCode = getAndValidateNationalCode("tenant");
-                    nationalCodeTenantSearch(nationalCode);
+                    nationalCodeTenantSearch(nationalCode); // Perform a search by national code
                     break;
                 case 6:
                     String phoneNumber = getAndValidatePhoneNumber("tenant");
-                    phoneNumberTenantSearch(phoneNumber);
+                    phoneNumberTenantSearch(phoneNumber); // Perform a search by phone number
                     break;
                 case 7:
                     System.out.print("Enter the tenant's username : ");
                     System.out.print(PURPLE);
                     String username = scanner.nextLine();
                     System.out.print(RESET);
-                    usernameTenantSearch(username);
+                    usernameTenantSearch(username); // Perform a search by username
                     break;
                 case 8:
                     int age = getAndValidateAge("tenant");
-                    ageTenantSearch(age);
+                    ageTenantSearch(age); // Perform a search by age
                     break;
                 case 0:
-                    running = false;
+                    running = false; // Exit the loop
                     break;
-
                 default:
                     System.out.println(RED + "Invalid option!" + RESET);
             }
         }
-
     }
 
     private static void handleSearchCarManager() {
         boolean running = true;
         while (running) {
-            displayCarSearchMenu();
-            int option = getUserOption();
+            displayCarSearchMenu(); // Display the car search menu
+            int option = getUserOption(); // Get the user input option
             switch (option) {
                 case 1:
-                    int engineCapacity = getAndValidateEngineCapacity();
-                    engineCapacitySearch(engineCapacity);
+                    int engineCapacity = getAndValidateEngineCapacity(); // Get and validate the engine capacity
+                    engineCapacitySearch(engineCapacity); // Perform a search by engine capacity
                     break;
                 case 2:
                     System.out.print("Enter the car name model : ");
                     System.out.print(PURPLE);
                     String nameModel = scanner.nextLine();
                     System.out.print(RESET);
-                    nameModelSearch(nameModel);
+                    nameModelSearch(nameModel); // Perform a search by car name model
                     break;
                 case 3:
                     String askText = "Enter the car's rent money : ";
                     String errorText = YELLOW + "The entered rental amount must be above" + RESET + RED + " 1,500,000 " + RESET + YELLOW + "toman" + RESET;
-                    int rentMoney = getAndValidateMoney(askText, errorText);
-                    rentMoneySearch(rentMoney);
+                    int rentMoney = getAndValidateMoney(askText, errorText); // Get and validate the rent money
+                    rentMoneySearch(rentMoney); // Perform a search by rent money
                     break;
                 case 4:
-                    int lifeSpan = validateNumericInput("Enter the car's lifespan: ", PURPLE);
-                    lifeSpanSearch(lifeSpan);
+                    int lifeSpan = validateNumericInput("Enter the car's lifespan: ", PURPLE); // Validate the car's lifespan
+                    lifeSpanSearch(lifeSpan); // Perform a search by lifespan
                     break;
                 case 5:
                     System.out.print("Enter the owner's first name : ");
@@ -1674,7 +1889,7 @@ class Agency extends UserInterface {
                     System.out.print(PURPLE);
                     String lastname = scanner.nextLine();
                     System.out.print(RESET);
-                    carOwnerSearch(firstname, lastname);
+                    carOwnerSearch(firstname, lastname); // Perform a search by car owner
                     break;
                 case 6:
                     System.out.println(PURPLE + "[" + WHITE + 1 + PURPLE + "] " + WHITE + "Sedan");
@@ -1683,18 +1898,18 @@ class Agency extends UserInterface {
                     System.out.println();
                     boolean running_type = true;
                     while (running_type) {
-                        option = validateNumericInput("Enter the car type : ", PURPLE);
+                        option = validateNumericInput("Enter the car type : ", PURPLE); // Validate the car type
                         switch (option) {
                             case 1:
-                                typeSearch("Sedan");
+                                typeSearch("Sedan"); // Perform a search by car type Sedan
                                 running_type = false;
                                 break;
                             case 2:
-                                typeSearch("High-riding");
+                                typeSearch("High-riding"); // Perform a search by car type High-riding
                                 running_type = false;
                                 break;
                             case 3:
-                                typeSearch("Semi-high-riding");
+                                typeSearch("Semi-high-riding"); // Perform a search by car type Semi-high-riding
                                 running_type = false;
                                 break;
                             default:
@@ -1703,87 +1918,77 @@ class Agency extends UserInterface {
                     }
                     break;
                 case 0:
-                    running = false;
+                    running = false; // Exit the loop
                     break;
-
                 default:
                     System.out.println(RED + "Invalid option!" + RESET);
             }
         }
-
     }
 
     static void handleSearchMainMenuManager() {
         boolean running = true;
         while (running) {
-            displaySearchMenu();
-            int option = getUserOption();
+            displaySearchMenu(); // Display the search menu
+            int option = getUserOption(); // Get the user input option
             switch (option) {
                 case 1:
-                    handleSearchOwnerManager();
+                    handleSearchOwnerManager(); // Handle the owner search manager
                     break;
                 case 2:
-                    handleSearchTenantManager();
+                    handleSearchTenantManager(); // Handle the tenant search manager
                     break;
                 case 3:
-                    handleSearchCarManager();
+                    handleSearchCarManager(); // Handle the car search manager
                     break;
                 case 0:
-                    running = false;
+                    running = false; // Exit the loop
                     break;
-
                 default:
                     System.out.println(RED + "Invalid option!" + RESET);
             }
         }
-
     }
 
     static void handleReportMenu() {
         boolean running = true;
         while (running) {
-            displayReportMenu();
-            int option = getUserOption();
+            displayReportMenu(); // Display the report menu
+            int option = getUserOption(); // Get the user input option
             switch (option) {
                 case 1:
-                    handlePrintOwnersList();
+                    handlePrintOwnersList(); // Handle printing the owners list
                     break;
-
                 case 2:
-                    handlePrintTenantsList();
+                    handlePrintTenantsList(); // Handle printing the tenants list
                     break;
-
                 case 3:
-                    handlePrintCarsList();
+                    handlePrintCarsList(); // Handle printing the cars list
                     break;
-
                 case 0:
-                    running = false;
+                    running = false; // Exit the loop
                     break;
-
                 default:
                     System.out.println(RED + "Invalid option!\n" + RESET);
                     break;
-
-
             }
         }
     }
 
     private static void handlePrintOwnersList() {
         boolean running = true;
-        if (!Owner.getOwnerList().isEmpty()) {
-            printOwners();
+        if (!Owner.getOwnerList().isEmpty()) { // Check if the owner list is not empty
+            printOwners(); // Print the owners list
             System.out.println(PURPLE + "\n[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back");
+
             while (running) {
-                int option = getUserOption();
+                int option = getUserOption(); // Get the user input option
                 if (option == 0) {
-                    running = false;
+                    running = false; // Exit the loop
                 } else {
                     System.out.println(RED + "Invalid option!" + RESET);
                 }
             }
-
         } else {
             System.out.println(RED + "No owner has been registered :(\n\n" + RESET);
         }
@@ -1791,18 +1996,18 @@ class Agency extends UserInterface {
 
     private static void handlePrintTenantsList() {
         boolean running = true;
-        if (!Tenant.getTenantList().isEmpty()) {
-            printTenants();
+        if (!Tenant.getTenantList().isEmpty()) { // Check if the tenant list is not empty
+            printTenants(); // Print the tenants list
             System.out.println(PURPLE + "\n[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back");
+
             while (running) {
-                int option = getUserOption();
+                int option = getUserOption(); // Get the user input option
                 if (option == 0) {
-                    running = false;
+                    running = false; // Exit the loop
                 } else {
                     System.out.println(RED + "Invalid option!" + RESET);
                 }
             }
-
         } else {
             System.out.println(RED + "No tenant has been registered :(\n\n" + RESET);
         }
@@ -1810,18 +2015,18 @@ class Agency extends UserInterface {
 
     private static void handlePrintCarsList() {
         boolean running = true;
-        if (!Car.getCarList().isEmpty()) {
-            printCars();
+        if (!Car.getCarList().isEmpty()) { // Check if the car list is not empty
+            printCars(); // Print the cars list
             System.out.println(PURPLE + "\n[" + WHITE + 0 + PURPLE + "] " + WHITE + "Back");
+
             while (running) {
-                int option = getUserOption();
+                int option = getUserOption(); // Get the user input option
                 if (option == 0) {
-                    running = false;
+                    running = false; // Exit the loop
                 } else {
                     System.out.println(RED + "Invalid option!" + RESET);
                 }
             }
-
         } else {
             System.out.println(RED + "No car has been registered :(\n\n" + RESET);
         }
@@ -1830,27 +2035,27 @@ class Agency extends UserInterface {
     static void handleAddMainMenuManager() {
         boolean running = true;
         while (running) {
-            displayAddMenu();
-            int option = getUserOption();
+            displayAddMenu(); // Display the add menu options
+            int option = getUserOption(); // Get the user input option
             switch (option) {
                 case 1:
-                    displayOwnerBanner();
-                    Agency.addOwner();
+                    displayOwnerBanner(); // Display the owner banner
+                    Agency.addOwner(); // Add a new owner
                     break;
                 case 2:
-                    displayTenantBanner();
-                    Agency.addTenant();
+                    displayTenantBanner(); // Display the tenant banner
+                    Agency.addTenant(); // Add a new tenant
                     break;
                 case 3:
-                    displayCarBanner();
-                    Agency.addCar();
+                    displayCarBanner(); // Display the car banner
+                    Agency.addCar(); // Add a new car
                     break;
                 case 0:
-                    running = false;
+                    running = false; // Exit the loop
                     break;
-
                 default:
                     System.out.println(RED + "\n\nInvalid option! Please try again" + RESET);
+                    // Display an invalid option message
             }
         }
     }
@@ -1858,30 +2063,29 @@ class Agency extends UserInterface {
     static void handleRemoveMainMenuManager() {
         boolean running = true;
         while (running) {
-            displayRemoveMenu();
-            int option = getUserOption();
+            displayRemoveMenu(); // Display the remove menu options
+            int option = getUserOption(); // Get the user input option
             switch (option) {
                 case 1:
-                    displayOwnerBanner();
-                    Agency.removeFromOwnerList();
+                    displayOwnerBanner(); // Display the owner banner
+                    Agency.removeFromOwnerList(); // Remove an owner from the list
                     break;
                 case 2:
-                    displayTenantBanner();
-                    Agency.removeFromTenantList();
+                    displayTenantBanner(); // Display the tenant banner
+                    Agency.removeFromTenantList(); // Remove a tenant from the list
                     break;
                 case 3:
-                    displayCarBanner();
-                    Agency.removeFromCarList();
+                    displayCarBanner(); // Display the car banner
+                    Agency.removeFromCarList(); // Remove a car from the list
                     break;
                 case 0:
-                    running = false;
+                    running = false; // Exit the loop
                     break;
-
                 default:
                     System.out.println(RED + "\n\nInvalid option! Please try again" + RESET);
+                    // Display an invalid option message
             }
         }
-
     }
 }
 
