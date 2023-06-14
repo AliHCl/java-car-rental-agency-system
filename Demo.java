@@ -4,40 +4,153 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-abstract class Login {
+abstract class Login extends UserInterface {
     //  Users can log in as an admin, owner, or tenant
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    private static void adminLogin() {
+        String adminUsername = "admin";
+        String adminPassword = "admin";
+
+        // Prompt for username
+        System.out.print(YELLOW + "Enter Username: " + RESET);
+        System.out.print(PURPLE);
+        String username = scanner.nextLine();
+        System.out.print(RESET);
+
+        // Prompt for password
+        System.out.print(YELLOW + "Enter Password: " + RESET);
+        System.out.print(PURPLE);
+        String password = scanner.nextLine();
+        System.out.print(RESET);
+
+        // Check username and password
+        if (username.equals(adminUsername) && password.equals(adminPassword)) {
+            System.out.println();
+            System.out.println("Welcome, " + username + " :)");
+            System.out.println();
+            Agency.handleAgencyManagerMenu();
+        } else {
+            System.out.println(RED + "\nAccess denied :(\n" + RESET);
+        }
+    }
+
+    private static void ownerLogin() {
+        if (!Owner.getOwnerList().isEmpty()) {
+            // Print list of owners
+            Agency.printOwnerList("username");
+
+            // Prompt for owner username
+            int ownerUsernameIndex = validateNumericInput(YELLOW + "\nSelect Username: " + RESET, PURPLE);
+            System.out.print(PURPLE);
+            scanner.nextLine();
+            System.out.print(RESET);
+
+            // Retrieve owner by index
+            Owner owner = Agency.getOwnerByIndex(ownerUsernameIndex);
+            if (owner == null) {
+                return;
+            }
+
+            // Clear valid indexes list
+            getValidIndexes().clear();
+
+            // Prompt for owner password
+            System.out.print(YELLOW + "Enter Password: " + RESET);
+            System.out.print(PURPLE);
+            String password = scanner.nextLine();
+            System.out.print(RESET);
+
+            // Check owner password
+            if (password.equals(owner.getPassword())) {
+                System.out.println();
+                System.out.println("\nWelcome, " + owner.getFirstName() + " :)");
+                Owner.handleOwnerPanelMenu(owner);
+            } else {
+                System.out.println();
+                System.out.println(RED + "Access denied :(" + RESET);
+                System.out.println();
+            }
+        } else {
+            System.out.println(RED + "\n\nNo owner has been registered\n\n" + RESET);
+        }
+    }
+
+    private static void tenantLogin() {
+        if (!Tenant.getTenantList().isEmpty()) {
+            // Print list of tenants
+            Agency.printTenantList("username", false);
+
+            // Prompt for tenant username
+            int tenantUsernameIndex = validateNumericInput(YELLOW + "\nSelect Username: " + RESET, PURPLE);
+            System.out.print(PURPLE);
+            scanner.nextLine();
+            System.out.print(RESET);
+
+            // Retrieve tenant by index
+            Tenant tenant = Agency.getTenantByIndex(tenantUsernameIndex);
+            if (tenant == null) {
+                return;
+            }
+
+            // Clear valid indexes list
+            getValidIndexes().clear();
+
+            // Prompt for tenant password
+            System.out.print(YELLOW + "Enter Password: " + RESET);
+            System.out.print(PURPLE);
+            String password = scanner.nextLine();
+            System.out.print(RESET);
+
+            // Check tenant password
+            if (password.equals(tenant.getPassword())) {
+                System.out.println();
+                System.out.println("\nWelcome, " + tenant.getFirstName() + " :)");
+                Tenant.handleTenantPanelMenu(tenant);
+            } else {
+                System.out.println();
+                System.out.println(RED + "Access denied :(" + RESET);
+                System.out.println();
+            }
+        } else {
+            System.out.println(RED + "\n\nNo tenant has been registered\n\n" + RESET);
+        }
+    }
+
     public static void main(String[] args) {
+
         boolean running = true;
         while (running) {
-            UserInterface.displayHomeMenu(); // display home banner menu
-            int option = UserInterface.getUserOption(); // Receiving a numerical input option from the user
+            displayHomeMenu(); // display home banner menu
+            int option = getUserOption(); // Receiving a numerical input option from the user
             switch (option) {
                 case 1:
-                    UserInterface.adminLogin();
+                    adminLogin();
                     break;
 
                 case 2:
-                    UserInterface.ownerLogin();
+                    ownerLogin();
                     break;
 
                 case 3:
-                    UserInterface.tenantLogin();
+                    tenantLogin();
                     break;
 
                 case 4:
-                    UserInterface.displayDeveloperInfo();
+                    displayDeveloperInfo();
                     break;
 
                 case 0:
                     // Getting system confirmation for logout from the user with a corresponding message print
-                    running = UserInterface.confirmLogout("System");
+                    running = confirmLogout("System");
                     break;
 
                 default:
-                    System.out.println(UserInterface.RED + "\nInvalid option!" + UserInterface.RESET);
+                    System.out.println(RED + "\nInvalid option!" + RESET);
             }
         }
-        System.out.println(UserInterface.GREEN + "Successful logout!" + UserInterface.RESET);
+        System.out.println(GREEN + "Successful logout!" + RESET);
     }
 
 }
@@ -2203,90 +2316,6 @@ abstract class UserInterface {
     protected static final String PURPLE = "\u001B[35m";
     protected static final String WHITE = "\u001B[37m";
 
-    static void adminLogin() {
-        String adminUsername = "admin";
-        String adminPassword = "admin";
-        System.out.print(YELLOW + "Enter Username : " + RESET);
-        System.out.print(PURPLE);
-        String username = scanner.nextLine();
-        System.out.print(RESET);
-        System.out.print(YELLOW + "Enter Password : " + RESET);
-        System.out.print(PURPLE);
-        String password = scanner.nextLine();
-        System.out.print(RESET);
-        if (username.equals(adminUsername) && password.equals(adminPassword)) {
-            System.out.println();
-            System.out.println("Welcome, " + username + " :)");
-            System.out.println();
-            Agency.handleAgencyManagerMenu();
-        } else {
-            System.out.println(RED + "\nAccess denied :(\n" + RESET);
-
-        }
-
-    }
-
-    static void ownerLogin() {
-        if (!Owner.getOwnerList().isEmpty()) {
-            Agency.printOwnerList("username");
-            int ownerUsernameIndex = validateNumericInput(YELLOW + "\nSelect Username : " + RESET, UserInterface.PURPLE);
-            System.out.print(PURPLE);
-            scanner.nextLine();
-            System.out.print(RESET);
-            Owner owner = Agency.getOwnerByIndex(ownerUsernameIndex);
-            if (owner == null) {
-                return;
-            }
-            getValidIndexes().clear();
-            System.out.print(YELLOW + "Enter Password : " + RESET);
-            System.out.print(PURPLE);
-            String password = scanner.nextLine();
-            System.out.print(RESET);
-            if (password.equals(owner.getPassword())) {
-                System.out.println();
-                System.out.println("\nWelcome, " + owner.getFirstName() + " :)");
-                Owner.handleOwnerPanelMenu(owner);
-            } else {
-                System.out.println();
-                System.out.println(RED + "Access denied :(" + RESET);
-                System.out.println();
-            }
-        } else {
-            System.out.println(RED + "\n\nNo owner has been registered\n\n" + RESET);
-        }
-
-    }
-
-    static void tenantLogin() {
-        if (!Tenant.getTenantList().isEmpty()) {
-            Agency.printTenantList("username", false);
-            int tenantUsernameIndex = validateNumericInput(YELLOW + "\nSelect Username : " + RESET, UserInterface.PURPLE);
-            System.out.print(PURPLE);
-            scanner.nextLine();
-            System.out.print(RESET);
-            Tenant tenant = Agency.getTenantByIndex(tenantUsernameIndex);
-            if (tenant == null) {
-                return;
-            }
-            getValidIndexes().clear();
-            System.out.print(YELLOW + "Enter Password : " + RESET);
-            System.out.print(PURPLE);
-            String password = scanner.nextLine();
-            System.out.print(RESET);
-            if (password.equals(tenant.getPassword())) {
-                System.out.println();
-                System.out.println("\nWelcome, " + tenant.getFirstName() + " :)");
-                Tenant.handleTenantPanelMenu(tenant);
-            } else {
-                System.out.println();
-                System.out.println(RED + "Access denied :(" + RESET);
-                System.out.println();
-            }
-        } else {
-            System.out.println(RED + "\n\nNo tenant has been registered\n\n" + RESET);
-        }
-
-    }
 
     private static void typingAnimation(String text, int delay) {
         try {
