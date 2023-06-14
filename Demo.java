@@ -578,7 +578,7 @@ class Agency extends UserInterface {
 
      */
 
-    private static boolean rentedCarStatus = false; // Set the initial status of the rented car as false
+    private static boolean unrentedTenants = false; // Indicates whether the list of unrented tenants is empty or not
     private static boolean isAffordableCarsListEmpty = false; // Indicates whether the list of affordable cars is empty or not
     private static int transactionCount; // private static integer variable to keep track of the transaction count
     private static int removedOwnersCount; // variable to keep track of the count of removed owners
@@ -644,12 +644,12 @@ class Agency extends UserInterface {
         Agency.isAffordableCarsListEmpty = isAffordableCarsListEmpty;
     }
 
-    static Boolean getRentedCarStatus() {
-        return rentedCarStatus;
+    static Boolean getUnrentedTenants() {
+        return unrentedTenants;
     }
 
-    static void setRentedCarStatus(boolean rentedCarStatus) {
-        Agency.rentedCarStatus = rentedCarStatus;
+    static void setUnrentedTenants(boolean unrentedTenants) {
+        Agency.unrentedTenants = unrentedTenants;
     }
 
 
@@ -895,7 +895,7 @@ class Agency extends UserInterface {
                 // By specifying the exception, only tenants who have not rented a car will be printed
                 if (exception) {
                     if (tenant.getRentedCar() == null) {
-                        rentedCarStatus = true;
+                        unrentedTenants = true;
                         System.out.println(PURPLE + "[" + RESET + Tenant.getTenantList().indexOf(tenant) + PURPLE + "]" + RESET + " " + tenant.getUsername());
                         getValidIndexes().add(Tenant.getTenantList().indexOf(tenant));
 
@@ -910,7 +910,7 @@ class Agency extends UserInterface {
             for (Tenant tenant : Tenant.getTenantList()) {
                 if (exception) {
                     if (tenant.getRentedCar() == null) {
-                        rentedCarStatus = true;
+                        unrentedTenants = true;
                         System.out.println(PURPLE + "[" + RESET + Tenant.getTenantList().indexOf(tenant) + PURPLE + "]" + RESET + " " + tenant.getFirstName() + ' ' + tenant.getLastName());
                         getValidIndexes().add(Tenant.getTenantList().indexOf(tenant));
                     }
@@ -1070,10 +1070,10 @@ class Agency extends UserInterface {
             System.out.println(PURPLE + "Please select the desired tenant : \n\n" + RESET);
             printTenantList("name", true); // Display the list of tenants who have not rented a car yet
 
-            if (getRentedCarStatus()) { // Check if there are available cars to rent
+            if (getUnrentedTenants()) { // Check whether the list of tenants who have not rented a car is empty or not
                 int option = getUserOption(); // Get user's choice
                 option = validateUserInput(option); // Validate the user's input
-                setRentedCarStatus(false); // Set the rented car status to false
+                setUnrentedTenants(false); // Reset the status of the list of tenants who have not rented a car to its default state
                 Tenant tenant = getTenantByIndex(option); // Get the selected tenant
 
                 if (!Car.getCarList().isEmpty()) { // Check if the list of cars is not empty
