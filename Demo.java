@@ -276,6 +276,28 @@ class Tenant extends Human {
         }
     }
 
+    // TENANT PANEL
+    static void handleTenantPanelMenu(Tenant tenant) {
+        boolean running = true;
+        while (running) {
+            System.out.println();
+            UserInterface.displayTenantPanelMenu(tenant);
+            int option = UserInterface.getUserOption();
+            switch (option) {
+                case 1:
+                    // Increase the account balance for the tenant
+                    Tenant.increaseAccountBalance(tenant);
+                    break;
+                case 0:
+                    // Confirm logout from tenant panel
+                    running = UserInterface.confirmLogout("tenant panel");
+                    break;
+                default:
+                    System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
+            }
+        }
+    }
+
 }
 
 class Owner extends Human {
@@ -403,6 +425,33 @@ class Owner extends Human {
             System.out.println(UserInterface.RED + "You don't have any tenants :(" + UserInterface.RESET);
         }
     }
+
+    // OWNER PANEL
+    static void handleOwnerPanelMenu(Owner owner) {
+        boolean running = true;
+        while (running) {
+            System.out.println();
+            UserInterface.displayOwnerPanelMenu(owner);
+            int option = UserInterface.getUserOption();
+            switch (option) {
+                case 1:
+                    // Display the cars owned by the owner
+                    Owner.displayMyCars(owner);
+                    break;
+                case 2:
+                    // Print the list of tenants for the owner
+                    Owner.printMyTenantsList(owner);
+                    break;
+                case 0:
+                    // Confirm logout from owner panel
+                    running = UserInterface.confirmLogout("owner panel");
+                    break;
+                default:
+                    System.out.println(UserInterface.RED + "\n\nInvalid option! Please try again" + UserInterface.RESET);
+            }
+        }
+    }
+
 }
 
 class Agency extends UserInterface {
@@ -2087,9 +2136,58 @@ class Agency extends UserInterface {
             }
         }
     }
+
+    // ADMIN PANEL
+    static void handleAgencyManagerMenu() {
+        boolean running = true;
+        while (running) {
+            displayAgencyManagerMenu();
+            int option = getUserOption();
+            switch (option) {
+                case 1:
+                    // Handle adding main menu for managers
+                    Agency.handleAddMainMenuManager();
+                    break;
+                case 2:
+                    // Handle removing main menu for managers
+                    Agency.handleRemoveMainMenuManager();
+                    break;
+                case 3:
+                    // Handle searching main menu for managers
+                    Agency.handleSearchMainMenuManager();
+                    break;
+                case 4:
+                    // Display rent banner
+                    displayRentBanner();
+                    // Perform rent operation
+                    Agency.rent();
+                    break;
+                case 5:
+                    // Handle report menu
+                    Agency.handleReportMenu();
+                    break;
+                case 0:
+                    // Confirm logout from admin panel
+                    running = confirmLogout("admin panel");
+                    break;
+                default:
+                    System.out.println(RED + "\n\nInvalid option! Please try again" + RESET);
+            }
+        }
+    }
+
+
 }
 
 abstract class UserInterface {
+
+    /*
+        This class handles printing banners, colors, validations, logins, user options,
+        user authentication, as well as validating all user inputs such as age,
+        national ID, phone number, motor capacity, and monetary value
+
+     */
+
     private static final Scanner scanner = new Scanner(System.in);
     private static final List<Integer> validIndexes = new ArrayList<>();
 
@@ -2120,7 +2218,7 @@ abstract class UserInterface {
             System.out.println();
             System.out.println("Welcome, " + username + " :)");
             System.out.println();
-            handleAgencyManagerMenu();
+            Agency.handleAgencyManagerMenu();
         } else {
             System.out.println(RED + "\nAccess denied :(\n" + RESET);
 
@@ -2147,7 +2245,7 @@ abstract class UserInterface {
             if (password.equals(owner.getPassword())) {
                 System.out.println();
                 System.out.println("\nWelcome, " + owner.getFirstName() + " :)");
-                handleOwnerPanelMenu(owner);
+                Owner.handleOwnerPanelMenu(owner);
             } else {
                 System.out.println();
                 System.out.println(RED + "Access denied :(" + RESET);
@@ -2178,7 +2276,7 @@ abstract class UserInterface {
             if (password.equals(tenant.getPassword())) {
                 System.out.println();
                 System.out.println("\nWelcome, " + tenant.getFirstName() + " :)");
-                handleTenantPanelMenu(tenant);
+                Tenant.handleTenantPanelMenu(tenant);
             } else {
                 System.out.println();
                 System.out.println(RED + "Access denied :(" + RESET);
@@ -2201,7 +2299,7 @@ abstract class UserInterface {
         }
     }
 
-    private static void displayOwnerPanelMenu(Owner owner) {
+    static void displayOwnerPanelMenu(Owner owner) {
         System.out.println();
         String art = """
                    _____        ___   _ _____ ____     ____   _    _   _ _____ _    \s
@@ -2225,7 +2323,7 @@ abstract class UserInterface {
         System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Log out");
     }
 
-    private static void displayTenantPanelMenu(Tenant tenant) {
+    static void displayTenantPanelMenu(Tenant tenant) {
         System.out.println();
         String art = """
                   _____ _____ _   _    _    _   _ _____    ____   _    _   _ _____ _    \s
@@ -2282,78 +2380,6 @@ abstract class UserInterface {
 
     }
 
-    private static void handleAgencyManagerMenu() {
-        boolean running = true;
-        while (running) {
-            displayAgencyManagerMenu();
-            int option = getUserOption();
-            switch (option) {
-                case 1:
-                    Agency.handleAddMainMenuManager();
-                    break;
-                case 2:
-                    Agency.handleRemoveMainMenuManager();
-                    break;
-                case 3:
-                    Agency.handleSearchMainMenuManager();
-                    break;
-                case 4:
-                    displayRentBanner();
-                    Agency.rent();
-                    break;
-                case 5:
-                    Agency.handleReportMenu();
-                    break;
-                case 0:
-                    running = confirmLogout("admin panel");
-                    break;
-                default:
-                    System.out.println(RED + "\n\nInvalid option! Please try again" + RESET);
-            }
-        }
-    }
-
-    private static void handleOwnerPanelMenu(Owner owner) {
-        boolean running = true;
-        while (running) {
-            System.out.println();
-            displayOwnerPanelMenu(owner);
-            int option = getUserOption();
-            switch (option) {
-                case 1:
-                    Owner.displayMyCars(owner);
-                    break;
-                case 2:
-                    Owner.printMyTenantsList(owner);
-                    break;
-                case 0:
-                    running = confirmLogout("owner panel");
-                    break;
-                default:
-                    System.out.println(RED + "\n\nInvalid option! Please try again" + RESET);
-            }
-        }
-    }
-
-    private static void handleTenantPanelMenu(Tenant tenant) {
-        boolean running = true;
-        while (running) {
-            System.out.println();
-            displayTenantPanelMenu(tenant);
-            int option = getUserOption();
-            switch (option) {
-                case 1:
-                    Tenant.increaseAccountBalance(tenant);
-                    break;
-                case 0:
-                    running = confirmLogout("tenant panel");
-                    break;
-                default:
-                    System.out.println(RED + "\n\nInvalid option! Please try again" + RESET);
-            }
-        }
-    }
-
     private static void showProjectHours() {
         try {
             int animationSpeed = 90;
@@ -2395,7 +2421,7 @@ abstract class UserInterface {
         System.out.println(PURPLE + "[" + WHITE + 0 + PURPLE + "] " + WHITE + "Exit");
     }
 
-    private static void displayAgencyManagerMenu() {
+    protected static void displayAgencyManagerMenu() {
         String art = """
                      _    ____  __  __ ___ _   _    ____   _    _   _ _____ _    \s
                     / \\  |  _ \\|  \\/  |_ _| \\ | |  |  _ \\ / \\  | \\ | | ____| |   \s
@@ -2550,7 +2576,7 @@ abstract class UserInterface {
         System.out.println();
     }
 
-    private static void displayRentBanner() {
+    protected static void displayRentBanner() {
         System.out.println();
         String art = """
                   ____  _____ _   _ _____\s
