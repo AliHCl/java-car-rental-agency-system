@@ -8,6 +8,17 @@
  * This project is a simulation of a car rental agency
  */
 
+/* References
+ *
+ *  Colors            --> https://stackoverflow.com/questions/5762491/how-to-print-color-in-console-using-system-out-println
+ *  ArrayList         --> https://www.youtube.com/watch?v=pruuvCVXIt8
+ *  print ASCII art   --> https://www.dideo.ir/v/yt/EDDJZ4dWM5c/%D8%AA%D9%85%D8%A7%D8%B4%D8%A7%DB%8C-%D9%88%DB%8C%D8%AF%D8%A6%D9%88-%D8%A7%D8%B2-%D8%AF%DB%8C%D8%AF%D8%A6%D9%88-watch-video-from-dideo
+ *  Number validation --> https://stackoverflow.com/questions/15111420/how-to-check-if-a-string-contains-only-digits-in-java
+ *  Typing effect     --> https://stackoverflow.com/questions/35673302/java-typewriter-effect
+ *
+ */
+
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -578,7 +589,6 @@ class Owner extends Human {
 }
 
 class Agency extends UserInterface {
-    // ArrayList --> https://www.youtube.com/watch?v=pruuvCVXIt8
 
     /*
 
