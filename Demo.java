@@ -64,9 +64,6 @@ abstract class Login extends UserInterface {
 
             // Prompt for owner username
             int ownerUsernameIndex = validateNumericInput(YELLOW + "\nSelect Username: " + RESET, PURPLE);
-            System.out.print(PURPLE);
-            scanner.nextLine();
-            System.out.print(RESET);
 
             // Retrieve owner by index
             Owner owner = Agency.getOwnerByIndex(ownerUsernameIndex);
@@ -105,9 +102,6 @@ abstract class Login extends UserInterface {
 
             // Prompt for tenant username
             int tenantUsernameIndex = validateNumericInput(YELLOW + "\nSelect Username: " + RESET, PURPLE);
-            System.out.print(PURPLE);
-            scanner.nextLine();
-            System.out.print(RESET);
 
             // Retrieve tenant by index
             Tenant tenant = Agency.getTenantByIndex(tenantUsernameIndex);
