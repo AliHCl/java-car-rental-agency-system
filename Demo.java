@@ -2777,6 +2777,8 @@ abstract class UserInterface {
 
     protected static String getAndValidateNationalCode(String type) {
         String nationalCode;
+        // The number 10 here indicates that the previous range should be repeated 10 times, and no character should be used in between
+        String pattern = "[0-9]{10}";
 
         // Continue looping until a valid national code is entered
         do {
@@ -2785,17 +2787,18 @@ abstract class UserInterface {
             nationalCode = scanner.nextLine();
             System.out.print(UserInterface.RESET);
 
-            // Check if the length of the national code is not equal to 10
-            if (nationalCode.length() != 10) {
+            if (!nationalCode.matches(pattern)) {
                 System.out.println(UserInterface.RED + "Invalid national code entered" + UserInterface.RESET);
             }
-        } while (nationalCode.length() != 10);
+        } while (!nationalCode.matches(pattern));
 
         return nationalCode; // Return the validated national code
     }
 
     protected static String getAndValidatePhoneNumber(String type) {
         String phoneNumber;
+        // The number 11 here indicates that the previous range should be repeated 11 times, and no character should be used in between
+        String pattern = "[0-9]{11}";
 
         // Continue looping until a valid phone number is entered
         do {
@@ -2804,11 +2807,10 @@ abstract class UserInterface {
             phoneNumber = scanner.nextLine();
             System.out.print(UserInterface.RESET);
 
-            // Check if the length of the phone number is not equal to 11
-            if (phoneNumber.length() != 11) {
+            if (!phoneNumber.matches(pattern)) {
                 System.out.println(UserInterface.RED + "Invalid phone number entered" + UserInterface.RESET);
             }
-        } while (phoneNumber.length() != 11);
+        } while (!phoneNumber.matches(pattern));
 
         return phoneNumber; // Return the validated phone number
     }
