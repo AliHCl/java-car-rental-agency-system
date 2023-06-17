@@ -1,3 +1,13 @@
+/**
+ * ====================================================
+ * Created by Ali dehghanpour on 1402 - 03 - 07 with ❤
+ * ====================================================
+ * (\__/) ||
+ * (•ㅅ•) ||
+ * / 　 づ
+ * This project is a simulation of a car rental agency
+ */
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -2941,4 +2951,3 @@ abstract class UserInterface {
     }
 
 }
-// چک کردن استاتیک ها
