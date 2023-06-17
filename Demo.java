@@ -1184,10 +1184,21 @@ class Agency extends UserInterface {
         owner.setAge(age);
 
         String nationalCode = getAndValidateNationalCode("owner");
-        owner.setNationalCode(nationalCode);
+        if (nationalCodeOwnerSearch(nationalCode)) {
+            System.out.println(RED + "The entered national code has already been registered in the list of owners" + RESET);
+            return;
+        } else {
+            owner.setNationalCode(nationalCode);
+        }
+
 
         String phoneNumber = getAndValidatePhoneNumber("owner");
-        owner.setPhoneNumber(phoneNumber);
+        if (phoneNumberOwnerSearch(phoneNumber)) {
+            System.out.println(RED + "The entered phone number has already been registered in the list of owners" + RESET);
+            return;
+        } else {
+            owner.setPhoneNumber(phoneNumber);
+        }
 
 
         System.out.print("Enter the owner's address: ");
@@ -1252,11 +1263,24 @@ class Agency extends UserInterface {
         int age = getAndValidateAge("tenant");
         tenant.setAge(age);
 
+
         String nationalCode = getAndValidateNationalCode("tenant");
-        tenant.setNationalCode(nationalCode);
+        if (nationalCodeTenantSearch(nationalCode)) {
+            System.out.println(RED + "The entered national code has already been registered in the list of tenants" + RESET);
+            return;
+        } else {
+            tenant.setNationalCode(nationalCode);
+        }
+
 
         String phoneNumber = getAndValidatePhoneNumber("tenant");
-        tenant.setPhoneNumber(phoneNumber);
+        if (phoneNumberTenantSearch(phoneNumber)) {
+            System.out.println(RED + "The entered phone number has already been registered in the list of tenants" + RESET);
+            return;
+        } else {
+            tenant.setPhoneNumber(phoneNumber);
+        }
+
 
         System.out.print("Enter the tenant's address: ");
         System.out.print(PURPLE);
@@ -1460,12 +1484,11 @@ class Agency extends UserInterface {
         }
     }
 
-    private static void nationalCodeOwnerSearch(String nationalCode) {
+    private static boolean nationalCodeOwnerSearch(String nationalCode) {
 
         /*
          * Searches for owners based on their national code.
          * Prints the details of the matching owners if found.
-         * If no matching owners are found, displays a "Not found" message.
          *
          * param nationalCode The national code of the owner to search for.
          */
@@ -1477,18 +1500,14 @@ class Agency extends UserInterface {
                 foundStatus = true;
             }
         }
-        if (!foundStatus) {
-            System.out.println();
-            System.out.println(RED + "Not found :(" + RESET);
-        }
+        return foundStatus;
     }
 
-    private static void phoneNumberOwnerSearch(String phoneNumber) {
+    private static boolean phoneNumberOwnerSearch(String phoneNumber) {
 
         /*
          * Searches for owners based on their phone number.
          * Prints the details of the matching owners if found.
-         * If no matching owners are found, displays a "Not found" message.
          *
          * param phoneNumber The phone number of the owner to search for.
          */
@@ -1500,10 +1519,8 @@ class Agency extends UserInterface {
                 foundStatus = true;
             }
         }
-        if (!foundStatus) {
-            System.out.println();
-            System.out.println(RED + "Not found :(" + RESET);
-        }
+        return foundStatus;
+
     }
 
     private static void usernameOwnerSearch(String userName) {
@@ -1622,12 +1639,11 @@ class Agency extends UserInterface {
         }
     }
 
-    private static void nationalCodeTenantSearch(String nationalCode) {
+    private static boolean nationalCodeTenantSearch(String nationalCode) {
 
         /*
          * Searches for tenants based on their national code.
          * Prints the details of the tenants whose national code matches the specified national code.
-         * If no matching tenants are found, displays a "Not found" message.
          *
          * param nationalCode The national code to search for.
          */
@@ -1639,19 +1655,14 @@ class Agency extends UserInterface {
                 foundStatus = true;
             }
         }
-        if (!foundStatus) {
-            System.out.println();
-            System.out.println(RED + "Not found :(" + RESET);
-        }
-
+        return foundStatus;
     }
 
-    private static void phoneNumberTenantSearch(String phoneNumber) {
+    private static boolean phoneNumberTenantSearch(String phoneNumber) {
 
         /*
          * Searches for tenants based on their phone number.
          * Prints the details of the tenants whose phone number matches the specified phone number.
-         * If no matching tenants are found, displays a "Not found" message.
          *
          * param phoneNumber The phone number to search for.
          */
@@ -1663,10 +1674,7 @@ class Agency extends UserInterface {
                 foundStatus = true;
             }
         }
-        if (!foundStatus) {
-            System.out.println();
-            System.out.println(RED + "Not found :(" + RESET);
-        }
+        return foundStatus;
     }
 
     private static void usernameTenantSearch(String userName) {
@@ -1923,10 +1931,17 @@ class Agency extends UserInterface {
                 case 4:
                     String nationalCode = getAndValidateNationalCode("owner");
                     nationalCodeOwnerSearch(nationalCode); // Perform a search by national code
+                    if (!nationalCodeOwnerSearch(nationalCode)) {
+                        System.out.println(RED + "Not found :(" + RESET);
+                    }
                     break;
                 case 5:
                     String phoneNumber = getAndValidatePhoneNumber("owner");
                     phoneNumberOwnerSearch(phoneNumber); // Perform a search by phone number
+                    if (!phoneNumberOwnerSearch(phoneNumber)) {
+                        System.out.println(RED + "Not found :(" + RESET);
+                    }
+
                     break;
                 case 6:
                     System.out.print("Enter the owner's username : ");
@@ -1990,10 +2005,16 @@ class Agency extends UserInterface {
                 case 5:
                     String nationalCode = getAndValidateNationalCode("tenant");
                     nationalCodeTenantSearch(nationalCode); // Perform a search by national code
+                    if (!nationalCodeTenantSearch(nationalCode)) {
+                        System.out.println(RED + "Not found :(" + RESET);
+                    }
                     break;
                 case 6:
                     String phoneNumber = getAndValidatePhoneNumber("tenant");
                     phoneNumberTenantSearch(phoneNumber); // Perform a search by phone number
+                    if (!phoneNumberTenantSearch(phoneNumber)) {
+                        System.out.println(RED + "Not found :(" + RESET);
+                    }
                     break;
                 case 7:
                     System.out.print("Enter the tenant's username : ");
