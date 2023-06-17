@@ -582,7 +582,7 @@ class Owner extends Human {
 
 }
 
-class Agency extends UserInterface {
+abstract class Agency extends UserInterface {
 
     /*
 
