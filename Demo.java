@@ -2473,7 +2473,7 @@ abstract class UserInterface {
     private static void showProjectHours() {
         try {
             int animationSpeed = 90;
-            int projectHours = 54;
+            int projectHours = 63;
             typingAnimation("\r" + YELLOW + "I worked on this project for " + RESET, 90); // Typing animation for the initial message
             for (int i = 0; i <= projectHours; i++) {
                 if (i < 10) {
