@@ -2489,7 +2489,7 @@ abstract class UserInterface {
             }
             typingAnimation(YELLOW + " hours" + RESET, 90); // Typing animation for displaying "hours"
             System.out.println();
-        } catch (InterruptedException error){}
+        } catch (InterruptedException ignored){}
     }
 
     static void displayHomeMenu() {
