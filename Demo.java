@@ -2908,8 +2908,7 @@ abstract class UserInterface {
             System.out.print(PURPLE + art.charAt(i));
             try {
                 Thread.sleep(2); // Pause for a short period of time to create an effect
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            } catch (InterruptedException ignored) {
             }
         }
 
@@ -2918,8 +2917,7 @@ abstract class UserInterface {
             System.out.print(WHITE + art.charAt(i));
             try {
                 Thread.sleep(2); // Pause for a short period of time to create an effect
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            } catch (InterruptedException ignored) {
             }
         }
     }
