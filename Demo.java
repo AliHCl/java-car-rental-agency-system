@@ -1198,7 +1198,7 @@ abstract class Agency extends UserInterface {
         owner.setAge(age);
 
         String nationalCode = getAndValidateNationalCode("owner");
-        if (nationalCodeOwnerSearch(nationalCode)) {
+        if (!(nationalCodeOwnerSearch(nationalCode) == null)) {
             System.out.println(RED + "The entered national code has already been registered in the list of owners" + RESET);
             return;
         } else {
@@ -1207,7 +1207,7 @@ abstract class Agency extends UserInterface {
 
 
         String phoneNumber = getAndValidatePhoneNumber("owner");
-        if (phoneNumberOwnerSearch(phoneNumber)) {
+        if (!(phoneNumberOwnerSearch(phoneNumber) == null)) {
             System.out.println(RED + "The entered phone number has already been registered in the list of owners" + RESET);
             return;
         } else {
@@ -1279,7 +1279,7 @@ abstract class Agency extends UserInterface {
 
 
         String nationalCode = getAndValidateNationalCode("tenant");
-        if (nationalCodeTenantSearch(nationalCode)) {
+        if (!(nationalCodeTenantSearch(nationalCode) == null)) {
             System.out.println(RED + "The entered national code has already been registered in the list of tenants" + RESET);
             return;
         } else {
@@ -1288,7 +1288,7 @@ abstract class Agency extends UserInterface {
 
 
         String phoneNumber = getAndValidatePhoneNumber("tenant");
-        if (phoneNumberTenantSearch(phoneNumber)) {
+        if (!(phoneNumberTenantSearch(phoneNumber) == null)) {
             System.out.println(RED + "The entered phone number has already been registered in the list of tenants" + RESET);
             return;
         } else {
@@ -1498,7 +1498,7 @@ abstract class Agency extends UserInterface {
         }
     }
 
-    private static boolean nationalCodeOwnerSearch(String nationalCode) {
+    private static Owner nationalCodeOwnerSearch(String nationalCode) {
 
         /*
          * Searches for owners based on their national code.
@@ -1507,17 +1507,15 @@ abstract class Agency extends UserInterface {
          * param nationalCode The national code of the owner to search for.
          */
 
-        boolean foundStatus = false;
         for (Owner owner : Owner.getOwnerList()) {
             if (owner.getNationalCode().equals(nationalCode)) {
-                Agency.printOwner(owner);
-                foundStatus = true;
+                return owner;
             }
         }
-        return foundStatus;
+        return null;
     }
 
-    private static boolean phoneNumberOwnerSearch(String phoneNumber) {
+    private static Owner phoneNumberOwnerSearch(String phoneNumber) {
 
         /*
          * Searches for owners based on their phone number.
@@ -1526,14 +1524,12 @@ abstract class Agency extends UserInterface {
          * param phoneNumber The phone number of the owner to search for.
          */
 
-        boolean foundStatus = false;
         for (Owner owner : Owner.getOwnerList()) {
             if (owner.getPhoneNumber().equals(phoneNumber)) {
-                Agency.printOwner(owner);
-                foundStatus = true;
+                return owner;
             }
         }
-        return foundStatus;
+        return null;
 
     }
 
@@ -1653,7 +1649,7 @@ abstract class Agency extends UserInterface {
         }
     }
 
-    private static boolean nationalCodeTenantSearch(String nationalCode) {
+    private static Tenant nationalCodeTenantSearch(String nationalCode) {
 
         /*
          * Searches for tenants based on their national code.
@@ -1662,17 +1658,15 @@ abstract class Agency extends UserInterface {
          * param nationalCode The national code to search for.
          */
 
-        boolean foundStatus = false;
         for (Tenant tenant : Tenant.getTenantList()) {
             if (tenant.getNationalCode().equals(nationalCode)) {
-                Agency.printTenant(tenant);
-                foundStatus = true;
+                return tenant;
             }
         }
-        return foundStatus;
+        return null;
     }
 
-    private static boolean phoneNumberTenantSearch(String phoneNumber) {
+    private static Tenant phoneNumberTenantSearch(String phoneNumber) {
 
         /*
          * Searches for tenants based on their phone number.
@@ -1681,14 +1675,12 @@ abstract class Agency extends UserInterface {
          * param phoneNumber The phone number to search for.
          */
 
-        boolean foundStatus = false;
         for (Tenant tenant : Tenant.getTenantList()) {
             if (tenant.getPhoneNumber().equals(phoneNumber)) {
-                Agency.printTenant(tenant);
-                foundStatus = true;
+                return tenant;
             }
         }
-        return foundStatus;
+        return null;
     }
 
     private static void usernameTenantSearch(String userName) {
@@ -1914,6 +1906,7 @@ abstract class Agency extends UserInterface {
             int option = getUserOption(); // Get the user input option
             String firstname;
             String lastname;
+            Owner owner;
             switch (option) {
                 case 1:
                     System.out.print("Enter the owner's first name : ");
@@ -1944,16 +1937,21 @@ abstract class Agency extends UserInterface {
                     break;
                 case 4:
                     String nationalCode = getAndValidateNationalCode("owner");
-                    nationalCodeOwnerSearch(nationalCode); // Perform a search by national code
-                    if (!nationalCodeOwnerSearch(nationalCode)) {
+                    owner = nationalCodeOwnerSearch(nationalCode); // Perform a search by national code
+                    if (owner == null) {
                         System.out.println(RED + "Not found :(" + RESET);
+
+                    } else {
+                        printOwner(owner);
                     }
                     break;
                 case 5:
                     String phoneNumber = getAndValidatePhoneNumber("owner");
-                    phoneNumberOwnerSearch(phoneNumber); // Perform a search by phone number
-                    if (!phoneNumberOwnerSearch(phoneNumber)) {
+                    owner = phoneNumberOwnerSearch(phoneNumber); // Perform a search by phone number
+                    if (owner == null) {
                         System.out.println(RED + "Not found :(" + RESET);
+                    } else {
+                        printOwner(owner);
                     }
 
                     break;
@@ -1984,6 +1982,7 @@ abstract class Agency extends UserInterface {
             int option = getUserOption(); // Get the user input option
             String firstname;
             String lastname;
+            Tenant tenant;
             switch (option) {
                 case 1:
                     System.out.print("Enter the tenant's first name : ");
@@ -2018,16 +2017,20 @@ abstract class Agency extends UserInterface {
                     break;
                 case 5:
                     String nationalCode = getAndValidateNationalCode("tenant");
-                    nationalCodeTenantSearch(nationalCode); // Perform a search by national code
-                    if (!nationalCodeTenantSearch(nationalCode)) {
+                    tenant = nationalCodeTenantSearch(nationalCode); // Perform a search by national code
+                    if (tenant == null) {
                         System.out.println(RED + "Not found :(" + RESET);
+                    } else {
+                        printTenant(tenant);
                     }
                     break;
                 case 6:
                     String phoneNumber = getAndValidatePhoneNumber("tenant");
-                    phoneNumberTenantSearch(phoneNumber); // Perform a search by phone number
-                    if (!phoneNumberTenantSearch(phoneNumber)) {
+                    tenant = phoneNumberTenantSearch(phoneNumber); // Perform a search by phone number
+                    if (tenant == null) {
                         System.out.println(RED + "Not found :(" + RESET);
+                    } else {
+                        printTenant(tenant);
                     }
                     break;
                 case 7:
@@ -2489,7 +2492,8 @@ abstract class UserInterface {
             }
             typingAnimation(YELLOW + " hours" + RESET, 90); // Typing animation for displaying "hours"
             System.out.println();
-        } catch (InterruptedException ignored){}
+        } catch (InterruptedException ignored) {
+        }
     }
 
     static void displayHomeMenu() {
