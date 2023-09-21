@@ -2498,10 +2498,9 @@ abstract class UserInterface {
 
     static void displayHomeMenu() {
         String art = """
-                ╔═╗┌─┐┬─┐  ╦═╗┌─┐┌┐┌┌┬┐┌─┐┬    ╔═╗┌─┐┌─┐┌┐┌┌─┐┬ ┬
-                ║  ├─┤├┬┘  ╠╦╝├┤ │││ │ ├─┤│    ╠═╣│ ┬├┤ ││││  └┬┘
-                ╚═╝┴ ┴┴└─  ╩╚═└─┘┘└┘ ┴ ┴ ┴┴─┘  ╩ ╩└─┘└─┘┘└┘└─┘ ┴
-                """;
+                 __ _  _     _  __   ___ _        _  __ __    __\\ /
+                /  |_||_)   |_)|_ |\\| | |_||     |_|/__|_ |\\|/   Y\s
+                \\__| || \\   | \\|__| | | | ||__   | |\\_||__| |\\__ |\s\n""";
         printBanner(art); // Display the banner art
         System.out.println("Welcome to the Agency Management System\n");
         System.out.println(PURPLE + "Who are you:\n" + RESET);
