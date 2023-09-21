@@ -45,3 +45,8 @@ The project is a car rental agency management application that allows the agency
    java Demo.java
 ```
 
+
+### Admin Username and Password 
+
+>Username : admin <br>
+Password : admin
