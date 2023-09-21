@@ -34,15 +34,15 @@ The project is a car rental agency management application that allows the agency
 - Clone the project repository to your local machine:
 
 ```shell
-   git clone https://github.com/AliHCl/java-car-rental-agency-system.git
+git clone https://github.com/AliHCl/java-car-rental-agency-system.git
 ```
 - Navigate to the project directory
 ```shell
-   cd java-car-rental-agency-system
+cd java-car-rental-agency-system
 ```
 - Run
 ```shell
-   java Demo.java
+java Demo.java
 ```
 
 
