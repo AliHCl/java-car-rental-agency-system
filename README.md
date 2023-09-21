@@ -3,7 +3,7 @@
 >This is a project for the Java programming course at the university. Our professor has asked us to define all project details within a file The intention was not to publish this project on GitHub; it was meant to be a project for receiving a grade in the course. However, I decided to make this project public so that other students can get ideas from it. If you find any issues or errors in the project, it's because this is not a professional project, and I am not proficient in Java as it should be. I don't have the intention to learn Java professionally; I only started learning Java to pass the university course. My expertise area is back-end web development using Python and the Django framework. Anyway, I hope you enjoy it :)
 
 # Car rental agency project
-The project is a car rental agency management application that allows the agency manager to add cars, renters, and owners to the agency. It rents out cars to renters for a specified period. Finally, it provides a comprehensive and detailed report of the agency's activities. The project is written in Java and does not have a graphical user interface
+The project is a car rental agency management application that allows the agency manager to add cars, renters, and owners to the agency. It rents out cars to renters for a specified period. Finally, it provides a comprehensive and detailed report of the agency's activities. The project is written in Java and does not have a graphical user interface and a database.
 
 <br>
 
