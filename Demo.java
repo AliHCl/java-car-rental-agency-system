@@ -2457,13 +2457,12 @@ abstract class UserInterface {
                 """;
 
         printBanner(art); // Display the banner using ASCII art
-        typingAnimation("\n\neverything is on " + PURPLE + "Principle" + RESET + ", everything is on " + PURPLE + "Discipline" + RESET, 90); // Typing animation for a message
         typingAnimation(PURPLE + "\n======================================\n\n" + RESET, 30);
         typingAnimation(YELLOW + "I am " + RESET + GREEN + "Ali Dehghanpour\n" + RESET, 90); // Typing animation for the developer's name
         System.out.println();
         showProjectHours(); // Display project hours
         System.out.println();
-        typingAnimation("Email    " + PURPLE + "[" + WHITE + GREEN + "ali75847584@gmail.com" + RESET + PURPLE + "]" + RESET, 90); // Typing animation for the developer's email
+        typingAnimation("Email    " + PURPLE + "[" + WHITE + GREEN + "alidehghanpour82@gmail.com" + RESET + PURPLE + "]" + RESET, 90); // Typing animation for the developer's email
         System.out.println();
         typingAnimation("GitHub   " + PURPLE + "[" + WHITE + GREEN + "AliHCl" + RESET + PURPLE + "]" + RESET, 90); // Typing animation for the developer's GitHub username
         System.out.println();
