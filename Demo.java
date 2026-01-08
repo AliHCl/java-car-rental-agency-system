@@ -2466,7 +2466,7 @@ abstract class UserInterface {
         System.out.println();
         typingAnimation("GitHub   " + PURPLE + "[" + WHITE + GREEN + "AliHCl" + RESET + PURPLE + "]" + RESET, 90); // Typing animation for the developer's GitHub username
         System.out.println();
-        typingAnimation("Telegram " + PURPLE + "[" + WHITE + GREEN + "@Ali_4201" + RESET + PURPLE + "]" + RESET, 90); // Typing animation for the developer's Telegram username
+        typingAnimation("Telegram " + PURPLE + "[" + WHITE + GREEN + "----" + RESET + PURPLE + "]" + RESET, 90); // Typing animation for the developer's Telegram username
         System.out.println();
         typingAnimation(PURPLE + "\n======================================\n\n" + RESET, 30);
         System.out.println();
