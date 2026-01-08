@@ -57,10 +57,6 @@ Password : admin
 
 <br>
 
-![2](https://github.com/AliHCl/java-car-rental-agency-system/assets/30931495/b906e496-2a9d-4384-90dd-826d962d4ddc)
-
-<br>
-
 ![3](https://github.com/AliHCl/java-car-rental-agency-system/assets/30931495/121f2888-bc27-4de7-80e0-d46f11ef21a2)
 
 <br>
